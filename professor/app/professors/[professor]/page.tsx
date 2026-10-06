@@ -10,6 +10,7 @@ import TopSearchSection from "@/components/searchbar/topSection";
 import Login from "@/components/auth/loginformbasicgoogle01"; 
 import { notFound } from "next/navigation";
 import { parseIdParam } from "@/helpers/links";
+import { getDictionary } from "@/helpers/i18n/locale";
 
 
 
@@ -73,13 +74,13 @@ async function getReviews(professor, courseId = null) {
   if(courseId == null) {
     course = {
       id: null,
-      name: "All Courses"
+      name: getDictionary().allCourses
     }
   }else{
     // take the name from the professor's own course list so a course with no reviews still works
     course = professor.courses
       .map(({ course }) => course)
-      .find((c) => c.id === parseInt(courseId, 10)) ?? { id: parseInt(courseId, 10), name: "Unknown course" };
+      .find((c) => c.id === parseInt(courseId, 10)) ?? { id: parseInt(courseId, 10), name: getDictionary().unknownCourse };
   }
   
   
@@ -139,6 +140,7 @@ const ProfessorPage = async ({ params, searchParams }) => {
     const session = await getServerSession(authOptions);
      
     const courseId = searchParams?.courseId || null; 
+    const t = getDictionary();
     const reviewsComp = await getReviews(professor, courseId);
     const reviews = reviewsComp.reviews;
     const allReviews = reviewsComp.allReviews;  
@@ -167,7 +169,7 @@ const ProfessorPage = async ({ params, searchParams }) => {
           
 
         <h1>{professor.Prefix} {professor.Firstname} {professor.Lastname}</h1>
-        <h2>Courses</h2>
+        <h2>{t.courses}</h2>
         <ul  className="flex flex-row">
           {professor.courses.map(({ course }) => (
             <li className="px-3" key={course.id}>
@@ -176,11 +178,11 @@ const ProfessorPage = async ({ params, searchParams }) => {
           ))}
         </ul>
         <div className="py-8">
-          <h1 className = "pt-5 pb-7 text-3xl text-center">Overall Ratings</h1>
+          <h1 className = "pt-5 pb-7 text-3xl text-center">{t.overallRatings}</h1>
           <ReviewCard review={overallReview} />
         </div>
 
-        <h1>Filter for a Course</h1>
+        <h1>{t.filterForCourse}</h1>
         <Filter items={allCoursesWithReviews} type="course" itemId={courseId} param="courseId" />
 
         <div className="py-5" />
@@ -192,9 +194,9 @@ const ProfessorPage = async ({ params, searchParams }) => {
 
         <div className="py-5" />
         
-        <h2>Reviews</h2>
+        <h2>{t.reviews}</h2>
         {reviews.length === 0 ? (
-          <p>No reviews yet</p>
+          <p>{t.noReviewsYet}</p>
         ) : (
           <ul className = "flex flex-col w-2/3  justify-center">
             {reviews.map(review => (

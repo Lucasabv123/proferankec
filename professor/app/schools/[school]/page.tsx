@@ -5,6 +5,7 @@ import ProfessorCard from "@/components/professor/card";
 import CourseCard from "@/components/course/card"; 
 import TopSearchSection from "@/components/searchbar/topSection";
 import HomeButton from "@/components/util/homeButton";
+import { getDictionary } from "@/helpers/i18n/locale";
 
 
 type Course = {
@@ -39,6 +40,7 @@ async function getSearch(school : string, type? : string, search? : string){
 
 async function SchoolPage( {params, searchParams }) {
 
+    const t = getDictionary();
     const school = decodeURIComponent(params.school);  
     const search = searchParams?.q; 
     const type = searchParams?.type;
@@ -62,9 +64,9 @@ async function SchoolPage( {params, searchParams }) {
         <div>
             <h1 className="text-4xl font-semibold mb-4 pt-3">{school}</h1>
         </div>
-        <SearchBarAddOnPrimitive  placeholder="Search for course/professor" />
+        <SearchBarAddOnPrimitive placeholder={t.schoolSearchPlaceholder} buttonText={t.searchButton} />
 
-        {searchData == null ? (<p>Could not find any results</p>) : (
+        {searchData == null ? (<p>{t.couldNotFind}</p>) : (
             type === "professor" ? (
                 <div className="flex flex-wrap justify-between space-x-3">
                     {searchData.map((professor : Professor, index) => (
