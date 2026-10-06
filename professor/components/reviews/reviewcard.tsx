@@ -1,8 +1,10 @@
 "use client"; 
 import Rating from "react-rating";
 import { useDictionary } from "@/components/i18n/provider";
+import ReportButton from "./reportButton";
 
 type Review = {
+  id?: number,
   professorId?: number, 
   courseId?: number, 
   userId?: number, 
@@ -25,6 +27,7 @@ type Review = {
 interface ReviewCardProps {
   review: Review; 
   type?: string;
+  canReport?: boolean;
 }
 
 interface StaticStarRatingProps {
@@ -45,7 +48,7 @@ const StaticStarRating: React.FC<StaticStarRatingProps> = ({ rating }) => {
   )
 }
 
-const ReviewCard: React.FC<ReviewCardProps> = ({ review, type = "professor" }) => {
+const ReviewCard: React.FC<ReviewCardProps> = ({ review, type = "professor", canReport = false }) => {
   const t = useDictionary();
   return (
     <div className="bg-gray-200 shadow-lg rounded-lg p-6 mb-6 w-full max-w-4xl mx-auto">
@@ -77,6 +80,11 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, type = "professor" }) =
       </div>
 
       <p className="text-gray-700 text-sm md:text-base">{review.comment}</p>
+      {canReport && review.id ? (
+        <div className="mt-3 text-right">
+          <ReportButton reviewId={review.id} />
+        </div>
+      ) : null}
     </div>
   );
 }

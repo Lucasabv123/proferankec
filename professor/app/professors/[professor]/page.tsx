@@ -51,21 +51,21 @@ async function getReviews(professor, courseId = null) {
   const reviews = await prisma.review.findMany({
       where: {
           professorId: professor.id,
+          hidden: false,
           ...(courseId && { courseId: parseInt(courseId, 10) }), // Convert courseId to an integer
       },
       include: {
           course: true,
-          user: true,
       },
   });
 
   const allReviews = await prisma.review.findMany({
     where: {
-      professorId: professor.id
+      professorId: professor.id,
+      hidden: false
     },
     include: {
       course: true,
-      user: true
   },
  });
 
@@ -201,7 +201,7 @@ const ProfessorPage = async ({ params, searchParams }) => {
           <ul className = "flex flex-col w-2/3  justify-center">
             {reviews.map(review => (
               <li key={review.id} className="p-5">
-                <ReviewCard review={review} />
+                <ReviewCard review={review} canReport={!!session} />
               </li>
             ))}
           </ul>

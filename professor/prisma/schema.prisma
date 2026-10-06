@@ -36,15 +36,16 @@ model Session {
 }
 
 model User {
-  id            Int       @id @default(autoincrement())
+  id            Int            @id @default(autoincrement())
   name          String?
-  email         String?   @unique
+  email         String?        @unique
   emailVerified DateTime?
   image         String?
-  isAdmin       Boolean   @default(false)
+  isAdmin       Boolean        @default(false)
   accounts      Account[]
   sessions      Session[]
   reviews       Review[]
+  reports       ReviewReport[]
 }
 
 model VerificationToken {
@@ -56,25 +57,25 @@ model VerificationToken {
 }
 
 model Course {
-  id          Int                 @id @default(autoincrement())
+  id          Int               @id @default(autoincrement())
   name        String
   description String
   School      String
   Department  String
-  professors  CourseProfessor[]   // Establish many-to-many relationship with Professor
+  professors  CourseProfessor[] // Establish many-to-many relationship with Professor
   Review      Review[]
 
   //@@unique([name])
 }
 
 model Professor {
-  id            Int                 @id @default(autoincrement())
-  Firstname     String
-  Lastname      String
-  Prefix        String?
-  Verified      Boolean             @default(false)
-  courses       CourseProfessor[]   // Establish many-to-many relationship with Course
-  Review        Review[]
+  id        Int               @id @default(autoincrement())
+  Firstname String
+  Lastname  String
+  Prefix    String?
+  Verified  Boolean           @default(false)
+  courses   CourseProfessor[] // Establish many-to-many relationship with Course
+  Review    Review[]
 }
 
 model CourseProfessor {
@@ -83,11 +84,11 @@ model CourseProfessor {
   course      Course    @relation(fields: [courseId], references: [id])
   professor   Professor @relation(fields: [professorId], references: [id])
 
-  @@id([courseId, professorId])    // Composite primary key
+  @@id([courseId, professorId]) // Composite primary key
 }
 
 model Review {
-  id            Int       @id @default(autoincrement())
+  id            Int            @id @default(autoincrement())
   courseId      Int
   professorId   Int
   userId        Int
@@ -97,9 +98,25 @@ model Review {
   lecture       Float
   learning      Float
   comment       String
-  course        Course    @relation(fields: [courseId], references: [id])
-  professor     Professor @relation(fields: [professorId], references: [id])
-  user          User      @relation(fields: [userId], references: [id])
+  hidden        Boolean        @default(false) // hidden by an admin; never shown publicly
+  createdAt     DateTime       @default(now())
+  course        Course         @relation(fields: [courseId], references: [id])
+  professor     Professor      @relation(fields: [professorId], references: [id])
+  user          User           @relation(fields: [userId], references: [id])
+  reports       ReviewReport[]
 
-  @@unique([userId, professorId, courseId])  // one review per user per professor and course
+  @@unique([userId, professorId, courseId]) // one review per user per professor and course
+}
+
+// a signed-in user flagging a review for an admin to look at
+model ReviewReport {
+  id        Int      @id @default(autoincrement())
+  reviewId  Int
+  userId    Int
+  reason    String?
+  createdAt DateTime @default(now())
+  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([reviewId, userId]) // one report per user per review
 }
