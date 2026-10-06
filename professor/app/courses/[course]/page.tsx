@@ -9,6 +9,7 @@ import HomeButton from "@/components/util/homeButton";
 import TopSearchSection from "@/components/searchbar/topSection";
 import Login from "@/components/auth/loginformbasicgoogle01"; 
 import { notFound } from "next/navigation";
+import { parseIdParam } from "@/helpers/links";
 
 
 
@@ -143,11 +144,12 @@ async function getReviews(course : Course, professorId = null){
 
 
 async function getCourseData(courseParam) {
-  const decodedParam = decodeURIComponent(courseParam);
-  const [name, school, department] = decodedParam.split("-");
+  const id = parseIdParam(courseParam);
+  // old links were "Name-School-Department"; keep them working
+  const [name, school, department] = decodeURIComponent(courseParam).split("-");
 
   const courseData = await prisma.course.findFirst({
-    where: {
+    where: id !== null ? { id } : {
       name: name,
       Department: department,
       School: school,

@@ -2,8 +2,10 @@
 
 import { useRouter } from "next/navigation"; 
 import { useState } from "react";
+import { coursePath } from "@/helpers/links";
 
 type Course = {
+    id: number;
     name: string; 
     School: string;
     Department: string; 
@@ -15,7 +17,7 @@ interface CourseCardProps{
 
  const CourseCard = ({ course }) => {
     const router = useRouter();
-    const coursePageName = '/courses/' + course.name + '-' + course.School + '-' + course.Department; 
+    const coursePageName = coursePath(course);
     const [hovered, setHovered] = useState(false);
 
     

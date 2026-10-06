@@ -1,5 +1,5 @@
 import prisma from '../prisma/prisma';
-import { searchMode } from '../search/mode';
+import { professorNameFilter } from '../search/professorsearch';
 
 
 
@@ -14,13 +14,7 @@ async function getProfessors(school: string, professor?: string) {
                         },
                     },
                 },
-                OR: professor
-                    ? [
-                        { Firstname: { contains: professor.toLowerCase(), ...searchMode } },
-                        { Lastname: { contains: professor.toLowerCase(), ...searchMode } },
-                        { Prefix: { contains: professor.toLowerCase(), ...searchMode } },
-                    ]
-                    : undefined,
+                ...(professor ? professorNameFilter(professor) : {}),
             },
             select: {
                 id: true,

@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation"; 
 import { useState } from "react";
+import { professorPath } from "@/helpers/links";
 
 type Professor = {
   id: number;
@@ -19,7 +20,7 @@ interface ProfessorCardProps{
 
 const ProfessorCard : React.FC<ProfessorCardProps> = ({ professor }) => {
   const router = useRouter();
-  const professorPageName = `/professors/${professor.Prefix}-${professor.Firstname}-${professor.Lastname}`;
+  const professorPageName = professorPath(professor);
   const [hovered, setHovered] = useState(false);
 
   const handleClick = () => {

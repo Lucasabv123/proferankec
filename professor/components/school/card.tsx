@@ -2,6 +2,7 @@
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react'; 
+import { schoolPath } from '@/helpers/links';
 
 interface SchoolCardProps {
     school: string;
@@ -10,7 +11,7 @@ interface SchoolCardProps {
 const SchoolCard: React.FC<SchoolCardProps> = ({ school }) => {
     const router = useRouter(); 
     const [hovered, setHovered] = useState(false); 
-    const schoolPageName = `/schools/${school}`;
+    const schoolPageName = schoolPath(school);
 
     const handleClick = (): void => {
         router.push(schoolPageName); 

@@ -41,11 +41,10 @@ export const SearchBarAddOnPrimitive : React.FC<SearchBarAddOnPrimitiveProps> = 
     };
 
     const handleSearch = () => {
-        const encodedURI = encodeURI(searchValue);
         const params = new URLSearchParams(window.location.search);
 
         if (searchValue) {
-            params.set('q', encodedURI);
+            params.set('q', searchValue.trim());
         } else {
             params.delete('q');
         }
@@ -104,9 +103,8 @@ export const SearchBarPrimitive: React.FC<SearchBarPrimitiveProps> = ({ defaultV
     }; 
 
     const handleSearch = () => {
-        const encodedURI = encodeURI(searchValue);  
-        if(searchValue){
-            const value = `/search/${searchType}?q=${encodeURI(encodedURI)}`;
+        if(searchValue.trim()){
+            const value = `/search/${searchType}?q=${encodeURIComponent(searchValue.trim())}`;
             router.push(value); 
             
         }

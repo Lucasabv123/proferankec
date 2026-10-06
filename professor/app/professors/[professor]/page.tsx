@@ -9,6 +9,7 @@ import HomeButton from '@/components/util/homeButton';
 import TopSearchSection from "@/components/searchbar/topSection";
 import Login from "@/components/auth/loginformbasicgoogle01"; 
 import { notFound } from "next/navigation";
+import { parseIdParam } from "@/helpers/links";
 
 
 
@@ -105,11 +106,12 @@ async function getUserId(session) {
 }
 
 async function getProfessorData(professorParam) {
-    const decodedParam = decodeURIComponent(professorParam);
-    const [prefix, firstname, lastname] = decodedParam.split("-");
-  
+    const id = parseIdParam(professorParam);
+    // old links were "Prefix-First-Last"; keep them working
+    const [prefix, firstname, lastname] = decodeURIComponent(professorParam).split("-");
+
     const prof = await prisma.professor.findFirst({
-      where: {
+      where: id !== null ? { id } : {
         Prefix: prefix,
         Firstname: firstname,
         Lastname: lastname
