@@ -1,0 +1,302 @@
+[
+  {
+    "Firstname": "Firstname Beta 1",
+    "Lastname": "Lastname Beta 1",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Delta 3",
+    "Lastname": "Lastname Delta 3",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Zeta 5",
+    "Lastname": "Lastname Zeta 5",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Theta 7",
+    "Lastname": "Lastname Theta 7",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Kappa 9",
+    "Lastname": "Lastname Kappa 9",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Beta 11",
+    "Lastname": "Lastname Beta 11",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Delta 13",
+    "Lastname": "Lastname Delta 13",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Zeta 15",
+    "Lastname": "Lastname Zeta 15",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Theta 17",
+    "Lastname": "Lastname Theta 17",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Kappa 19",
+    "Lastname": "Lastname Kappa 19",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Beta 21",
+    "Lastname": "Lastname Beta 21",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Delta 23",
+    "Lastname": "Lastname Delta 23",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Zeta 25",
+    "Lastname": "Lastname Zeta 25",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Theta 27",
+    "Lastname": "Lastname Theta 27",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Kappa 29",
+    "Lastname": "Lastname Kappa 29",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Beta 31",
+    "Lastname": "Lastname Beta 31",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Delta 33",
+    "Lastname": "Lastname Delta 33",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Zeta 35",
+    "Lastname": "Lastname Zeta 35",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Theta 37",
+    "Lastname": "Lastname Theta 37",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Kappa 39",
+    "Lastname": "Lastname Kappa 39",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Beta 41",
+    "Lastname": "Lastname Beta 41",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Delta 43",
+    "Lastname": "Lastname Delta 43",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Zeta 45",
+    "Lastname": "Lastname Zeta 45",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Theta 47",
+    "Lastname": "Lastname Theta 47",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Kappa 49",
+    "Lastname": "Lastname Kappa 49",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Beta 51",
+    "Lastname": "Lastname Beta 51",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Delta 53",
+    "Lastname": "Lastname Delta 53",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Zeta 55",
+    "Lastname": "Lastname Zeta 55",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Theta 57",
+    "Lastname": "Lastname Theta 57",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Kappa 59",
+    "Lastname": "Lastname Kappa 59",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Beta 61",
+    "Lastname": "Lastname Beta 61",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Delta 63",
+    "Lastname": "Lastname Delta 63",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Zeta 65",
+    "Lastname": "Lastname Zeta 65",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Theta 67",
+    "Lastname": "Lastname Theta 67",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Kappa 69",
+    "Lastname": "Lastname Kappa 69",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Beta 71",
+    "Lastname": "Lastname Beta 71",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Delta 73",
+    "Lastname": "Lastname Delta 73",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Zeta 75",
+    "Lastname": "Lastname Zeta 75",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Theta 77",
+    "Lastname": "Lastname Theta 77",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Kappa 79",
+    "Lastname": "Lastname Kappa 79",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Beta 81",
+    "Lastname": "Lastname Beta 81",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Delta 83",
+    "Lastname": "Lastname Delta 83",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Zeta 85",
+    "Lastname": "Lastname Zeta 85",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Theta 87",
+    "Lastname": "Lastname Theta 87",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Kappa 89",
+    "Lastname": "Lastname Kappa 89",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Beta 91",
+    "Lastname": "Lastname Beta 91",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Delta 93",
+    "Lastname": "Lastname Delta 93",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Zeta 95",
+    "Lastname": "Lastname Zeta 95",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Theta 97",
+    "Lastname": "Lastname Theta 97",
+    "Prefix": "Prof.",
+    "Verified": false
+  },
+  {
+    "Firstname": "Firstname Kappa 99",
+    "Lastname": "Lastname Kappa 99",
+    "Prefix": "Prof.",
+    "Verified": false
+  }
+]

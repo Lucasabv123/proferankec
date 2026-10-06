@@ -1,0 +1,302 @@
+[
+  {
+    "name": "Course Beta 1",
+    "description": "Description for Course 1",
+    "School": "School of Engineering",
+    "Department": "Electrical Engineering"
+  },
+  {
+    "name": "Course Delta 3",
+    "description": "Description for Course 3",
+    "School": "School of Arts",
+    "Department": "Fine Arts"
+  },
+  {
+    "name": "Course Zeta 5",
+    "description": "Description for Course 5",
+    "School": "School of Computer Science",
+    "Department": "Computer Science"
+  },
+  {
+    "name": "Course Theta 7",
+    "description": "Description for Course 7",
+    "School": "School of Business",
+    "Department": "Business Administration"
+  },
+  {
+    "name": "Course Kappa 9",
+    "description": "Description for Course 9",
+    "School": "School of Medicine",
+    "Department": "Medical Sciences"
+  },
+  {
+    "name": "Course Beta 11",
+    "description": "Description for Course 11",
+    "School": "School of Engineering",
+    "Department": "Electrical Engineering"
+  },
+  {
+    "name": "Course Delta 13",
+    "description": "Description for Course 13",
+    "School": "School of Arts",
+    "Department": "Fine Arts"
+  },
+  {
+    "name": "Course Zeta 15",
+    "description": "Description for Course 15",
+    "School": "School of Computer Science",
+    "Department": "Computer Science"
+  },
+  {
+    "name": "Course Theta 17",
+    "description": "Description for Course 17",
+    "School": "School of Business",
+    "Department": "Business Administration"
+  },
+  {
+    "name": "Course Kappa 19",
+    "description": "Description for Course 19",
+    "School": "School of Medicine",
+    "Department": "Medical Sciences"
+  },
+  {
+    "name": "Course Beta 21",
+    "description": "Description for Course 21",
+    "School": "School of Engineering",
+    "Department": "Electrical Engineering"
+  },
+  {
+    "name": "Course Delta 23",
+    "description": "Description for Course 23",
+    "School": "School of Arts",
+    "Department": "Fine Arts"
+  },
+  {
+    "name": "Course Zeta 25",
+    "description": "Description for Course 25",
+    "School": "School of Computer Science",
+    "Department": "Computer Science"
+  },
+  {
+    "name": "Course Theta 27",
+    "description": "Description for Course 27",
+    "School": "School of Business",
+    "Department": "Business Administration"
+  },
+  {
+    "name": "Course Kappa 29",
+    "description": "Description for Course 29",
+    "School": "School of Medicine",
+    "Department": "Medical Sciences"
+  },
+  {
+    "name": "Course Beta 31",
+    "description": "Description for Course 31",
+    "School": "School of Engineering",
+    "Department": "Electrical Engineering"
+  },
+  {
+    "name": "Course Delta 33",
+    "description": "Description for Course 33",
+    "School": "School of Arts",
+    "Department": "Fine Arts"
+  },
+  {
+    "name": "Course Zeta 35",
+    "description": "Description for Course 35",
+    "School": "School of Computer Science",
+    "Department": "Computer Science"
+  },
+  {
+    "name": "Course Theta 37",
+    "description": "Description for Course 37",
+    "School": "School of Business",
+    "Department": "Business Administration"
+  },
+  {
+    "name": "Course Kappa 39",
+    "description": "Description for Course 39",
+    "School": "School of Medicine",
+    "Department": "Medical Sciences"
+  },
+  {
+    "name": "Course Beta 41",
+    "description": "Description for Course 41",
+    "School": "School of Engineering",
+    "Department": "Electrical Engineering"
+  },
+  {
+    "name": "Course Delta 43",
+    "description": "Description for Course 43",
+    "School": "School of Arts",
+    "Department": "Fine Arts"
+  },
+  {
+    "name": "Course Zeta 45",
+    "description": "Description for Course 45",
+    "School": "School of Computer Science",
+    "Department": "Computer Science"
+  },
+  {
+    "name": "Course Theta 47",
+    "description": "Description for Course 47",
+    "School": "School of Business",
+    "Department": "Business Administration"
+  },
+  {
+    "name": "Course Kappa 49",
+    "description": "Description for Course 49",
+    "School": "School of Medicine",
+    "Department": "Medical Sciences"
+  },
+  {
+    "name": "Course Beta 51",
+    "description": "Description for Course 51",
+    "School": "School of Engineering",
+    "Department": "Electrical Engineering"
+  },
+  {
+    "name": "Course Delta 53",
+    "description": "Description for Course 53",
+    "School": "School of Arts",
+    "Department": "Fine Arts"
+  },
+  {
+    "name": "Course Zeta 55",
+    "description": "Description for Course 55",
+    "School": "School of Computer Science",
+    "Department": "Computer Science"
+  },
+  {
+    "name": "Course Theta 57",
+    "description": "Description for Course 57",
+    "School": "School of Business",
+    "Department": "Business Administration"
+  },
+  {
+    "name": "Course Kappa 59",
+    "description": "Description for Course 59",
+    "School": "School of Medicine",
+    "Department": "Medical Sciences"
+  },
+  {
+    "name": "Course Beta 61",
+    "description": "Description for Course 61",
+    "School": "School of Engineering",
+    "Department": "Electrical Engineering"
+  },
+  {
+    "name": "Course Delta 63",
+    "description": "Description for Course 63",
+    "School": "School of Arts",
+    "Department": "Fine Arts"
+  },
+  {
+    "name": "Course Zeta 65",
+    "description": "Description for Course 65",
+    "School": "School of Computer Science",
+    "Department": "Computer Science"
+  },
+  {
+    "name": "Course Theta 67",
+    "description": "Description for Course 67",
+    "School": "School of Business",
+    "Department": "Business Administration"
+  },
+  {
+    "name": "Course Kappa 69",
+    "description": "Description for Course 69",
+    "School": "School of Medicine",
+    "Department": "Medical Sciences"
+  },
+  {
+    "name": "Course Beta 71",
+    "description": "Description for Course 71",
+    "School": "School of Engineering",
+    "Department": "Electrical Engineering"
+  },
+  {
+    "name": "Course Delta 73",
+    "description": "Description for Course 73",
+    "School": "School of Arts",
+    "Department": "Fine Arts"
+  },
+  {
+    "name": "Course Zeta 75",
+    "description": "Description for Course 75",
+    "School": "School of Computer Science",
+    "Department": "Computer Science"
+  },
+  {
+    "name": "Course Theta 77",
+    "description": "Description for Course 77",
+    "School": "School of Business",
+    "Department": "Business Administration"
+  },
+  {
+    "name": "Course Kappa 79",
+    "description": "Description for Course 79",
+    "School": "School of Medicine",
+    "Department": "Medical Sciences"
+  },
+  {
+    "name": "Course Beta 81",
+    "description": "Description for Course 81",
+    "School": "School of Engineering",
+    "Department": "Electrical Engineering"
+  },
+  {
+    "name": "Course Delta 83",
+    "description": "Description for Course 83",
+    "School": "School of Arts",
+    "Department": "Fine Arts"
+  },
+  {
+    "name": "Course Zeta 85",
+    "description": "Description for Course 85",
+    "School": "School of Computer Science",
+    "Department": "Computer Science"
+  },
+  {
+    "name": "Course Theta 87",
+    "description": "Description for Course 87",
+    "School": "School of Business",
+    "Department": "Business Administration"
+  },
+  {
+    "name": "Course Kappa 89",
+    "description": "Description for Course 89",
+    "School": "School of Medicine",
+    "Department": "Medical Sciences"
+  },
+  {
+    "name": "Course Beta 91",
+    "description": "Description for Course 91",
+    "School": "School of Engineering",
+    "Department": "Electrical Engineering"
+  },
+  {
+    "name": "Course Delta 93",
+    "description": "Description for Course 93",
+    "School": "School of Arts",
+    "Department": "Fine Arts"
+  },
+  {
+    "name": "Course Zeta 95",
+    "description": "Description for Course 95",
+    "School": "School of Computer Science",
+    "Department": "Computer Science"
+  },
+  {
+    "name": "Course Theta 97",
+    "description": "Description for Course 97",
+    "School": "School of Business",
+    "Department": "Business Administration"
+  },
+  {
+    "name": "Course Kappa 99",
+    "description": "Description for Course 99",
+    "School": "School of Medicine",
+    "Department": "Medical Sciences"
+  }
+]
