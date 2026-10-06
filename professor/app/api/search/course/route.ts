@@ -7,12 +7,10 @@ async function handler(req: NextRequest) {
         if(!search){
             return NextResponse.error();
         }
-        console.log(search);
 
         const courses = await searchCourses(search);
         return NextResponse.json(courses);
     } catch(e){
-        console.log(e);
         return NextResponse.error();
     }
 }

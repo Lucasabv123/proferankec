@@ -16,12 +16,10 @@ const Filter : React.FC<FilterProps> =  ({ items, itemId, totalItems, type = "co
     const router = useRouter();
     const pathname = usePathname();
     const [selectedItem, setSelectedItem] = useState(itemId || '');
-    console.log('item: ' + selectedItem); 
 
     const handleItemChange = (id) =>{
         setSelectedItem(id);  
         const params = new URLSearchParams(window.location.search);
-        console.log(items); 
 
         if(id){
             params.set(param, id);

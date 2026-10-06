@@ -130,7 +130,6 @@ async function getProfessorData(professorParam) {
 
 
 const ProfessorPage = async ({ params, searchParams }) => {
-    console.log(params); 
     const professor = await getProfessorData(params.professor);
     if (!professor) {
       notFound();
@@ -138,7 +137,6 @@ const ProfessorPage = async ({ params, searchParams }) => {
     const session = await getServerSession(authOptions);
      
     const courseId = searchParams?.courseId || null; 
-    console.log('course id: ' + courseId);
     const reviewsComp = await getReviews(professor, courseId);
     const reviews = reviewsComp.reviews;
     const allReviews = reviewsComp.allReviews;  
@@ -150,7 +148,6 @@ const ProfessorPage = async ({ params, searchParams }) => {
       );
       
     const allCoursesWithReviews = allCourses.filter(course => allReviews.some(review => review.courseId === course.id));
-    console.log(allCoursesWithReviews);
 
     
     const userid = await getUserId(session); 

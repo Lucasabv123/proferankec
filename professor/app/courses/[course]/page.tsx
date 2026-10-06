@@ -58,7 +58,6 @@ type Review = {
 
 function calcAverageRatings(reviews : Review[], professor : Professor){
 
-  console.log(professor); 
   const overallRatings = reviews.map(review => review.overallRating);
   const difficulties = reviews.map(review => review.difficulty);
   const workloads = reviews.map(review => review.workload);
@@ -81,7 +80,6 @@ function calcAverageRatings(reviews : Review[], professor : Professor){
     learning: meanLearning,
     professor: professor,
   }
-  console.log('overallReview: ', overallReview);
 
   return overallReview; 
 
@@ -147,7 +145,6 @@ async function getReviews(course : Course, professorId = null){
 async function getCourseData(courseParam) {
   const decodedParam = decodeURIComponent(courseParam);
   const [name, school, department] = decodedParam.split("-");
-  console.log(name, school, department);
 
   const courseData = await prisma.course.findFirst({
     where: {
@@ -187,7 +184,6 @@ const CoursePage = async ({ params, searchParams }) => {
             t.id === value.id
         ))
     );
-    console.log(allProfessors); 
 
   const allProffessorWithReviews = allProfessors.filter(professor => allReviews.some(review => review.professorId === professor.id));
 

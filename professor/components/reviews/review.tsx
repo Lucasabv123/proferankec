@@ -140,7 +140,6 @@ const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "profe
     }
 
     
-    console.log(session.user);
 
     let courseId; 
     let professorId;
@@ -155,7 +154,6 @@ const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "profe
     const review = {
       professorId: professorId,
       courseId: courseId,
-      userId: userid,
       overallRating: rating,
       difficulty,
       workload,
@@ -164,7 +162,6 @@ const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "profe
       comment
     };
 
-    console.log('Submitting review:', review); // Log the review data for debugging
 
     const res = await fetch("/api/review", {
       method: "POST",
@@ -176,7 +173,6 @@ const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "profe
 
     if (res.ok) {
       const data = await res.json();
-      console.log('Response data:', data); // Log the response data for debugging
       router.refresh(); 
 
       setIsOpen(false);
@@ -187,8 +183,8 @@ const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "profe
       setLearning(0);
       setComment("");
     } else {
-      console.error("Failed to submit review");
-      alert("Failed to submit review");
+      const data = await res.json().catch(() => null);
+      alert(data?.error ?? "Failed to submit review");
     }
   };
 

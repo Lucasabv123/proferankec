@@ -100,4 +100,6 @@ model Review {
   course        Course    @relation(fields: [courseId], references: [id])
   professor     Professor @relation(fields: [professorId], references: [id])
   user          User      @relation(fields: [userId], references: [id])
+
+  @@unique([userId, professorId, courseId])  // one review per user per professor and course
 }
