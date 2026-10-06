@@ -39,7 +39,7 @@ async function getSearch(school : string, type? : string, search? : string){
 
 async function SchoolPage( {params, searchParams }) {
 
-    const school = decodeURI(params.school);  
+    const school = decodeURIComponent(params.school);  
     const search = searchParams?.q; 
     const type = searchParams?.type;
     const searchData: any = await getSearch(school, type, search); 

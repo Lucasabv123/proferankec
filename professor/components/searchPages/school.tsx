@@ -17,7 +17,7 @@ const SearchInner : React.FC = () => {
     const search = useSearchParams(); 
 
     const searchQ = search ? search.get("q") : ""; 
-    const {data, error} = useSWR(`/api/search/school?q=${searchQ}`, fetcher);
+    const {data, error} = useSWR(`/api/search/school?q=${encodeURIComponent(searchQ ?? "")}`, fetcher);
     // set of data to remove duplicates
     const list = data ? Array.from(new Set(data.map((school: School) => school.School)))
                         .map(schoolName => data.find((school: School) => school.School === schoolName))

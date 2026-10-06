@@ -20,7 +20,7 @@ const fetcher = async (url: string) => {
 const SearchInner: React.FC = () => {
   const search = useSearchParams();
   const searchQ = search ? search.get("q") : "";
-  const { data, error } = useSWR(`/api/search/professor?q=${searchQ}`, fetcher);
+  const { data, error } = useSWR(`/api/search/professor?q=${encodeURIComponent(searchQ ?? "")}`, fetcher);
 
   return (
     <>
