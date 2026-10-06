@@ -5,6 +5,8 @@ import { Dialog, DialogPanel, DialogTitle, Combobox, ComboboxButton, ComboboxOpt
 import StarRating from "./rating";
 import { FiChevronDown } from 'react-icons/fi';
 import { useRouter } from "next/navigation";
+import { useDictionary } from "@/components/i18n/provider";
+import { format } from "@/helpers/i18n/dictionaries";
 
 interface ComboBoxProps {
     options: any[];
@@ -22,6 +24,7 @@ interface ReviewProps {
 // Lukas Continue from this point
 // You have to have this combobox work for professor and course choices now
 const ComboBox : React.FC<ComboBoxProps> = ({ options, setOption, type = "professor" }) => {
+  const t = useDictionary();
   const [selectedOption, setSelectedOption] = useState(options[0]);
   const [query, setQuery] = useState("");
  
@@ -62,7 +65,7 @@ const ComboBox : React.FC<ComboBoxProps> = ({ options, setOption, type = "profes
           className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           displayValue={(option : any) => { if(!option) return ""; return type == "professor" ? option.name : option.Prefix + " " + option.Firstname + " " + option.Lastname; }} 
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search for a course..."
+          placeholder={type == "professor" ? t.searchCourseOption : t.searchProfessorOption}
         />
         <ComboboxButton className="absolute inset-y-0 right-0 flex items-center pr-2">
           <FiChevronDown className="w-5 h-5 text-gray-400" />
@@ -70,7 +73,7 @@ const ComboBox : React.FC<ComboBoxProps> = ({ options, setOption, type = "profes
       </div>
       <ComboboxOptions className="absolute z-10 mt-1 w-full max-w-md bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto focus:outline-none">
         {filtered.length === 0 ? (
-          <div className="p-2 text-gray-500">No {type == 'professor' ? "course" : "professor"}s found</div>
+          <div className="p-2 text-gray-500">{type == 'professor' ? t.noCoursesFound : t.noProfessorsFound}</div>
         ) : (
           filtered.map((option) => (
             <ComboboxOption
@@ -93,6 +96,7 @@ const ComboBox : React.FC<ComboBoxProps> = ({ options, setOption, type = "profes
 };
 
 const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "professor" }) => {
+  const t = useDictionary();
   
 
 
@@ -135,7 +139,7 @@ const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "profe
     
 
     if (session == null) {
-      alert("You must be signed in to leave a review");
+      alert(t.errSignIn);
       return;
     }
 
@@ -184,12 +188,12 @@ const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "profe
       setComment("");
     } else {
       const data = await res.json().catch(() => null);
-      alert(data?.error ?? "Failed to submit review");
+      alert(data?.error ?? t.reviewFailed);
     }
   };
 
   if (session == null) {
-    return <p className="text-gray-600">Sign in to leave a review</p>;
+    return <p className="text-gray-600">{t.signInToReview}</p>;
   }
 
   return (
@@ -198,7 +202,7 @@ const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "profe
       onClick={() => setIsOpen(true)} 
       className="bg-blue-500 text-white px-4 py-2 rounded shadow-lg hover:bg-blue-600 transition duration-200 ease-in-out"
     >
-      Leave a review
+      {t.leaveReview}
     </button>
   
     <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
@@ -206,45 +210,45 @@ const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "profe
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <DialogPanel className="bg-white p-6 rounded-lg shadow-xl max-w-lg w-full">
           <DialogTitle className="text-xl font-semibold text-gray-800 mb-4">
-            Leave a review for {identifer}
+            {format(t.leaveReviewFor, { name: identifer })}
           </DialogTitle>
           
           <form onSubmit={handleSubmit}>
             <div className="mb-6">
-              <h1 className="text-gray-700 font-semibold mb-2">What {type === 'course' ? "professor" : "course"}</h1>
+              <h1 className="text-gray-700 font-semibold mb-2">{type === 'course' ? t.whichProfessor : t.whichCourse}</h1>
               <ComboBox options={others} setOption={setOther} type = {type} />
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <div>
-                <h1 className="text-gray-700 font-semibold mb-2">Difficulty</h1>
+                <h1 className="text-gray-700 font-semibold mb-2">{t.difficulty}</h1>
                 <StarRating rating={difficulty} onRatingChange={setDifficulty} />
               </div>
   
               <div>
-                <h1 className="text-gray-700 font-semibold mb-2">Workload</h1>
+                <h1 className="text-gray-700 font-semibold mb-2">{t.workload}</h1>
                 <StarRating rating={workload} onRatingChange={setWorkload} />
               </div>
   
               <div>
-                <h1 className="text-gray-700 font-semibold mb-2">Lecture Quality</h1>
+                <h1 className="text-gray-700 font-semibold mb-2">{t.lectureQuality}</h1>
                 <StarRating rating={lecture} onRatingChange={setLecture} />
               </div>
   
               <div>
-                <h1 className="text-gray-700 font-semibold mb-2">Learning Value</h1>
+                <h1 className="text-gray-700 font-semibold mb-2">{t.learningValue}</h1>
                 <StarRating rating={learning} onRatingChange={setLearning} />
               </div>
   
               <div className="sm:col-span-2">
-                <h1 className="text-gray-700 font-semibold mb-2">Overall Rating</h1>
+                <h1 className="text-gray-700 font-semibold mb-2">{t.overallRating}</h1>
                 <StarRating rating={rating} onRatingChange={setRating} />
               </div>
             </div>
   
             <div className="mb-6">
               <Field>
-                <Label className="block text-gray-700 font-semibold mb-2">Comment</Label>
+                <Label className="block text-gray-700 font-semibold mb-2">{t.comment}</Label>
                 <Textarea 
                   value={comment} 
                   onChange={(e) => setComment(e.target.value)} 
@@ -257,7 +261,7 @@ const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "profe
               type="submit" 
               className="bg-blue-500 text-white px-4 py-2 rounded shadow-lg hover:bg-blue-600 transition duration-200 ease-in-out w-full"
             >
-              Submit Review
+              {t.submitReview}
             </button>
           </form>
         </DialogPanel>

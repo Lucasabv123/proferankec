@@ -10,6 +10,7 @@ import TopSearchSection from "@/components/searchbar/topSection";
 import Login from "@/components/auth/loginformbasicgoogle01"; 
 import { notFound } from "next/navigation";
 import { parseIdParam } from "@/helpers/links";
+import { getDictionary } from "@/helpers/i18n/locale";
 
 
 
@@ -128,15 +129,15 @@ async function getReviews(course : Course, professorId = null){
   if(professorId == null){
     professor = {
       id: null,
-      Prefix: "All",
-      Firstname: "Professors",
+      Prefix: "",
+      Firstname: getDictionary().allProfessors,
       Lastname: ""
     }
   } else{
     // take the name from the course's own professor list so a professor with no reviews still works
     professor = course.professors
       .map(({ professor }) => professor)
-      .find((p) => p.id === parseInt(professorId, 10)) ?? { id: parseInt(professorId, 10), Prefix: "", Firstname: "Unknown", Lastname: "professor" };
+      .find((p) => p.id === parseInt(professorId, 10)) ?? { id: parseInt(professorId, 10), Prefix: "", Firstname: getDictionary().unknownProfessor, Lastname: "" };
   }
   const overallReview = calcAverageRatings(reviews, professor);
   return({reviews: reviews, overallReview: overallReview, allReviews: allReviews});
@@ -175,6 +176,7 @@ const CoursePage = async ({ params, searchParams }) => {
   }
   const session = await getServerSession( authOptions );
   const professorId = searchParams.professorId;
+  const t = getDictionary();
   const reviewsComp = await getReviews(course, professorId);
   const reviews = reviewsComp.reviews;
   const allReviews = reviewsComp.allReviews;
@@ -201,7 +203,7 @@ const CoursePage = async ({ params, searchParams }) => {
       <div className="absolute top-4 right-4 flex flex-col justify-evenly"><TopSearchSection /> </div>
 
       <h1>{course.name} - {course.School} - {course.Department}</h1>
-      <h2>Professors</h2>
+      <h2>{t.professors}</h2>
       <ul>
         {course.professors.map(({ professor }) => (
           <li key={professor.id}>
@@ -211,20 +213,20 @@ const CoursePage = async ({ params, searchParams }) => {
       </ul>
 
       <div className = "py-8">
-        <h1 className = "pt-5 pb-7 text-3xl text-center">Overall Ratings</h1>
+        <h1 className = "pt-5 pb-7 text-3xl text-center">{t.overallRatings}</h1>
         <ReviewCard review={overallReview} type="course" />
       </div>
 
-      <h1>Filter for a Professor</h1>
+      <h1>{t.filterForProfessor}</h1>
       <Filter items={allProffessorWithReviews} itemId={professorId} type="professor" param="professorId" />
 
       <div className="py-5 pb-8" />
 
       <Review proco={course} session={session} userid={userid} type="course" />
 
-      <h1>Reviews</h1>
+      <h1>{t.reviews}</h1>
       {reviews.length === 0 ? (
-        <p>No reviews found</p>
+        <p>{t.noReviewsYet}</p>
       ) : (
         <ul>
           {reviews.map((review) => (

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react"; 
+import { useDictionary } from "@/components/i18n/provider";
 
 interface FilterProps {
     items: any[];
@@ -13,6 +14,8 @@ interface FilterProps {
 }
 
 const Filter : React.FC<FilterProps> =  ({ items, itemId, totalItems, type = "course", param = "courseId" }) => {
+    const t = useDictionary();
+    const allLabel = type === "course" ? t.allCourses : t.allProfessors;
     const router = useRouter();
     const pathname = usePathname();
     const [selectedItem, setSelectedItem] = useState(itemId || '');
@@ -40,13 +43,13 @@ const Filter : React.FC<FilterProps> =  ({ items, itemId, totalItems, type = "co
                             type === "course" 
                             ? selected.name 
                             : `${selected.Prefix} ${selected.Firstname} ${selected.Lastname}`
-                        ) : `All ${type}s`;
+                        ) : allLabel;
                     })()}
                 </ListboxButton>
 
                 <ListboxOptions className="mt-2 max-h-60 w-1/3 overflow-auto rounded-md bg-white shadow-lg z-10 sm:text-sm">
                     <ListboxOption value="" className="cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-gray-300 transition-all">
-                        All {type}s
+                        {allLabel}
                     </ListboxOption>
                     {items.map((item) => (
                         <ListboxOption key={item.id} value={item.id} className="cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-gray-300">

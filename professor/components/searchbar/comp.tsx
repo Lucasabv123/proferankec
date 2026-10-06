@@ -2,6 +2,7 @@
 
 import { useRouter, usePathname } from "next/navigation"; 
 import { useState } from "react"; 
+import { useDictionary } from "@/components/i18n/provider";
 
 interface SearchBarAddOnPrimitiveProps {
     defaultValue?: string;
@@ -30,6 +31,8 @@ export const SearchBarAddOnPrimitive : React.FC<SearchBarAddOnPrimitiveProps> = 
     const pathname = usePathname();
     const [searchValue, setSearchValue] = useState(defaultValue);
     const [searchType, setSearchType] = useState(searchTypeOptions[0]); // Default to the first search type
+    const t = useDictionary();
+    const typeLabels: Record<string, string> = { course: t.searchTypeCourse, professor: t.searchTypeProfessor };
 
     const handleChange = (e : any) => {
         const inputValue = e.target.value; 
@@ -69,7 +72,7 @@ export const SearchBarAddOnPrimitive : React.FC<SearchBarAddOnPrimitiveProps> = 
                 className="border border-gray-300 rounded-lg px-2 py-1 text-sm"
             >
                 {searchTypeOptions.map(type => (
-                    <option key={type} value={type}>{type}</option>
+                    <option key={type} value={type}>{typeLabels[type] ?? type}</option>
                 ))}
             </select>
             <input
@@ -141,12 +144,10 @@ export const SearchBarPrimitive: React.FC<SearchBarPrimitiveProps> = ({ defaultV
 }; 
 
 const SearchBar : React.FC<SearchBarProps> = ({ type = "course", size = "medium", onPage = false, placeholder}) => {
-    if(type == "course" && onPage) return <SearchBarPrimitive searchType="course" placeholder={placeholder} buttonText="Search Courses" size = {size}/>;
-    if(type == "professor" && onPage) return <SearchBarPrimitive searchType="professor" placeholder={placeholder} buttonText="Search Professors" size={size} />;
-    if(type == "school" && onPage) return <SearchBarPrimitive searchType="school" placeholder={placeholder} buttonText="Search Schools" size={size} />;
-    if(type == "course") return <SearchBarPrimitive searchType="course" placeholder="Search for courses..." buttonText="Search Courses" size = {size}/>; 
-    if(type == "professor") return <SearchBarPrimitive searchType="professor" placeholder="Search for professors..." buttonText="Search Professors" size={size} />;
-    if(type == "school") return <SearchBarPrimitive searchType="school" placeholder="Search for schools..." buttonText="Search Schools" size={size} />;
+    const t = useDictionary();
+    if(type == "course") return <SearchBarPrimitive searchType="course" placeholder={onPage && placeholder ? placeholder : t.searchCoursesPlaceholder} buttonText={t.searchCoursesButton} size={size} />;
+    if(type == "professor") return <SearchBarPrimitive searchType="professor" placeholder={onPage && placeholder ? placeholder : t.searchProfessorsPlaceholder} buttonText={t.searchProfessorsButton} size={size} />;
+    if(type == "school") return <SearchBarPrimitive searchType="school" placeholder={onPage && placeholder ? placeholder : t.searchSchoolsPlaceholder} buttonText={t.searchSchoolsButton} size={size} />;
     return null;  
 }; 
 
