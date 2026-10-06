@@ -8,6 +8,7 @@ import authOptions from "@/helpers/auth/options";
 import HomeButton from "@/components/util/homeButton";
 import TopSearchSection from "@/components/searchbar/topSection";
 import Login from "@/components/auth/loginformbasicgoogle01"; 
+import { notFound } from "next/navigation";
 
 
 
@@ -64,11 +65,13 @@ function calcAverageRatings(reviews : Review[], professor : Professor){
   const lectures = reviews.map(review => review.lecture);
   const learning = reviews.map(review => review.learning);
 
-  const meanOverallRating = overallRatings.reduce((a, b) => a + b, 0) / overallRatings.length;
-  const meanDifficulty = difficulties.reduce((a, b) => a + b, 0) / difficulties.length;
-  const meanWorkload = workloads.reduce((a, b) => a + b, 0) / workloads.length;
-  const meanLecture = lectures.reduce((a, b) => a + b, 0) / lectures.length;
-  const meanLearning = learning.reduce((a, b) => a + b, 0) / learning.length;
+  // with no reviews, show zero stars instead of NaN
+  const mean = (values: number[]) => values.length ? values.reduce((a, b) => a + b, 0) / values.length : 0;
+  const meanOverallRating = mean(overallRatings);
+  const meanDifficulty = mean(difficulties);
+  const meanWorkload = mean(workloads);
+  const meanLecture = mean(lectures);
+  const meanLearning = mean(learning);
 
   const overallReview = {
     overallRating: meanOverallRating,
@@ -94,7 +97,7 @@ async function getUserId(session) {
        email: session.user.email
      }
    });
-   return user.id;
+   return user?.id ?? null;
 
 }
 
@@ -131,7 +134,10 @@ async function getReviews(course : Course, professorId = null){
       Lastname: ""
     }
   } else{
-    professor = reviews[0].professor; 
+    // take the name from the course's own professor list so a professor with no reviews still works
+    professor = course.professors
+      .map(({ professor }) => professor)
+      .find((p) => p.id === parseInt(professorId, 10)) ?? { id: parseInt(professorId, 10), Prefix: "", Firstname: "Unknown", Lastname: "professor" };
   }
   const overallReview = calcAverageRatings(reviews, professor);
   return({reviews: reviews, overallReview: overallReview, allReviews: allReviews});
@@ -165,6 +171,9 @@ async function getCourseData(courseParam) {
 const CoursePage = async ({ params, searchParams }) => {
 
   const course = await getCourseData(params.course); 
+  if (!course) {
+    notFound();
+  }
   const session = await getServerSession( authOptions );
   const professorId = searchParams.professorId;
   const reviewsComp = await getReviews(course, professorId);
@@ -183,11 +192,6 @@ const CoursePage = async ({ params, searchParams }) => {
   const allProffessorWithReviews = allProfessors.filter(professor => allReviews.some(review => review.professorId === professor.id));
 
   const userid = await getUserId(session); 
-
-
-  if (!course) {
-    return <p>Course not found</p>;
-  }
 
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-between p-24">

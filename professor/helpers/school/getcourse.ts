@@ -1,4 +1,5 @@
-import prisma from '../prisma/prisma';  
+import prisma from '../prisma/prisma';
+import { searchMode } from '../search/mode';  
 
 
 
@@ -13,7 +14,7 @@ async function getCourses(school: string, course?: string) {
                 where: {
                     School: school,
                     name: {
-                        contains: course.toLowerCase(),
+                        contains: course.toLowerCase(), ...searchMode
                     }
                 },
                 select: {

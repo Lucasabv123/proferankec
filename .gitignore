@@ -5,3 +5,4 @@ node_modules/
 *.db-journal
 *.bak
 __pycache__/
+*.tsbuildinfo
