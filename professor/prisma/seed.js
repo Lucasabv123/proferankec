@@ -67,7 +67,8 @@ async function main() {
   for (let i = 0; i < 100; i++) {
     const courseId = insertedCourses[i % insertedCourses.length].id;
     const professorId = insertedProfessors[i % insertedProfessors.length].id;
-    const userId = insertedUsers[i % insertedUsers.length].id;
+    // shift the user on each pass so no user reviews the same professor and course twice
+    const userId = insertedUsers[(i + Math.floor(i / insertedUsers.length)) % insertedUsers.length].id;
     const review = {
       courseId,
       professorId,

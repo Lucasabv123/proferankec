@@ -12,30 +12,19 @@ type Review = {
     comment: string
 }
 
+// errors are left to the caller so it can tell a duplicate review (P2002) from other failures
 export const postReview = async ( review : Review ) => {
-    if(review){
-        try{
-            const newReview = await prisma.review.create({
-                data: {
-                    professorId: review.professorId,
-                    courseId: review.courseId,
-                    userId: review.userId,
-                    overallRating: review.overallRating,
-                    difficulty: review.difficulty,
-                    workload: review.workload,
-                    lecture: review.lecture,
-                    learning: review.learning,
-                    comment: review.comment
-                }
-            });
-            return newReview;
-        }catch(e){
-            console.error('Failed to submit review:', e);
-            return null;
+    return prisma.review.create({
+        data: {
+            professorId: review.professorId,
+            courseId: review.courseId,
+            userId: review.userId,
+            overallRating: review.overallRating,
+            difficulty: review.difficulty,
+            workload: review.workload,
+            lecture: review.lecture,
+            learning: review.learning,
+            comment: review.comment
         }
-    } else {
-        return null;
-    }
-
-
+    });
 }

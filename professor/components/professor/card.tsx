@@ -23,11 +23,9 @@ const ProfessorCard : React.FC<ProfessorCardProps> = ({ professor }) => {
   const [hovered, setHovered] = useState(false);
 
   const handleClick = () => {
-    console.log("Navigating to:", professorPageName);
     router.push(professorPageName);
   };
 
-  console.log("Professor:", professor); // Log the professor object
 
   return (
     <>

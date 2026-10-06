@@ -24,17 +24,13 @@ type Professor = {
 
 async function getSearch(school : string, type? : string, search? : string){
     if(!type || !search){
-        console.log("no type or search");
         return;
     }
     let data = []; 
     if(type === "professor"){
-        console.log("professor");
         data = await getProfessors(school, search);
     }else if(type === "course"){
-        console.log("course");
         data = await getCourses(school, search);
-        console.log(data); 
     }else{
         return; 
     }
@@ -54,7 +50,6 @@ async function SchoolPage( {params, searchParams }) {
         })
     }
     
-    console.log(searchData); 
      
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24"> 

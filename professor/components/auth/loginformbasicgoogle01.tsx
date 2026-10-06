@@ -1,6 +1,6 @@
 "use client";
 
-import { signIn } from 'next-auth/react'; 
+import { signIn, signOut } from 'next-auth/react'; 
 import { FaGoogle } from 'react-icons/fa'; 
 
 interface LoginProps {
@@ -12,10 +12,15 @@ interface LoginProps {
 
 const Login : React.FC<LoginProps> = ({ showLogin, user }) => {
   if ( user && !showLogin) {
-    console.log(user)
     return (
       <div className="flex items-center space-x-4">
         <h1 className="text-lg font-semibold">Welcome, {user.name}!</h1>
+        <button
+          className="px-4 py-2 bg-white text-blue-700 rounded-lg shadow hover:bg-gray-100 transition-colors duration-300"
+          onClick={() => signOut({ callbackUrl: '/' })}
+        >
+          Sign out
+        </button>
       </div>
     );
   } else if (showLogin) {
