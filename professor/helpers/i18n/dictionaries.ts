@@ -64,6 +64,23 @@ export const en = {
     errLongComment: "Comment must be {max} characters or fewer",
     errNotTaught: "That professor does not teach that course",
     errDuplicate: "You already reviewed this professor for this course",
+    // reporting and moderation
+    reportReview: "Report",
+    reportPrompt: "Why are you reporting this review? (optional)",
+    reportThanks: "Thanks. An admin will look at this review.",
+    reportFailed: "Couldn't send the report",
+    errSignInToReport: "You must be signed in to report a review",
+    errReviewNotFound: "That review no longer exists",
+    errAlreadyReported: "You already reported this review",
+    adminTitle: "Reported reviews",
+    adminEmpty: "No reported reviews.",
+    reportsCount: "{count} report(s)",
+    hiddenLabel: "Hidden",
+    hide: "Hide",
+    unhide: "Show again",
+    dismissReports: "Dismiss reports",
+    noReason: "No reason given",
+    actionFailed: "That didn't work. Try again.",
 };
 
 export type Dictionary = typeof en;
@@ -132,6 +149,22 @@ export const es: Dictionary = {
     errLongComment: "El comentario debe tener {max} caracteres o menos",
     errNotTaught: "Ese profesor no dicta esa materia",
     errDuplicate: "Ya dejaste una reseña de este profesor para esta materia",
+    reportReview: "Reportar",
+    reportPrompt: "¿Por qué reportas esta reseña? (opcional)",
+    reportThanks: "Gracias. Un administrador revisará esta reseña.",
+    reportFailed: "No se pudo enviar el reporte",
+    errSignInToReport: "Debes iniciar sesión para reportar una reseña",
+    errReviewNotFound: "Esa reseña ya no existe",
+    errAlreadyReported: "Ya reportaste esta reseña",
+    adminTitle: "Reseñas reportadas",
+    adminEmpty: "No hay reseñas reportadas.",
+    reportsCount: "{count} reporte(s)",
+    hiddenLabel: "Oculta",
+    hide: "Ocultar",
+    unhide: "Mostrar de nuevo",
+    dismissReports: "Descartar reportes",
+    noReason: "Sin motivo",
+    actionFailed: "No funcionó. Inténtalo de nuevo.",
 };
 
 export const dictionaries = { en, es };
