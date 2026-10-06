@@ -133,7 +133,7 @@ function collect(sections) {
       if (!f.displayName) continue;
       f.displayName = decode(f.displayName);
       // Banner's internal id when exposed, otherwise the normalized name. Emails are not stored.
-      const key = f.bannerId || f.displayName.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase();
+      const key = f.bannerId ? String(f.bannerId) : f.displayName.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase();
       if (!professors.has(key)) professors.set(key, { key, displayName: f.displayName, ...splitName(f.displayName), courses: new Set() });
       professors.get(key).courses.add(code);
       course.professors.add(key);
