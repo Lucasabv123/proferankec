@@ -94,6 +94,20 @@ async function searchSubject(term, subject) {
   return sections;
 }
 
+// Banner returns text HTML-escaped ("Ruiz O&ntilde;ate"); turn it back into plain text.
+const ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' };
+function decode(text) {
+  if (typeof text !== 'string') return text;
+  return text.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (m, e) => {
+    if (e[0] === '#') return String.fromCodePoint(e[1].toLowerCase() === 'x' ? parseInt(e.slice(2), 16) : Number(e.slice(1)));
+    if (ENTITIES[e]) return ENTITIES[e];
+    // Accented letters: &aacute; &Ntilde; &uuml; ...
+    const accent = { acute: '\u0301', grave: '\u0300', tilde: '\u0303', uml: '\u0308', circ: '\u0302' };
+    const k = Object.keys(accent).find((a) => e.length === a.length + 1 && e.endsWith(a));
+    return k ? (e[0] + accent[k]).normalize('NFC') : m;
+  });
+}
+
 // "Idrovo Pérez, Gustavo Andrés" -> { lastName: 'Idrovo Pérez', firstName: 'Gustavo Andrés' }
 function splitName(displayName) {
   const [last, first = ''] = displayName.split(',').map((s) => s.trim());
@@ -103,12 +117,13 @@ function splitName(displayName) {
 function collect(sections) {
   const courses = new Map();
   const professors = new Map();
-  for (const s of sections) {
+  for (const raw of sections) {
+    const s = { ...raw, courseTitle: decode(raw.courseTitle), subjectDescription: decode(raw.subjectDescription) };
     const code = `${s.subject} ${s.courseNumber}`;
     if (!courses.has(code)) {
       courses.set(code, {
         code, title: s.courseTitle, subject: s.subject,
-        department: s.subjectDescription, college: s.collegeDescription ?? null,
+        department: s.subjectDescription,
         professors: new Set(), sections: 0,
       });
     }
@@ -116,6 +131,7 @@ function collect(sections) {
     course.sections += 1;
     for (const f of s.faculty ?? []) {
       if (!f.displayName) continue;
+      f.displayName = decode(f.displayName);
       // Banner's internal id when exposed, otherwise the normalized name. Emails are not stored.
       const key = f.bannerId || f.displayName.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase();
       if (!professors.has(key)) professors.set(key, { key, displayName: f.displayName, ...splitName(f.displayName), courses: new Set() });
@@ -133,7 +149,7 @@ function collect(sections) {
 
 async function main() {
   await startSession();
-  const terms = await listTerms();
+  const terms = (await listTerms()).map((t) => ({ ...t, description: decode(t.description) }));
   if (!args.term) {
     console.log(`Terms at ${args.school.toUpperCase()}:`);
     for (const t of terms) console.log(`  ${t.code}  ${t.description}`);
@@ -144,7 +160,7 @@ async function main() {
   const termName = terms.find((t) => t.code === term)?.description ?? term;
   await selectTerm(term);
 
-  const allSubjects = await listSubjects(term);
+  const allSubjects = (await listSubjects(term)).map((s) => ({ ...s, description: decode(s.description) }));
   const subjects = args.subject
     ? allSubjects.filter((s) => s.code === String(args.subject).toUpperCase())
     : allSubjects;
