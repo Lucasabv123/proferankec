@@ -1,11 +1,12 @@
-import prisma from '../prisma/prisma'; 
+import prisma from '../prisma/prisma';
+import { searchMode } from '../search/mode'; 
 async function schoolSearch(school: string) {
     console.log(school)
     try {
         const courses = await prisma.course.findMany({
           where: {
             School: {
-                contains: school,
+                contains: school, ...searchMode
             }
           },
           select: {

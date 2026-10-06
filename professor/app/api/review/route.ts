@@ -2,11 +2,26 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { postReview } from '@/helpers/reviews/review';
 import prisma from '@/helpers/prisma/prisma';
+import { getServerSession } from 'next-auth';
+import authOptions from '@/helpers/auth/options';
 
 export async function POST(req : NextRequest) {
   try {
+    // the reviewer is always the signed-in user, never a userId sent by the client
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: 'You must be signed in to leave a review' }, { status: 401 });
+    }
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email }
+    });
+    if (!user) {
+      return NextResponse.json({ error: 'You must be signed in to leave a review' }, { status: 401 });
+    }
+    const userId = user.id;
+
     const body = await req.json();
-    const { professorId, courseId, userId, overallRating, difficulty, workload, lecture, learning, comment } = body;
+    const { professorId, courseId, overallRating, difficulty, workload, lecture, learning, comment } = body;
     const review = {
       professorId,
       courseId,

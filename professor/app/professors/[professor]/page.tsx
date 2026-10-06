@@ -8,6 +8,7 @@ import Filter from "@/components/reviews/filterDrop";
 import HomeButton from '@/components/util/homeButton'; 
 import TopSearchSection from "@/components/searchbar/topSection";
 import Login from "@/components/auth/loginformbasicgoogle01"; 
+import { notFound } from "next/navigation";
 
 
 
@@ -19,11 +20,13 @@ function calcAverageRatings(reviews, course){
   const lectures = reviews.map(review => review.lecture);
   const learning = reviews.map(review => review.learning);
 
-  const meanOverallRating = overallRatings.reduce((a, b) => a + b, 0) / overallRatings.length;
-  const meanDifficulty = difficulties.reduce((a, b) => a + b, 0) / difficulties.length;
-  const meanWorkload = workloads.reduce((a, b) => a + b, 0) / workloads.length;
-  const meanLecture = lectures.reduce((a, b) => a + b, 0) / lectures.length;
-  const meanLearning = learning.reduce((a, b) => a + b, 0) / learning.length;
+  // with no reviews, show zero stars instead of NaN
+  const mean = (values: number[]) => values.length ? values.reduce((a, b) => a + b, 0) / values.length : 0;
+  const meanOverallRating = mean(overallRatings);
+  const meanDifficulty = mean(difficulties);
+  const meanWorkload = mean(workloads);
+  const meanLecture = mean(lectures);
+  const meanLearning = mean(learning);
 
   const overallReview = {
     overallRating: meanOverallRating,
@@ -72,7 +75,10 @@ async function getReviews(professor, courseId = null) {
       name: "All Courses"
     }
   }else{
-    course = reviews[0].course;
+    // take the name from the professor's own course list so a course with no reviews still works
+    course = professor.courses
+      .map(({ course }) => course)
+      .find((c) => c.id === parseInt(courseId, 10)) ?? { id: parseInt(courseId, 10), name: "Unknown course" };
   }
   
   
@@ -94,7 +100,7 @@ async function getUserId(session) {
         email: session.user.email
       }
     });
-    return user.id;
+    return user?.id ?? null;
 
 }
 
@@ -126,6 +132,9 @@ async function getProfessorData(professorParam) {
 const ProfessorPage = async ({ params, searchParams }) => {
     console.log(params); 
     const professor = await getProfessorData(params.professor);
+    if (!professor) {
+      notFound();
+    }
     const session = await getServerSession(authOptions);
      
     const courseId = searchParams?.courseId || null; 
@@ -147,12 +156,6 @@ const ProfessorPage = async ({ params, searchParams }) => {
     const userid = await getUserId(session); 
      
 
-  
-    if (!professor) {
-      return (
-        <p>Professor not found</p>
-      );
-    }
   
     return (
       <main className=" relative flex min-h-screen flex-col items-center justify-between p-24">

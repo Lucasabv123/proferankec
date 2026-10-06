@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Dialog, DialogPanel, DialogTitle, Combobox, ComboboxButton, ComboboxOptions, ComboboxOption, ComboboxInput, Field, Label, Textarea } from "@headlessui/react";
 import StarRating from "./rating";
 import { FiChevronDown } from 'react-icons/fi';
@@ -130,13 +130,6 @@ const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "profe
   const [comment, setComment] = useState("");
 
 
-  useEffect(() => {
-    if (session == null) {
-      alert("You must be signed in to leave a review");
-      setIsOpen(false);
-    }
-  }, [session]);
-
   const handleSubmit = async (e : any) => {
     e.preventDefault();
     
@@ -198,6 +191,10 @@ const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "profe
       alert("Failed to submit review");
     }
   };
+
+  if (session == null) {
+    return <p className="text-gray-600">Sign in to leave a review</p>;
+  }
 
   return (
     <>
