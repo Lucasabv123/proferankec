@@ -1,6 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const fs = require('fs');
 const path = require('path');
+const { withSchoolIds } = require('./schools');
 
 const prisma = new PrismaClient();
 
@@ -14,7 +15,7 @@ async function main() {
 
   // Insert courses
   const insertedCourses = [];
-  for (const course of coursesData) {
+  for (const course of await withSchoolIds(prisma, coursesData)) {
     const createdCourse = await prisma.course.create({
       data: course,
     });
@@ -22,11 +23,11 @@ async function main() {
   }
   console.log(`Inserted ${insertedCourses.length} courses`);
 
-  // Insert professors
+  // Insert professors; each belongs to the school of the first course it is paired with below
   const insertedProfessors = [];
-  for (const professor of professorsData) {
+  for (const [i, professor] of professorsData.entries()) {
     const createdProfessor = await prisma.professor.create({
-      data: professor,
+      data: { ...professor, schoolId: insertedCourses[i % insertedCourses.length].schoolId },
     });
     insertedProfessors.push(createdProfessor);
   }

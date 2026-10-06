@@ -1,5 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 
+const { withSchoolIds } = require('./schools');
+
 const prisma = new PrismaClient();
 
 async function main() {
@@ -26,30 +28,26 @@ async function main() {
 
   const allUsers = await prisma.user.findMany();
 
-  await prisma.professor.createMany({
-    data: [
-      { Firstname: 'John', Lastname: 'Doe', Prefix: 'Dr.', Verified: true },
-      { Firstname: 'Jane', Lastname: 'Smith', Prefix: 'Prof.', Verified: true },
-      { Firstname: 'Mike', Lastname: 'Johnson', Prefix: 'Dr.', Verified: false },
-      { Firstname: 'Sara', Lastname: 'Lee', Prefix: 'Prof.', Verified: true },
-      { Firstname: 'Robert', Lastname: 'Brown', Prefix: 'Dr.', Verified: true },
-      { Firstname: "Jose", Lastname: "Gonzalez", Prefix: "Dr.", Verified: true },
-      { Firstname: 'Emily', Lastname: 'Davis', Prefix: 'Prof.', Verified: false },
-      { Firstname: 'David', Lastname: 'Harris', Prefix: 'Dr.', Verified: true },
-      { Firstname: 'Sophia', Lastname: 'Martinez', Prefix: 'Prof.', Verified: true },
-      { Firstname: 'James', Lastname: 'Anderson', Prefix: 'Dr.', Verified: true },
-      { Firstname: 'Lisa', Lastname: 'Turner', Prefix: 'Prof.', Verified: false },
-      { Firstname: 'Paul', Lastname: 'Garcia', Prefix: 'Dr.', Verified: true },
-      { Firstname: 'Nina', Lastname: 'Roberts', Prefix: 'Prof.', Verified: false },
-      { Firstname: 'Walter', Lastname: 'Clark', Prefix: 'Dr.', Verified: true },
-      { Firstname: 'Rachel', Lastname: 'Walker', Prefix: 'Prof.', Verified: true },
-    ],
-  });
-
-  const allProfessors = await prisma.professor.findMany();
+  const professorRows = [
+    { Firstname: 'John', Lastname: 'Doe', Prefix: 'Dr.', Verified: true },
+    { Firstname: 'Jane', Lastname: 'Smith', Prefix: 'Prof.', Verified: true },
+    { Firstname: 'Mike', Lastname: 'Johnson', Prefix: 'Dr.', Verified: false },
+    { Firstname: 'Sara', Lastname: 'Lee', Prefix: 'Prof.', Verified: true },
+    { Firstname: 'Robert', Lastname: 'Brown', Prefix: 'Dr.', Verified: true },
+    { Firstname: "Jose", Lastname: "Gonzalez", Prefix: "Dr.", Verified: true },
+    { Firstname: 'Emily', Lastname: 'Davis', Prefix: 'Prof.', Verified: false },
+    { Firstname: 'David', Lastname: 'Harris', Prefix: 'Dr.', Verified: true },
+    { Firstname: 'Sophia', Lastname: 'Martinez', Prefix: 'Prof.', Verified: true },
+    { Firstname: 'James', Lastname: 'Anderson', Prefix: 'Dr.', Verified: true },
+    { Firstname: 'Lisa', Lastname: 'Turner', Prefix: 'Prof.', Verified: false },
+    { Firstname: 'Paul', Lastname: 'Garcia', Prefix: 'Dr.', Verified: true },
+    { Firstname: 'Nina', Lastname: 'Roberts', Prefix: 'Prof.', Verified: false },
+    { Firstname: 'Walter', Lastname: 'Clark', Prefix: 'Dr.', Verified: true },
+    { Firstname: 'Rachel', Lastname: 'Walker', Prefix: 'Prof.', Verified: true },
+  ];
 
   await prisma.course.createMany({
-    data: [
+    data: await withSchoolIds(prisma, [
       {
         name: 'Introduction to Computer Science',
         description: 'An introductory course on computer science.',
@@ -140,10 +138,17 @@ async function main() {
         School: 'University of Bob',
         Department: 'Literature',
       },
-    ],
+    ]),
   });
 
-  const allCourses = await prisma.course.findMany();
+  const allCourses = await prisma.course.findMany({ orderBy: { id: 'asc' } });
+
+  // each professor belongs to the school of the course at the same position
+  await prisma.professor.createMany({
+    data: professorRows.map((professor, i) => ({ ...professor, schoolId: allCourses[i % allCourses.length].schoolId })),
+  });
+
+  const allProfessors = await prisma.professor.findMany({ orderBy: { id: 'asc' } });
 
   const courseProfessorAssignments = [
     { courseId: allCourses[0].id, professorId: allProfessors[0].id },

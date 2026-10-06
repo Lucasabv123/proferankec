@@ -9,6 +9,7 @@
     "lint": "next lint",
     "clear-db": "node prisma/clear.js",
     "seed-db": "node prisma/seed.js",
+    "load-banner": "node scripts/load-banner.mjs",
     "generate-data": "node prisma/generator.js",
     "delete-files": "node prisma/delete-json.js",
     "alt-seed-db": "node prisma/alt_seed.js",

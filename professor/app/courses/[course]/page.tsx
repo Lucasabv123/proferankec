@@ -9,16 +9,18 @@ import HomeButton from "@/components/util/homeButton";
 import TopSearchSection from "@/components/searchbar/topSection";
 import Login from "@/components/auth/loginformbasicgoogle01"; 
 import { notFound } from "next/navigation";
-import { parseIdParam } from "@/helpers/links";
+import { parseIdParam, schoolPath } from "@/helpers/links";
+import Link from "next/link";
 import { getDictionary } from "@/helpers/i18n/locale";
 
 
 
 type Course = {
   id: number;
+  code?: string | null;
   name: string;
-  School: string;
   Department: string;
+  school: { key: string; name: string };
   professors: {
     professor: Professor;
   }[];
@@ -153,9 +155,10 @@ async function getCourseData(courseParam) {
     where: id !== null ? { id } : {
       name: name,
       Department: department,
-      School: school,
+      school: { name: school },
     },
     include: {
+      school: true,
       professors: {
         include: {
           professor: true,
@@ -202,7 +205,7 @@ const CoursePage = async ({ params, searchParams }) => {
 
       <div className="absolute top-4 right-4 flex flex-col justify-evenly"><TopSearchSection /> </div>
 
-      <h1>{course.name} - {course.School} - {course.Department}</h1>
+      <h1>{course.code ? `${course.code} ` : ""}{course.name} - <Link className="underline" href={schoolPath(course.school)}>{course.school.name}</Link> - {course.Department}</h1>
       <h2>{t.professors}</h2>
       <ul>
         {course.professors.map(({ professor }) => (

@@ -1,13 +1,10 @@
 import prisma from "../prisma/prisma";
-import { searchMode } from "../search/mode";
+import { courseTextFilter } from "../school/getcourse";
 
 async function searchCourses(query : string) {
     const courses = await prisma.course.findMany({
-        where: {
-            name: {
-                contains: query.trim(), ...searchMode
-            }
-        }
+        where: courseTextFilter(query),
+        include: { school: true },
     });
     return courses;
 

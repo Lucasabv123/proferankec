@@ -1,50 +1,26 @@
 import prisma from '../prisma/prisma';
-import { searchMode } from '../search/mode';  
+import { searchMode } from '../search/mode';
 
+// matches the course name or its catalog code ("ART 1101")
+export function courseTextFilter(query: string) {
+    const q = query.trim();
+    return {
+        OR: [
+            { name: { contains: q, ...searchMode } },
+            { code: { contains: q, ...searchMode } },
+        ],
+    };
+}
 
-
-
-async function getCourses(school: string, course?: string) {
-    
-    let c = []; 
-    
-    try {
-        if(course){
-            c = await prisma.course.findMany({
-                where: {
-                    School: school,
-                    name: {
-                        contains: course.toLowerCase(), ...searchMode
-                    }
-                },
-                select: {
-                    id: true,
-                    name: true,
-                    description: true,
-                    Department: true,
-                },
-            })
-        }else{
-            c = await prisma.course.findMany({
-                where: {
-                    School: school,
-                },
-                select: {
-                    id: true,
-                    name: true,
-                    description: true,
-                    Department: true,
-                },
-            });
-        }
-        const courses = c; 
-        return courses;
-    } catch (error) {
-        console.error('Failed to retrieve courses for the school:', error);
-        throw error;
-    }
+async function getCourses(schoolId: number, course?: string) {
+    return prisma.course.findMany({
+        where: {
+            schoolId,
+            ...(course ? courseTextFilter(course) : {}),
+        },
+        include: { school: true },
+        orderBy: [{ code: 'asc' }, { name: 'asc' }],
+    });
 }
 
 export default getCourses;
-
-

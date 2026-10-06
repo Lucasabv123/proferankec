@@ -7,10 +7,11 @@ import { useDictionary } from "@/components/i18n/provider";
 
 type Course = {
   id: number;
-  name?: string;
+  name: string;
   description?: string;
-  School?: string;
-  Department?: string;
+  code?: string | null;
+  school?: { name: string } | null;
+  Department: string;
 };
 
 const fetcher = async (url: string) => {
