@@ -28,7 +28,7 @@ const SearchInner: React.FC = () => {
     <>
       {/* Responsive search bars */}
       <div className="flex flex-col space-y-8 md:flex-row md:space-y-0 md:space-x-8 mb-8 w-full justify-center">
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center w-full md:w-auto">
           <h2 className="text-lg md:text-xl font-semibold mb-4">{t.professorsSearch}</h2>
           <SearchBar
             type="professor"
@@ -37,11 +37,11 @@ const SearchInner: React.FC = () => {
             placeholder={searchQ}
           />
         </div>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center w-full md:w-auto">
           <h2 className="text-lg md:text-xl font-semibold mb-4">{t.coursesSearch}</h2>
           <SearchBar type="course" size="small" />
         </div>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center w-full md:w-auto">
           <h2 className="text-lg md:text-xl font-semibold mb-4">{t.schoolSearch}</h2>
           <SearchBar type="school" size="small" />
         </div>

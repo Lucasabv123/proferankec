@@ -3,8 +3,9 @@ import getProfessors from "@/helpers/school/getprof";
 import getCourses from "@/helpers/school/getcourse"; 
 import ProfessorCard from "@/components/professor/card";    
 import CourseCard from "@/components/course/card"; 
-import TopSearchSection from "@/components/searchbar/topSection";
-import HomeButton from "@/components/util/homeButton";
+import SiteHeader from "@/components/layout/siteHeader";
+import { getServerSession } from "next-auth";
+import authOptions from "@/helpers/auth/options";
 import { getDictionary } from "@/helpers/i18n/locale";
 import getSchool from "@/helpers/school/getschool";
 import { notFound } from "next/navigation";
@@ -46,31 +47,28 @@ async function SchoolPage( {params, searchParams }) {
     const search = searchParams?.q; 
     const type = searchParams?.type;
     const searchData: any = await getSearch(school.id, type, search); 
+    const session = await getServerSession(authOptions);
     
      
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24"> 
-        <div className = "absolute top-4 left-4">
-            <HomeButton /> 
-        </div>
-
-
-        <div className="md:absolute md:top-4 md:right-4 flex flex-col justify-evenly"><TopSearchSection /> </div>
-        <div>
-            <h1 className="text-4xl font-semibold mb-4 pt-3">{school.name}</h1>
+    <>
+    <SiteHeader session={session} />
+    <main className="flex min-h-screen flex-col items-center gap-6 px-4 py-6 md:p-12 max-w-5xl mx-auto w-full"> 
+        <div className="text-center">
+            <h1 className="text-3xl md:text-4xl font-semibold mb-2">{school.name}</h1>
             <Link className="underline" href={`${schoolPath(school)}/rankings`}>{t.seeRankings}</Link>
         </div>
         <SearchBarAddOnPrimitive placeholder={t.schoolSearchPlaceholder} buttonText={t.searchButton} />
 
         {searchData == null ? (<p>{t.couldNotFind}</p>) : (
             type === "professor" ? (
-                <div className="flex flex-wrap justify-between space-x-3">
+                <div className="grid w-full grid-cols-1 gap-x-4 sm:grid-cols-2 lg:grid-cols-3">
                     {searchData.map((professor : Professor) => (
                         <ProfessorCard key={professor.id} professor={professor} />
                     ))}
                 </div>
             ) : (
-                <div className="flex flex-wrap justify-between space-x-3">
+                <div className="grid w-full grid-cols-1 gap-x-4 sm:grid-cols-2 lg:grid-cols-3">
                     {searchData.map((course) => (
                         <div key={course.id}>
                             <CourseCard course={course} />
@@ -79,10 +77,8 @@ async function SchoolPage( {params, searchParams }) {
                 </div>
             )
         ) }
-
-
-        
     </main>
+    </>
   )
 }
 

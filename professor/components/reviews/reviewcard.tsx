@@ -4,6 +4,7 @@ import { useDictionary } from "@/components/i18n/provider";
 import ReportButton from "./reportButton";
 import ReviewComment from "./reviewComment";
 import OwnReviewActions from "./ownReviewActions";
+import { professorName } from "@/helpers/links";
 
 type Review = {
   id?: number,
@@ -55,9 +56,9 @@ const StaticStarRating: React.FC<StaticStarRatingProps> = ({ rating }) => {
 const ReviewCard: React.FC<ReviewCardProps> = ({ review, type = "professor", canReport = false, isOwn = false, canTranslate = false }) => {
   const t = useDictionary();
   return (
-    <div className="bg-gray-200 shadow-lg rounded-lg p-6 mb-6 w-full max-w-4xl mx-auto">
+    <div className="bg-gray-200 shadow-lg rounded-lg p-4 sm:p-6 mb-6 w-full max-w-4xl mx-auto">
       <h3 className="text-xl md:text-2xl font-bold mb-4 text-center">
-        {type === "professor" ? review.course?.name : `${review.professor?.Prefix} ${review.professor?.Firstname} ${review.professor?.Lastname}`}
+        {type === "professor" ? review.course?.name : (review.professor ? professorName(review.professor) : "")}
       </h3>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
@@ -85,7 +86,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, type = "professor", can
 
       <ReviewComment reviewId={review.id} comment={review.comment} canTranslate={canTranslate} />
       {review.id && isOwn ? (
-        <div className="mt-3 flex justify-end items-center gap-3">
+        <div className="mt-3 flex flex-wrap justify-end items-center gap-3">
           <OwnReviewActions
             reviewId={review.id}
             initial={{

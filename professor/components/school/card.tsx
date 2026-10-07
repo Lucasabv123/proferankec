@@ -18,7 +18,7 @@ const SchoolCard: React.FC<SchoolCardProps> = ({ school }) => {
 
     return(
         <>
-            <div onClick={handleClick} onMouseEnter={() => setHovered(true)} className="bg-white mx-auto p-5 mb-9 max-w-6xl rounded-lg shadow-lg mt-5 text-xl font-bold text-center flex flex-col cursor-pointer hover:border-black hover:border-2">
+            <div onClick={handleClick} onMouseEnter={() => setHovered(true)} className="bg-white w-full p-4 my-2 rounded-lg shadow-lg text-xl font-bold text-center flex flex-col cursor-pointer hover:border-black hover:border-2">
                 <h1>{school.name}</h1>    
             </div>
         

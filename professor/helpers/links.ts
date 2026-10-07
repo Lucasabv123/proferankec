@@ -31,3 +31,8 @@ export function parseIdParam(param: string): number | null {
     const match = /^(\d+)(?:-|$)/.exec(decodeURIComponent(param));
     return match ? parseInt(match[1], 10) : null;
 }
+
+// "Prefix First Last", skipping a missing prefix (Banner imports have none) so it never reads "null"
+export function professorName(professor: { Prefix?: string | null; Firstname?: string | null; Lastname?: string | null }): string {
+    return [professor.Prefix, professor.Firstname, professor.Lastname].filter(Boolean).join(" ");
+}

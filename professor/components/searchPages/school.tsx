@@ -29,7 +29,7 @@ const SearchInner : React.FC = () => {
     return(
     <>
         <div className ="flex space-x-8"> 
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center w-full md:w-auto">
             <h2 className="text-xl font-semibold mb-4">{t.professorsSearch}</h2>
             <SearchBar type="professor" size ="small"/>
 
@@ -39,13 +39,13 @@ const SearchInner : React.FC = () => {
                 <SearchBar type="course" size ="small"/>
 
             </div>
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center w-full md:w-auto">
             <h2 className="text-xl font-semibold mb-4">{t.schoolSearch}</h2>
             <SearchBar type="school" size ="small" onPage={true} placeholder={searchQ} />
             </div>
             
         </div>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center w-full md:w-auto">
             <h2 className="text-xl font-semibold mb-4">{t.schools}</h2>
             <div className="flex flex-wrap justify-center">
                 {list.length ? list.map((school) => (
