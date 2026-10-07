@@ -5,9 +5,7 @@ import ReviewCard from "@/components/reviews/reviewcard";
 import Review from "@/components/reviews/review";
 import { getServerSession } from 'next-auth'; 
 import authOptions from "@/helpers/auth/options";
-import HomeButton from "@/components/util/homeButton";
-import TopSearchSection from "@/components/searchbar/topSection";
-import Login from "@/components/auth/loginformbasicgoogle01"; 
+import SiteHeader from "@/components/layout/siteHeader";
 import { notFound } from "next/navigation";
 import { parseIdParam, schoolPath } from "@/helpers/links";
 import Link from "next/link";
@@ -199,17 +197,15 @@ const CoursePage = async ({ params, searchParams }) => {
   const canTranslate = isTranslationEnabled();
 
   return (
-    <main className="detail-page">
-      <div className = "detail-home">
-        <HomeButton /> 
-        {session ? null : <Login showLogin ={true} />}
+    <>
+    <SiteHeader session={session} />
+    <main className="flex min-h-screen flex-col items-center gap-4 px-4 py-6 md:p-12 max-w-5xl mx-auto w-full">
+      <div className="text-center">
+        <h1 className="text-2xl md:text-3xl font-bold">{course.code ? `${course.code} ` : ""}{course.name}</h1>
+        <p><Link className="underline" href={schoolPath(course.school)}>{course.school.name}</Link> · {course.Department}</p>
       </div>
-
-      <div className="detail-search"><TopSearchSection /> </div>
-
-      <h1>{course.code ? `${course.code} ` : ""}{course.name} - <Link className="underline" href={schoolPath(course.school)}>{course.school.name}</Link> - {course.Department}</h1>
-      <h2>{t.professors}</h2>
-      <ul>
+      <h2 className="text-xl font-semibold">{t.professors}</h2>
+      <ul className="grid w-full grid-cols-1 gap-x-4 sm:grid-cols-2 lg:grid-cols-3">
         {course.professors.map(({ professor }) => (
           <li key={professor.id}>
             <ProfessorCard professor={professor} />
@@ -217,23 +213,25 @@ const CoursePage = async ({ params, searchParams }) => {
         ))}
       </ul>
 
-      <div className = "py-8">
-        <h1 className = "pt-5 pb-7 text-3xl text-center">{t.overallRatings}</h1>
+      <div className="w-full">
+        <h1 className="pb-4 text-2xl md:text-3xl text-center">{t.overallRatings}</h1>
         <ReviewCard review={overallReview} type="course" />
       </div>
 
       <h1>{t.filterForProfessor}</h1>
       <Filter items={allProffessorWithReviews} itemId={professorId} type="professor" param="professorId" />
 
-      <div className="py-5 pb-8" />
+      <div className="py-3" />
 
       <Review proco={course} session={session} userid={userid} type="course" />
 
-      <h1>{t.reviews}</h1>
+      <div className="py-3" />
+
+      <h2 className="text-xl font-semibold">{t.reviews}</h2>
       {reviews.length === 0 ? (
         <p>{t.noReviewsYet}</p>
       ) : (
-        <ul>
+        <ul className="flex flex-col w-full">
           {reviews.map((review) => (
             <li key={review.id}>
               <ReviewCard review={review} type="course" canReport={!!session} isOwn={userid !== null && review.userId === userid} canTranslate={canTranslate} />
@@ -241,9 +239,8 @@ const CoursePage = async ({ params, searchParams }) => {
           ))}
         </ul>
       )}
-
-
     </main>
+    </>
   );
 };
 

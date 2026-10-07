@@ -7,6 +7,7 @@ import { FiChevronDown } from 'react-icons/fi';
 import { useRouter } from "next/navigation";
 import { useDictionary } from "@/components/i18n/provider";
 import { format } from "@/helpers/i18n/dictionaries";
+import { professorName } from "@/helpers/links";
 
 interface ComboBoxProps {
     options: any[];
@@ -42,9 +43,9 @@ const ComboBox : React.FC<ComboBoxProps> = ({ options, setOption, type = "profes
    }else {
       filter = query
       ? options.filter((option : any) => {
-          const professorName = option.Prefix + " " + option.Firstname + " " + option.Lastname;
+          const name = professorName(option).toLowerCase();
           const queryString = query ? query.toString().toLowerCase() : "";
-          return professorName.includes(queryString);
+          return name.includes(queryString);
         })
       : options;
    }
@@ -63,7 +64,7 @@ const ComboBox : React.FC<ComboBoxProps> = ({ options, setOption, type = "profes
       <div className="relative">
         <ComboboxInput
           className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          displayValue={(option : any) => { if(!option) return ""; return type == "professor" ? option.name : option.Prefix + " " + option.Firstname + " " + option.Lastname; }} 
+          displayValue={(option : any) => { if(!option) return ""; return type == "professor" ? option.name : professorName(option); }} 
           onChange={(e) => setQuery(e.target.value)}
           placeholder={type == "professor" ? t.searchCourseOption : t.searchProfessorOption}
         />
@@ -71,7 +72,7 @@ const ComboBox : React.FC<ComboBoxProps> = ({ options, setOption, type = "profes
           <FiChevronDown className="w-5 h-5 text-gray-400" />
         </ComboboxButton>
       </div>
-      <ComboboxOptions className="absolute z-10 mt-1 w-full max-w-md bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto focus:outline-none">
+      <ComboboxOptions anchor="bottom start" className="z-[60] mt-1 w-[var(--input-width)] bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto focus:outline-none">
         {filtered.length === 0 ? (
           <div className="p-2 text-gray-500">{type == 'professor' ? t.noCoursesFound : t.noProfessorsFound}</div>
         ) : (
@@ -85,7 +86,7 @@ const ComboBox : React.FC<ComboBoxProps> = ({ options, setOption, type = "profes
                 }`
               }
             >
-              {type == "professor" ? option.name : option.Prefix  + " " + option.Firstname + " " + option.Lastname}
+              {type == "professor" ? option.name : professorName(option)}
             </ComboboxOption>
           ))
         )}
@@ -106,7 +107,7 @@ const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "profe
   
   if(type == "professor"){
     info = proco.courses.map(({ course }) => course);
-    alt = `${proco.Prefix} ${proco.Firstname} ${proco.Lastname}`; 
+    alt = professorName(proco); 
     
 
     
@@ -193,7 +194,7 @@ const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "profe
     <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
       <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <DialogPanel className="bg-white p-6 rounded-lg shadow-xl max-w-lg w-full">
+        <DialogPanel className="bg-white p-4 sm:p-6 rounded-lg shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
           <DialogTitle className="text-xl font-semibold text-gray-800 mb-4">
             {format(t.leaveReviewFor, { name: identifer })}
           </DialogTitle>

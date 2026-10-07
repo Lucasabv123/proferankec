@@ -9,6 +9,8 @@ const StarRating: React.FC<StarRatingProps> = ({ rating, onRatingChange }) =>
 {   
     const RatingComponent = Rating as any; 
     return (
+        // larger stars so each one is easy to tap on a phone
+        <span className="text-2xl">
         <RatingComponent
             initialRating={rating}
             emptySymbol="far fa-star"
@@ -16,6 +18,7 @@ const StarRating: React.FC<StarRatingProps> = ({ rating, onRatingChange }) =>
             fractions={2}
             onChange={onRatingChange}
         />
+        </span>
     );
 
 }

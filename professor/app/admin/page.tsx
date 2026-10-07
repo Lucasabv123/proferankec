@@ -3,7 +3,9 @@ import prisma from "@/helpers/prisma/prisma";
 import { getCurrentUser } from "@/helpers/auth/currentUser";
 import { getDictionary } from "@/helpers/i18n/locale";
 import { format } from "@/helpers/i18n/dictionaries";
-import HomeButton from "@/components/util/homeButton";
+import SiteHeader from "@/components/layout/siteHeader";
+import { getServerSession } from "next-auth";
+import authOptions from "@/helpers/auth/options";
 import ReviewActions from "@/components/admin/reviewActions";
 
 // reported or hidden reviews, most-reported first; only admins (User.isAdmin) can open it
@@ -13,6 +15,7 @@ export default async function AdminPage() {
     notFound();
   }
   const t = getDictionary();
+  const session = await getServerSession(authOptions);
 
   const reviews = await prisma.review.findMany({
     where: { OR: [{ reports: { some: {} } }, { hidden: true }] },
@@ -25,10 +28,9 @@ export default async function AdminPage() {
   reviews.sort((a, b) => b.reports.length - a.reports.length);
 
   return (
-    <main className="relative flex min-h-screen flex-col items-center p-8 md:p-24">
-      <div className="absolute top-4 left-4">
-        <HomeButton />
-      </div>
+    <>
+    <SiteHeader session={session} />
+    <main className="flex min-h-screen flex-col items-center px-4 py-6 md:p-12">
       <h1 className="text-3xl font-bold mb-8">{t.adminTitle}</h1>
 
       {reviews.length === 0 ? (
@@ -36,8 +38,8 @@ export default async function AdminPage() {
       ) : (
         <ul className="w-full max-w-4xl space-y-6">
           {reviews.map((review) => (
-            <li key={review.id} className="bg-white rounded-lg shadow p-6">
-              <div className="flex justify-between items-start gap-4 mb-2">
+            <li key={review.id} className="bg-white rounded-lg shadow p-4 md:p-6">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-2">
                 <div>
                   <p className="font-semibold">
                     {review.professor.Prefix} {review.professor.Firstname} {review.professor.Lastname} · {review.course.name}
@@ -60,5 +62,6 @@ export default async function AdminPage() {
         </ul>
       )}
     </main>
+    </>
   );
 }

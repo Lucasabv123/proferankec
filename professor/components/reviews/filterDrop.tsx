@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react"; 
 import { useDictionary } from "@/components/i18n/provider";
+import { professorName } from "@/helpers/links";
 
 interface FilterProps {
     items: any[];
@@ -33,21 +34,21 @@ const Filter : React.FC<FilterProps> =  ({ items, itemId, totalItems, type = "co
     }
 
     return (
-        <>
+        <div className="relative w-full sm:w-1/2">
             <Listbox value={selectedItem} onChange={handleItemChange}>
-                <ListboxButton className="relative w-1/3 cursor-default py-2 pl-3 pr-10 text-left bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                <ListboxButton className="relative w-full cursor-default py-2 pl-3 pr-10 text-left bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     {(() => {
                         const selected = items.find(item => item.id === selectedItem);
 
                         return selected ? (
                             type === "course" 
                             ? selected.name 
-                            : `${selected.Prefix} ${selected.Firstname} ${selected.Lastname}`
+                            : professorName(selected)
                         ) : allLabel;
                     })()}
                 </ListboxButton>
 
-                <ListboxOptions className="mt-2 max-h-60 w-1/3 overflow-auto rounded-md bg-white shadow-lg z-10 sm:text-sm">
+                <ListboxOptions className="absolute mt-2 max-h-60 w-full overflow-auto rounded-md bg-white shadow-lg z-10 sm:text-sm">
                     <ListboxOption value="" className="cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-gray-300 transition-all">
                         {allLabel}
                     </ListboxOption>
@@ -55,12 +56,12 @@ const Filter : React.FC<FilterProps> =  ({ items, itemId, totalItems, type = "co
                         <ListboxOption key={item.id} value={item.id} className="cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-gray-300">
                             {type === "course" 
                             ? item.name 
-                            : `${item.Prefix} ${item.Firstname} ${item.Lastname}`}
+                            : professorName(item)}
                         </ListboxOption>
                     ))}
                 </ListboxOptions>
             </Listbox>
-        </>
+        </div>
     ); 
 }
 

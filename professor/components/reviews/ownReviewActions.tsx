@@ -61,7 +61,7 @@ const OwnReviewActions: React.FC<{ reviewId: number; initial: ReviewDraft }> = (
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <DialogPanel className="bg-white p-6 rounded-lg shadow-xl max-w-lg w-full text-left">
+          <DialogPanel className="bg-white p-4 sm:p-6 rounded-lg shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto text-left">
             <DialogTitle className="text-xl font-semibold text-gray-800 mb-4">{t.editReviewTitle}</DialogTitle>
             <form onSubmit={handleSave}>
               <ReviewFields value={draft} onChange={setDraft} />

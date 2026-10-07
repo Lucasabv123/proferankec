@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import HomeButton from "@/components/util/homeButton";
-import TopSearchSection from "@/components/searchbar/topSection";
+import SiteHeader from "@/components/layout/siteHeader";
+import { getServerSession } from "next-auth";
+import authOptions from "@/helpers/auth/options";
 import getSchool from "@/helpers/school/getschool";
 import { getDictionary } from "@/helpers/i18n/locale";
 import { format } from "@/helpers/i18n/dictionaries";
@@ -23,10 +24,10 @@ function RankingList<T>({ title, rows, href, label }: {
             ) : (
                 <ol className="bg-white rounded-lg shadow divide-y">
                     {rows.map((row, index) => (
-                        <li key={href(row.item)} className="flex items-center gap-4 p-4">
-                            <span className="text-xl font-bold w-8 text-right">{index + 1}</span>
-                            <Link className="flex-1 underline" href={href(row.item)}>{label(row.item)}</Link>
-                            <span className="text-right">
+                        <li key={href(row.item)} className="flex items-center gap-3 p-3 sm:gap-4 sm:p-4">
+                            <span className="shrink-0 text-xl font-bold w-8 text-right">{index + 1}</span>
+                            <Link className="flex-1 min-w-0 break-words underline" href={href(row.item)}>{label(row.item)}</Link>
+                            <span className="shrink-0 text-right">
                                 <span className="font-semibold">{row.average.toFixed(1)}</span>
                                 <i className="fas fa-star text-yellow-500 ml-1" />
                                 <span className="block text-sm text-gray-500">{format(t.reviewCount, { count: row.reviewCount })}</span>
@@ -45,17 +46,14 @@ async function RankingsPage({ params }) {
     if (!school) {
         notFound();
     }
-    const [professors, courses] = await Promise.all([getTopProfessors(school.id), getTopCourses(school.id)]);
+    const [professors, courses, session] = await Promise.all([getTopProfessors(school.id), getTopCourses(school.id), getServerSession(authOptions)]);
 
     return (
-        <main className="detail-page">
-            <div className="detail-home">
-                <HomeButton />
-            </div>
-            <div className="detail-search"><TopSearchSection /></div>
-
+        <>
+        <SiteHeader session={session} />
+        <main className="flex min-h-screen flex-col items-center gap-8 px-4 py-6 md:p-12">
             <div className="text-center">
-                <h1 className="text-4xl font-semibold pt-3">{format(t.rankingsTitle, { school: school.name })}</h1>
+                <h1 className="text-3xl md:text-4xl font-semibold pt-3">{format(t.rankingsTitle, { school: school.name })}</h1>
                 <Link className="underline" href={schoolPath(school)}>{t.backToSchool}</Link>
             </div>
 
@@ -72,6 +70,7 @@ async function RankingsPage({ params }) {
                 label={(c) => (c.code ? `${c.code} ${c.name}` : c.name)}
             />
         </main>
+        </>
     );
 }
 

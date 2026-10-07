@@ -8,16 +8,17 @@ import { format } from '@/helpers/i18n/dictionaries';
 interface LoginProps {
     showLogin: boolean;
     user?: any;
+    compact?: boolean;
 }
 
 
 
-const Login : React.FC<LoginProps> = ({ showLogin, user }) => {
+const Login : React.FC<LoginProps> = ({ showLogin, user, compact = false }) => {
   const t = useDictionary();
   if ( user && !showLogin) {
     return (
       <div className="flex flex-wrap items-center justify-center gap-3">
-        <p className="text-sm font-medium">{format(t.welcome, { name: user.name ?? "" })}</p>
+        <p className={compact ? "hidden sm:block text-sm font-medium" : "text-sm font-medium"}>{format(t.welcome, { name: user.name ?? "" })}</p>
         <button
           className="auth-button"
           onClick={() => signOut({ callbackUrl: '/' })}
@@ -33,7 +34,7 @@ const Login : React.FC<LoginProps> = ({ showLogin, user }) => {
         onClick={() => signIn('google')}
       >
         <FaGoogle aria-hidden="true" className="text-blue-600" />
-        {t.signInWithGoogle}
+        {compact ? <><span className="sm:hidden">{t.signIn}</span><span className="hidden sm:inline">{t.signInWithGoogle}</span></> : t.signInWithGoogle}
       </button>
     );
   } else {
