@@ -1,23 +1,11 @@
 import prisma from "../prisma/prisma";
-import { searchMode } from "../search/mode";
+import { matchingIdsFilter } from "./text";
 
-// every word must match some part of the name, so "dr jane doe" and "doe jane" both work
-export function professorNameFilter(query: string) {
-    const words = query.trim().split(/\s+/).filter(Boolean);
-    return {
-        AND: words.map((word) => ({
-            OR: [
-                { Firstname: { contains: word, ...searchMode } },
-                { Lastname: { contains: word, ...searchMode } },
-                { Prefix: { contains: word, ...searchMode } }
-            ]
-        }))
-    };
-}
-
+// every word must match some part of the name, ignoring accents, so "perez jane" finds "Jane Pérez"
 async function searchProfessors(query : string) {
     const professors = await prisma.professor.findMany({
-        where: professorNameFilter(query)
+        where: await matchingIdsFilter("Professor", query),
+        orderBy: [{ Lastname: "asc" }, { Firstname: "asc" }],
     });
     return professors;
 }

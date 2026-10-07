@@ -1,11 +1,11 @@
 import prisma from '../prisma/prisma';
-import { professorNameFilter } from '../search/professorsearch';
+import { matchingIdsFilter } from '../search/text';
 
 async function getProfessors(schoolId: number, professor?: string) {
     return prisma.professor.findMany({
         where: {
             schoolId,
-            ...(professor ? professorNameFilter(professor) : {}),
+            ...(professor ? await matchingIdsFilter('Professor', professor, schoolId) : {}),
         },
         select: {
             id: true,

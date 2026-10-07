@@ -1,15 +1,9 @@
 import prisma from '../prisma/prisma';
-import { searchMode } from '../search/mode';
+import { matchingIdsFilter } from './text';
 
 async function schoolSearch(school: string) {
-    const q = school.trim();
     return prisma.school.findMany({
-        where: {
-            OR: [
-                { name: { contains: q, ...searchMode } },
-                { key: { contains: q, ...searchMode } },
-            ],
-        },
+        where: await matchingIdsFilter('School', school),
         select: { id: true, key: true, name: true },
         orderBy: { name: 'asc' },
     });
