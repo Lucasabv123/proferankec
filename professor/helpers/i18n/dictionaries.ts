@@ -1,5 +1,5 @@
-// The site name is a brand: it stays "Professor Rank" in every language.
-export const BRAND_NAME = "Professor Rank";
+// The site name is a brand: it stays "Profe Rank" in every language.
+export const BRAND_NAME = "Profe Rank";
 
 // UI text in every supported language. Add a key to `en` first; TypeScript then requires it in `es`.
 export const en = {
