@@ -99,6 +99,12 @@ export const en = {
     dismissReports: "Dismiss reports",
     noReason: "No reason given",
     actionFailed: "That didn't work. Try again.",
+    // translating review comments
+    translate: "Translate to English",
+    translating: "Translating...",
+    showOriginal: "Show original",
+    machineTranslated: "Machine translated",
+    translateFailed: "Couldn't translate this review right now",
 };
 
 export type Dictionary = typeof en;
@@ -199,6 +205,11 @@ export const es: Dictionary = {
     dismissReports: "Descartar reportes",
     noReason: "Sin motivo",
     actionFailed: "No funcionó. Inténtalo de nuevo.",
+    translate: "Traducir al español",
+    translating: "Traduciendo...",
+    showOriginal: "Ver original",
+    machineTranslated: "Traducción automática",
+    translateFailed: "No se pudo traducir esta reseña ahora",
 };
 
 export const dictionaries = { en, es };

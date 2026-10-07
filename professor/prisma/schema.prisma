@@ -122,6 +122,7 @@ model Review {
   professor     Professor      @relation(fields: [professorId], references: [id])
   user          User           @relation(fields: [userId], references: [id])
   reports       ReviewReport[]
+  translations  ReviewTranslation[]
 
   @@unique([userId, professorId, courseId]) // one review per user per professor and course
 }
@@ -137,4 +138,15 @@ model ReviewReport {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([reviewId, userId]) // one report per user per review
+}
+
+// a review comment machine-translated into another language, kept so each one is translated once
+model ReviewTranslation {
+  reviewId    Int
+  language    String // "en" or "es"
+  source      String // the comment that was translated; a mismatch means the review was edited since
+  translation String
+  review      Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  @@id([reviewId, language])
 }
