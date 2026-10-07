@@ -12,6 +12,7 @@ import { notFound } from "next/navigation";
 import { parseIdParam, schoolPath } from "@/helpers/links";
 import Link from "next/link";
 import { getDictionary } from "@/helpers/i18n/locale";
+import { isTranslationEnabled } from "@/helpers/translate/translate";
 
 
 
@@ -157,6 +158,7 @@ const ProfessorPage = async ({ params, searchParams }) => {
 
     
     const userid = await getUserId(session); 
+    const canTranslate = isTranslationEnabled();
      
 
   
@@ -204,7 +206,7 @@ const ProfessorPage = async ({ params, searchParams }) => {
           <ul className = "flex flex-col w-2/3  justify-center">
             {reviews.map(review => (
               <li key={review.id} className="p-5">
-                <ReviewCard review={review} canReport={!!session} />
+                <ReviewCard review={review} canReport={!!session} isOwn={userid !== null && review.userId === userid} canTranslate={canTranslate} />
               </li>
             ))}
           </ul>

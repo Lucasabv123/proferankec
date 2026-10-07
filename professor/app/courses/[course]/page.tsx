@@ -12,6 +12,7 @@ import { notFound } from "next/navigation";
 import { parseIdParam, schoolPath } from "@/helpers/links";
 import Link from "next/link";
 import { getDictionary } from "@/helpers/i18n/locale";
+import { isTranslationEnabled } from "@/helpers/translate/translate";
 
 
 
@@ -195,6 +196,7 @@ const CoursePage = async ({ params, searchParams }) => {
   const allProffessorWithReviews = allProfessors.filter(professor => allReviews.some(review => review.professorId === professor.id));
 
   const userid = await getUserId(session); 
+  const canTranslate = isTranslationEnabled();
 
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-between p-24">
@@ -234,7 +236,7 @@ const CoursePage = async ({ params, searchParams }) => {
         <ul>
           {reviews.map((review) => (
             <li key={review.id}>
-              <ReviewCard review={review} type="course" canReport={!!session} />
+              <ReviewCard review={review} type="course" canReport={!!session} isOwn={userid !== null && review.userId === userid} canTranslate={canTranslate} />
             </li>
           ))}
         </ul>

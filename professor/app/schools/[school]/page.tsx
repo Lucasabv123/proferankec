@@ -8,6 +8,8 @@ import HomeButton from "@/components/util/homeButton";
 import { getDictionary } from "@/helpers/i18n/locale";
 import getSchool from "@/helpers/school/getschool";
 import { notFound } from "next/navigation";
+import Link from "next/link";
+import { schoolPath } from "@/helpers/links";
 
 
 type Professor = {
@@ -56,6 +58,7 @@ async function SchoolPage( {params, searchParams }) {
         <div className="md:absolute md:top-4 md:right-4 flex flex-col justify-evenly"><TopSearchSection /> </div>
         <div>
             <h1 className="text-4xl font-semibold mb-4 pt-3">{school.name}</h1>
+            <Link className="underline" href={`${schoolPath(school)}/rankings`}>{t.seeRankings}</Link>
         </div>
         <SearchBarAddOnPrimitive placeholder={t.schoolSearchPlaceholder} buttonText={t.searchButton} />
 

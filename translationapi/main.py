@@ -1,67 +1,73 @@
-from fastapi import FastAPI, Form, Request
-from fastapi.middleware.cors import CORSMiddleware
-from transformers import pipeline
-import uvicorn
-from pydantic import BaseModel
-from fastapi.responses import HTMLResponse
+"""English <-> Spanish translation service for Professor Rank review comments.
 
-class TranslationInput(BaseModel): 
-   text:str
+The Next.js app calls POST /translate from the server; browsers never call this directly.
+Models are the Helsinki-NLP Marian models, baked into the Docker image at build time.
+"""
 
+import hmac
+import os
+from functools import lru_cache
+from typing import Literal
 
+from fastapi import Depends, FastAPI, Header, HTTPException
+from pydantic import BaseModel, Field
 
+MODELS = {
+    ("en", "es"): "Helsinki-NLP/opus-mt-en-es",
+    ("es", "en"): "Helsinki-NLP/opus-mt-es-en",
+}
+MAX_TEXT_LENGTH = 2000  # review comments are capped at 500 characters
 
-app = FastAPI() 
+# when set, requests must send it in the X-API-Key header
+API_KEY = os.environ.get("TRANSLATION_API_KEY", "")
 
-
-
-en_to_es = None
-es_to_en = None
-
-def load_en_to_es(): 
-    global en_to_es
-    if en_to_es is None: 
-        en_to_es = pipeline("translation_en_to_es", "Helsinki-NLP/opus-mt-en-es")
-
-def load_es_to_en(): 
-    global es_to_en
-    if es_to_en is None: 
-        es_to_en = pipeline("translation_es_to_en", "Helsinki-NLP/opus-mt-es-en")
+Language = Literal["en", "es"]
 
 
+class TranslationRequest(BaseModel):
+    text: str = Field(min_length=1, max_length=MAX_TEXT_LENGTH)
+    source: Language
+    target: Language
 
 
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-@app.post("/english_to_spanish")
-async def english_to_spanish(body: TranslationInput):
-    load_en_to_es()
-    
-    english_text = body.text
-    en_to_es_translation = en_to_es(english_text)
-    print(en_to_es_translation)
-    return {"english_text": english_text, "spanish_text": en_to_es_translation[0]['translation_text']}   
-
-@app.post("/spanish_to_english")
-async def spanish_to_english(body: TranslationInput):
-    load_es_to_en()
-    spanish_text = body.text
-    es_to_en_translation = es_to_en(spanish_text)
-    print(es_to_en_translation)
-    return {"spanish_text": spanish_text, "english_text": es_to_en_translation[0]['translation_text']} 
-
-@app.get("/")
-def read_root():
-    return {"meesage": "Welcome to the translation API. Please use the /english_to_spanish or /spanish_to_english endpoints to translate text."}  
-                                                                                                          
+class TranslationResponse(BaseModel):
+    translation: str
 
 
-if __name__ == "__main__":                                                                                                                      
-    uvicorn.run(app, reload=True)
+@lru_cache(maxsize=None)
+def get_translator(source: str, target: str):
+    # imported here so the app (and its tests) start without loading torch
+    from transformers import pipeline
+
+    return pipeline(f"translation_{source}_to_{target}", model=MODELS[(source, target)])
+
+
+def translate(text: str, source: str, target: str) -> str:
+    return get_translator(source, target)(text, max_length=1024)[0]["translation_text"]
+
+
+def check_api_key(x_api_key: str = Header(default="")):
+    if API_KEY and not hmac.compare_digest(x_api_key, API_KEY):
+        raise HTTPException(status_code=401, detail="Invalid API key")
+
+
+app = FastAPI(title="Professor Rank translation API")
+
+
+@app.get("/health")
+def health():
+    return {"ok": True}
+
+
+# a plain def runs in a worker thread, so a slow translation doesn't block other requests
+@app.post("/translate", response_model=TranslationResponse, dependencies=[Depends(check_api_key)])
+def translate_endpoint(body: TranslationRequest):
+    if body.source == body.target:
+        return TranslationResponse(translation=body.text)
+    return TranslationResponse(translation=translate(body.text, body.source, body.target))
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", "8080")))
