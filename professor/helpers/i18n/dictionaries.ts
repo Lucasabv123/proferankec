@@ -111,6 +111,12 @@ export const en = {
     showOriginal: "Show original",
     machineTranslated: "Machine translated",
     translateFailed: "Couldn't translate this review right now",
+    // privacy and terms pages
+    privacyPolicy: "Privacy Policy",
+    termsOfService: "Terms of Service",
+    legalContact: "Contact",
+    legalUpdated: "Last updated:",
+    backHome: "Back to home",
 };
 
 export type Dictionary = typeof en;
@@ -219,6 +225,11 @@ export const es: Dictionary = {
     showOriginal: "Ver original",
     machineTranslated: "Traducción automática",
     translateFailed: "No se pudo traducir esta reseña ahora",
+    privacyPolicy: "Política de privacidad",
+    termsOfService: "Términos de servicio",
+    legalContact: "Contacto",
+    legalUpdated: "Última actualización:",
+    backHome: "Volver al inicio",
 };
 
 export const dictionaries = { en, es };

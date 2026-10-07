@@ -4,6 +4,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css'
 import { getLocale } from "@/helpers/i18n/locale";
 import { dictionaries } from "@/helpers/i18n/dictionaries";
 import { DictionaryProvider } from "@/components/i18n/provider";
+import SiteFooter from "@/components/legal/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
     <html lang={locale}>
       <body className={`${inter.className}`}>
         <DictionaryProvider dictionary={dictionaries[locale]}>{children}</DictionaryProvider>
+        <SiteFooter />
       </body>
     </html>
   );
