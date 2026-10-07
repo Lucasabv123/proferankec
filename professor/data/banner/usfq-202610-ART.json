@@ -1,0 +1,700 @@
+{
+  "school": {
+    "key": "usfq",
+    "name": "Universidad San Francisco de Quito"
+  },
+  "term": {
+    "code": "202610",
+    "name": "Primer Semestre 2026/2027"
+  },
+  "fetchedAt": "2026-10-06T22:33:43.775Z",
+  "counts": {
+    "sections": 76,
+    "courses": 38,
+    "professors": 29
+  },
+  "courses": [
+    {
+      "code": "ART 1004",
+      "title": "Fundamentos de Dibujo",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539123",
+        "539143"
+      ],
+      "sections": 2
+    },
+    {
+      "code": "ART 1101",
+      "title": "Dibujo 1",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539124",
+        "539125",
+        "539140"
+      ],
+      "sections": 5
+    },
+    {
+      "code": "ART 1105",
+      "title": "Dibujo de Perspectiva",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539141"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 1201",
+      "title": "Taller de Cerámica 1",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539124",
+        "539140",
+        "539134",
+        "539126"
+      ],
+      "sections": 7
+    },
+    {
+      "code": "ART 1203",
+      "title": "Escultura de Figura Humana",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539127"
+      ],
+      "sections": 2
+    },
+    {
+      "code": "ART 1204",
+      "title": "Fundamentos de Escultura",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539128"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 1205",
+      "title": "Taller de Madera 1",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539129"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 1206",
+      "title": "Taller de Metal y Piedra 1",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539129"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 1301",
+      "title": "Taller de Grabado Calcográfico",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539130"
+      ],
+      "sections": 2
+    },
+    {
+      "code": "ART 1302",
+      "title": "Taller de Serigrafía",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539130"
+      ],
+      "sections": 2
+    },
+    {
+      "code": "ART 1303",
+      "title": "Taller de Xilografía",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539131"
+      ],
+      "sections": 2
+    },
+    {
+      "code": "ART 1401E",
+      "title": "Botanical Illustration",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539131"
+      ],
+      "sections": 2
+    },
+    {
+      "code": "ART 1406",
+      "title": "Comics y Arte Secuencial",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539132"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 1501",
+      "title": "Técnicas Básicas de Pintura",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539125",
+        "539127",
+        "539132"
+      ],
+      "sections": 5
+    },
+    {
+      "code": "ART 1601",
+      "title": "Tejido Básico",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539133",
+        "539134"
+      ],
+      "sections": 4
+    },
+    {
+      "code": "ART 1701",
+      "title": "Fundamentos de las Artes",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539135"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 1901",
+      "title": "Taller de Acuarela 1",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539136"
+      ],
+      "sections": 4
+    },
+    {
+      "code": "ART 1901E",
+      "title": "Watercolor Workshop 1",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539137"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 1902",
+      "title": "Acuarela Experimental",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539136"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 2001",
+      "title": "Dibujo para Arte y Diseño",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539123"
+      ],
+      "sections": 2
+    },
+    {
+      "code": "ART 2002",
+      "title": "Fotografía 1",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539138",
+        "539145",
+        "539146",
+        "539144",
+        "539147",
+        "539148"
+      ],
+      "sections": 10
+    },
+    {
+      "code": "ART 2002E",
+      "title": "Photography 1",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539146"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 2080",
+      "title": "Arte, Ciencia y Tecnología",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539128",
+        "539151"
+      ],
+      "sections": 2
+    },
+    {
+      "code": "ART 2102",
+      "title": "Dibujo de Retrato y Caricatura",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539132"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 2213E",
+      "title": "Intro to Mixed Media",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539150"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 2502",
+      "title": "Pintura Experimental",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539125"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 2602",
+      "title": "Taller Tejido Macramé",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539133"
+      ],
+      "sections": 2
+    },
+    {
+      "code": "ART 2701",
+      "title": "Laboratorio de Creación 1",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539138"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 2702",
+      "title": "Laboratorio de Creación 2",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539137"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 3082",
+      "title": "Ilustración Infantil",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539139"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 3085",
+      "title": "Fotografía Post Digital e IA",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539149"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 3104",
+      "title": "Dibujo de Figura Humana",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539132"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 3505",
+      "title": "Pintura Realista de la Figura",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539132"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 3704",
+      "title": "Laboratorio de Creación 3",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539128"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 3706",
+      "title": "Gestión y Producción Cultural",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539142"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 4002",
+      "title": "Fotografía de Estudio",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539135"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 4704",
+      "title": "Laboratorio de Creación 4",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539137"
+      ],
+      "sections": 1
+    },
+    {
+      "code": "ART 4991",
+      "title": "Proyecto Final",
+      "subject": "ART",
+      "department": "Arte",
+      "professors": [
+        "539128"
+      ],
+      "sections": 1
+    }
+  ],
+  "professors": [
+    {
+      "key": "539123",
+      "displayName": "Idrovo Pérez, Gustavo",
+      "firstName": "Gustavo",
+      "lastName": "Idrovo Pérez",
+      "courses": [
+        "ART 1004",
+        "ART 2001"
+      ]
+    },
+    {
+      "key": "539143",
+      "displayName": "Aguirre Cardenas, Sebastian",
+      "firstName": "Sebastian",
+      "lastName": "Aguirre Cardenas",
+      "courses": [
+        "ART 1004"
+      ]
+    },
+    {
+      "key": "539124",
+      "displayName": "Toledo Goyes, Byron",
+      "firstName": "Byron",
+      "lastName": "Toledo Goyes",
+      "courses": [
+        "ART 1101",
+        "ART 1201"
+      ]
+    },
+    {
+      "key": "539125",
+      "displayName": "Echeverria Kossak, Carlos",
+      "firstName": "Carlos",
+      "lastName": "Echeverria Kossak",
+      "courses": [
+        "ART 1101",
+        "ART 1501",
+        "ART 2502"
+      ]
+    },
+    {
+      "key": "539140",
+      "displayName": "Espinosa Ponce, Daniel",
+      "firstName": "Daniel",
+      "lastName": "Espinosa Ponce",
+      "courses": [
+        "ART 1101",
+        "ART 1201"
+      ]
+    },
+    {
+      "key": "539141",
+      "displayName": "Ruiz Oñate, Jorge",
+      "firstName": "Jorge",
+      "lastName": "Ruiz Oñate",
+      "courses": [
+        "ART 1105"
+      ]
+    },
+    {
+      "key": "539134",
+      "displayName": "Fun Sang Vera, Saskya",
+      "firstName": "Saskya",
+      "lastName": "Fun Sang Vera",
+      "courses": [
+        "ART 1201",
+        "ART 1601"
+      ]
+    },
+    {
+      "key": "539126",
+      "displayName": "Carrera Núñez, Luis",
+      "firstName": "Luis",
+      "lastName": "Carrera Núñez",
+      "courses": [
+        "ART 1201"
+      ]
+    },
+    {
+      "key": "539127",
+      "displayName": "Orellana Morales, Wilson",
+      "firstName": "Wilson",
+      "lastName": "Orellana Morales",
+      "courses": [
+        "ART 1203",
+        "ART 1501"
+      ]
+    },
+    {
+      "key": "539128",
+      "displayName": "Rosero Contreras, Paúl",
+      "firstName": "Paúl",
+      "lastName": "Rosero Contreras",
+      "courses": [
+        "ART 1204",
+        "ART 2080",
+        "ART 3704",
+        "ART 4991"
+      ]
+    },
+    {
+      "key": "539129",
+      "displayName": "Terán Villegas, Rubén",
+      "firstName": "Rubén",
+      "lastName": "Terán Villegas",
+      "courses": [
+        "ART 1205",
+        "ART 1206"
+      ]
+    },
+    {
+      "key": "539130",
+      "displayName": "Monsalve Sosa, Teodoro",
+      "firstName": "Teodoro",
+      "lastName": "Monsalve Sosa",
+      "courses": [
+        "ART 1301",
+        "ART 1302"
+      ]
+    },
+    {
+      "key": "539131",
+      "displayName": "Morillo Paimann, Deborah",
+      "firstName": "Deborah",
+      "lastName": "Morillo Paimann",
+      "courses": [
+        "ART 1303",
+        "ART 1401E"
+      ]
+    },
+    {
+      "key": "539132",
+      "displayName": "Villacís Pastor, Martín",
+      "firstName": "Martín",
+      "lastName": "Villacís Pastor",
+      "courses": [
+        "ART 1406",
+        "ART 1501",
+        "ART 2102",
+        "ART 3104",
+        "ART 3505"
+      ]
+    },
+    {
+      "key": "539133",
+      "displayName": "Égüez Jiménez, Maria",
+      "firstName": "Maria",
+      "lastName": "Égüez Jiménez",
+      "courses": [
+        "ART 1601",
+        "ART 2602"
+      ]
+    },
+    {
+      "key": "539135",
+      "displayName": "García Sedano, Marcelino",
+      "firstName": "Marcelino",
+      "lastName": "García Sedano",
+      "courses": [
+        "ART 1701",
+        "ART 4002"
+      ]
+    },
+    {
+      "key": "539136",
+      "displayName": "Calderón Carvallo, Hernán",
+      "firstName": "Hernán",
+      "lastName": "Calderón Carvallo",
+      "courses": [
+        "ART 1901",
+        "ART 1902"
+      ]
+    },
+    {
+      "key": "539137",
+      "displayName": "Molestina Luzuriaga, Camila",
+      "firstName": "Camila",
+      "lastName": "Molestina Luzuriaga",
+      "courses": [
+        "ART 1901E",
+        "ART 2702",
+        "ART 4704"
+      ]
+    },
+    {
+      "key": "539138",
+      "displayName": "Paredes Alban, Paola",
+      "firstName": "Paola",
+      "lastName": "Paredes Alban",
+      "courses": [
+        "ART 2002",
+        "ART 2701"
+      ]
+    },
+    {
+      "key": "539145",
+      "displayName": "Higuera Bernal, Yinna",
+      "firstName": "Yinna",
+      "lastName": "Higuera Bernal",
+      "courses": [
+        "ART 2002"
+      ]
+    },
+    {
+      "key": "539146",
+      "displayName": "Aguas García, Romina",
+      "firstName": "Romina",
+      "lastName": "Aguas García",
+      "courses": [
+        "ART 2002",
+        "ART 2002E"
+      ]
+    },
+    {
+      "key": "539144",
+      "displayName": "Luengo Vielma, Luis",
+      "firstName": "Luis",
+      "lastName": "Luengo Vielma",
+      "courses": [
+        "ART 2002"
+      ]
+    },
+    {
+      "key": "539147",
+      "displayName": "Houlberg Silva, Joseph",
+      "firstName": "Joseph",
+      "lastName": "Houlberg Silva",
+      "courses": [
+        "ART 2002"
+      ]
+    },
+    {
+      "key": "539148",
+      "displayName": "Blasco Zuñiga, Ailin",
+      "firstName": "Ailin",
+      "lastName": "Blasco Zuñiga",
+      "courses": [
+        "ART 2002"
+      ]
+    },
+    {
+      "key": "539151",
+      "displayName": "Barberis Figueroa, Pierluigi",
+      "firstName": "Pierluigi",
+      "lastName": "Barberis Figueroa",
+      "courses": [
+        "ART 2080"
+      ]
+    },
+    {
+      "key": "539150",
+      "displayName": "Burgos Yánez, Hugo",
+      "firstName": "Hugo",
+      "lastName": "Burgos Yánez",
+      "courses": [
+        "ART 2213E"
+      ]
+    },
+    {
+      "key": "539139",
+      "displayName": "Gonzalez Flores, Edison",
+      "firstName": "Edison",
+      "lastName": "Gonzalez Flores",
+      "courses": [
+        "ART 3082"
+      ]
+    },
+    {
+      "key": "539149",
+      "displayName": "Viteri Morejón, Juan",
+      "firstName": "Juan",
+      "lastName": "Viteri Morejón",
+      "courses": [
+        "ART 3085"
+      ]
+    },
+    {
+      "key": "539142",
+      "displayName": "Garzón Mantilla, Ana",
+      "firstName": "Ana",
+      "lastName": "Garzón Mantilla",
+      "courses": [
+        "ART 3706"
+      ]
+    }
+  ]
+}
