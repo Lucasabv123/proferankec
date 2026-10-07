@@ -11,7 +11,7 @@ applications:
           commands:
             # Amplify only exposes environment variables at build time; write the
             # ones the server needs into .env.production so they exist at runtime too.
-            - env | grep -E '^(DATABASE_URL|NEXT_AUTH_SECRET|NEXTAUTH_URL|GOOGLE_CLIENT_ID|GOOGLE_CLIENT_SECRET)=' >> .env.production
+            - env | grep -E '^(DATABASE_URL|NEXT_AUTH_SECRET|NEXTAUTH_URL|GOOGLE_CLIENT_ID|GOOGLE_CLIENT_SECRET|TRANSLATION_API_URL|TRANSLATION_API_KEY)=' >> .env.production
             - npm run build
       artifacts:
         baseDirectory: .next

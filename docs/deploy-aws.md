@@ -57,7 +57,7 @@ Re-running the import and `load-banner` at the start of each semester updates co
 
 1. Open **AWS Amplify → Create new app → GitHub** and authorize access to `Lucasabv123/proferankec`. Pick the `main` branch.
 2. Check **My app is a monorepo** and set the root directory to `professor`. Amplify reads the build settings from `amplify.yml` in the repo.
-3. Under **Advanced settings → Environment variables**, add:
+3. Under **Advanced settings → Environment variables**, add these (the two translation ones are optional):
 
 | Name | Value |
 | --- | --- |
@@ -66,6 +66,8 @@ Re-running the import and `load-banner` at the start of each semester updates co
 | `NEXTAUTH_URL` | `https://<your-amplify-domain>` (fill this in after the first deploy, then redeploy) |
 | `GOOGLE_CLIENT_ID` | from step 3 |
 | `GOOGLE_CLIENT_SECRET` | from step 3 |
+| `TRANSLATION_API_URL` | optional: the translation service's address. The review Translate button stays hidden without it. |
+| `TRANSLATION_API_KEY` | optional: the key for that translation service |
 
 4. Click **Save and deploy**. Every push to `main` deploys again automatically.
 
