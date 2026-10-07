@@ -17,6 +17,8 @@ interface SearchBarPrimitiveProps {
     placeholder?: string;
     buttonText?: string;
     size?: "small" | "medium" | "large";
+    // place suggestions under the nearest positioned parent instead of the input, so a narrow input still gets a wide list
+    listUnderParent?: boolean;
 }
 
 interface SearchBarProps {
@@ -66,11 +68,11 @@ export const SearchBarAddOnPrimitive : React.FC<SearchBarAddOnPrimitiveProps> = 
     };
 
     return (
-        <div className="flex space-x-4 md:flex-row flex-col justify-center items-center gap-2">
+        <div className="flex flex-wrap justify-center items-stretch gap-2 w-full max-w-xl">
             <select 
                 value={searchType} 
                 onChange={handleSearchTypeChange} 
-                className="border border-gray-300 rounded-lg px-2 py-1 text-sm"
+                className="border border-gray-300 rounded-lg px-2 py-2 text-base md:text-sm"
             >
                 {searchTypeOptions.map(type => (
                     <option key={type} value={type}>{typeLabels[type] ?? type}</option>
@@ -82,11 +84,11 @@ export const SearchBarAddOnPrimitive : React.FC<SearchBarAddOnPrimitiveProps> = 
                 onChange={handleChange}
                 onKeyPress={handleKeyPress}
                 placeholder={placeholder}
-                className="border border-gray-300 rounded-lg px-2 py-1 text-sm"
+                className="flex-1 min-w-0 border border-gray-300 rounded-lg px-2 py-2 text-base md:text-sm"
             />
             <button 
                 onClick={handleSearch} 
-                className="bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 px-4"
+                className="bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 px-4 py-2"
             >
                 {buttonText}
             </button>
@@ -97,7 +99,7 @@ export const SearchBarAddOnPrimitive : React.FC<SearchBarAddOnPrimitiveProps> = 
 
 
 
-export const SearchBarPrimitive: React.FC<SearchBarPrimitiveProps> = ({ defaultValue = '', searchType = 'course', placeholder = 'Search...', buttonText = 'Search', size="medium"}) =>{
+export const SearchBarPrimitive: React.FC<SearchBarPrimitiveProps> = ({ defaultValue = '', searchType = 'course', placeholder = 'Search...', buttonText = 'Search', size="medium", listUnderParent = false}) =>{
     const router = useRouter(); 
     const t = useDictionary();
     const [searchValue, setSearchValue] = useState(defaultValue);
@@ -169,7 +171,8 @@ export const SearchBarPrimitive: React.FC<SearchBarPrimitiveProps> = ({ defaultV
     }; 
 
     const sizeClasses = {
-        small: 'px-2 py-1 text-sm',
+        // phones zoom into inputs under 16px, so small stays text-base until md
+        small: 'px-2 py-2 text-base md:py-1 md:text-sm',
         medium: 'px-4 py-2 text-base', // Default size
         large: 'px-6 py-3 text-lg',
     };
@@ -178,8 +181,8 @@ export const SearchBarPrimitive: React.FC<SearchBarPrimitiveProps> = ({ defaultV
     const showList = open && q.length >= 2 && loadedFor === q;
 
     return(
-        <div className="flex space-x-4 ">
-            <div className="relative">
+        <div className="flex gap-2 w-full">
+            <div className={`${listUnderParent ? "" : "relative"} flex-1 min-w-0`}>
                 <input
                 type = "text"
                 value = {searchValue}
@@ -197,7 +200,7 @@ export const SearchBarPrimitive: React.FC<SearchBarPrimitiveProps> = ({ defaultV
                 className = {`border border-gray-300 rounded-lg w-full ${sizeClasses[size]}`}
                 />
                 {showList && (
-                    <ul id={listId} role="listbox" className="absolute left-0 right-0 z-20 mt-1 min-w-[16rem] max-h-80 overflow-auto rounded-lg border border-gray-200 bg-white text-left text-black shadow-lg">
+                    <ul id={listId} role="listbox" className={`absolute left-0 right-0 z-20 mt-1 ${listUnderParent ? "top-full" : "min-w-[14rem] sm:min-w-[16rem]"} max-h-80 overflow-auto rounded-lg border border-gray-200 bg-white text-left text-black shadow-lg`}>
                         {suggestions.length === 0 && (
                             <li className="px-3 py-2 text-sm text-gray-500">{t.searchNoSuggestions}</li>
                         )}
@@ -219,8 +222,10 @@ export const SearchBarPrimitive: React.FC<SearchBarPrimitiveProps> = ({ defaultV
                     </ul>
                 )}
             </div>
-            <button onClick = {handleSearch} className={`bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 ${sizeClasses[size]}`}>
-                {buttonText}
+            <button onClick = {handleSearch} aria-label = {buttonText} className={`shrink-0 whitespace-nowrap bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 ${sizeClasses[size]}`}>
+                {/* a magnifier on phones leaves the input room to show what is typed */}
+                <span className="sm:hidden"><i className="fas fa-search" aria-hidden="true" /></span>
+                <span className="hidden sm:inline">{buttonText}</span>
             </button>
 
         </div>

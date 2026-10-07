@@ -30,7 +30,7 @@ interface CourseCardProps{
 
     return (
         <div onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)} onClick = {handleClick} className = "bg-white mx-auto p-5 mb-9 max-w-6x1 rounded-lg shadow-lg mt-5 text-xl font-bold text-center flex flex-col cursor-pointer hover:border-black hover:border-2">
+        onMouseLeave={() => setHovered(false)} onClick = {handleClick} className = "bg-white w-full p-4 my-2 rounded-lg shadow-lg text-xl font-bold text-center flex flex-col cursor-pointer hover:border-black hover:border-2">
             <h1>{course.code ? `${course.code} ` : ""}{course.name}</h1>
             {course.school ? <h1 className="text-sm"> {course.school.name}</h1> : null}
             <h1 className="text-sm"> {course.Department}</h1>

@@ -5,9 +5,7 @@ import { getServerSession } from "next-auth";
 import Review from "@/components/reviews/review";
 import ReviewCard from "@/components/reviews/reviewcard";
 import Filter from "@/components/reviews/filterDrop";
-import HomeButton from '@/components/util/homeButton'; 
-import TopSearchSection from "@/components/searchbar/topSection";
-import Login from "@/components/auth/loginformbasicgoogle01"; 
+import SiteHeader from "@/components/layout/siteHeader";
 import { notFound } from "next/navigation";
 import { parseIdParam, schoolPath } from "@/helpers/links";
 import Link from "next/link";
@@ -163,59 +161,49 @@ const ProfessorPage = async ({ params, searchParams }) => {
 
   
     return (
-      <main className=" relative flex min-h-screen flex-col items-center justify-between p-24">
-        <div className="absolute top-4 left-4">
-          <HomeButton />
-          {session ? null : <Login showLogin={true} />}
+      <>
+      <SiteHeader session={session} />
+      <main className="flex min-h-screen flex-col items-center gap-4 px-4 py-6 md:p-12 max-w-5xl mx-auto w-full">
+        <div className="text-center">
+          <h1 className="text-2xl md:text-3xl font-bold">{professor.Prefix} {professor.Firstname} {professor.Lastname}</h1>
+          <Link className="underline" href={schoolPath(professor.school)}>{professor.school.name}</Link>
         </div>
-
-        <div className="absolute top-4 right-4 flex flex-col justify-evenl"><TopSearchSection /> </div>
-          
-
-        <h1>{professor.Prefix} {professor.Firstname} {professor.Lastname}</h1>
-        <Link className="underline" href={schoolPath(professor.school)}>{professor.school.name}</Link>
-        <h2>{t.courses}</h2>
-        <ul  className="flex flex-row">
+        <h2 className="text-xl font-semibold">{t.courses}</h2>
+        <ul className="grid w-full grid-cols-1 gap-x-4 sm:grid-cols-2 lg:grid-cols-3">
           {professor.courses.map(({ course }) => (
-            <li className="px-3" key={course.id}>
+            <li key={course.id}>
               <CourseCard course={course} />
             </li>
           ))}
         </ul>
-        <div className="py-8">
-          <h1 className = "pt-5 pb-7 text-3xl text-center">{t.overallRatings}</h1>
+        <div className="w-full">
+          <h1 className="pb-4 text-2xl md:text-3xl text-center">{t.overallRatings}</h1>
           <ReviewCard review={overallReview} />
         </div>
 
         <h1>{t.filterForCourse}</h1>
         <Filter items={allCoursesWithReviews} type="course" itemId={courseId} param="courseId" />
 
-        <div className="py-5" />
+        <div className="py-3" />
 
-
-
-        
         <Review proco = { professor } session = { session } userid={userid} />
 
-        <div className="py-5" />
+        <div className="py-3" />
         
-        <h2>{t.reviews}</h2>
+        <h2 className="text-xl font-semibold">{t.reviews}</h2>
         {reviews.length === 0 ? (
           <p>{t.noReviewsYet}</p>
         ) : (
-          <ul className = "flex flex-col w-2/3  justify-center">
+          <ul className="flex flex-col w-full">
             {reviews.map(review => (
-              <li key={review.id} className="p-5">
+              <li key={review.id}>
                 <ReviewCard review={review} canReport={!!session} isOwn={userid !== null && review.userId === userid} canTranslate={canTranslate} />
               </li>
             ))}
           </ul>
         )}
-        
-          
-        
-        
       </main>
+      </>
     );
   };
   
