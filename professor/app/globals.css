@@ -2,24 +2,61 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@layer base {
+  :root { color-scheme: light; }
+  body { @apply bg-slate-50 text-slate-900 antialiased; }
+  h1, h2, h3 { text-wrap: balance; letter-spacing: -0.025em; }
+  button, input, select, textarea { font: inherit; }
+  button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+  :focus-visible { outline: 3px solid #2563eb; outline-offset: 4px; }
+  ::selection { background: #dbeafe; color: #172554; }
+  button { touch-action: manipulation; }
+  button:disabled { cursor: default; }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer components {
+  .home-shell { @apply flex min-h-screen flex-col; }
+  .home-header { @apply w-full bg-blue-700 text-white shadow-sm; }
+  .home-header-inner { @apply mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-4 px-5 py-5 md:px-10; }
+  .home-brand { @apply flex items-center gap-3; }
+  .home-button { @apply inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl; }
+  .home-header .home-button { @apply bg-white p-1; }
+  .home-header :focus-visible { outline-color: #fff; }
+  .home-header .auth-button:focus-visible { outline-offset: 4px; }
+  .home-content { @apply mx-auto flex w-full max-w-[1440px] flex-1 flex-col items-center justify-center px-5 py-16 md:px-10; }
+  .home-intro { @apply mb-9 text-center; }
+  .home-intro h1 { @apply text-2xl font-semibold md:text-3xl; }
+  .home-searches { @apply grid w-full grid-cols-1 gap-8 lg:grid-cols-3; }
+  .search-panel { @apply min-w-0; }
+  .search-panel h2 { @apply mb-4 text-center text-lg font-semibold; }
+  .home-searches .search-control-medium { @apply flex-row; }
+  .home-searches .search-control-medium button { @apply px-3 text-xs sm:text-sm; }
+  .auth-button { @apply inline-flex min-h-11 items-center justify-center gap-3 rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:border-blue-300 hover:bg-blue-50; }
+  .search-control { @apply flex w-full min-w-0 gap-2; }
+  .search-control input { @apply min-h-11 border-slate-300 bg-white text-base md:text-sm text-slate-900 placeholder:text-slate-500; }
+  .search-control button { @apply min-h-11 shrink-0 px-3 text-xs font-semibold; }
+  .search-control-medium { @apply flex-col; }
+  .search-control-medium input { @apply px-3 py-3; }
+  .search-control-medium button { @apply py-3 text-sm; }
+  .school-search { @apply flex w-full max-w-2xl flex-col items-stretch justify-center gap-3 sm:flex-row; }
+  .school-search input { @apply min-w-0 flex-1; }
+  .school-search input, .school-search select, .school-search button { @apply min-h-11 px-3 py-2 text-base md:text-sm; }
+  .result-card { @apply relative mx-auto my-3 flex w-full min-w-0 flex-col rounded-2xl border border-slate-200 bg-white p-6 pr-12 text-left transition-colors hover:border-blue-400 hover:bg-blue-50; }
+  .result-card h3 { @apply text-base font-semibold leading-relaxed; overflow-wrap: anywhere; }
+  .result-card p { @apply mt-2 text-sm font-normal text-slate-500; }
+  .result-arrow { @apply absolute right-5 top-6 text-blue-600; }
+  .review-card { @apply rounded-2xl border border-slate-200 bg-white; box-shadow: 0 4px 20px #0f172a04; }
+  .static-rating { @apply inline-flex flex-wrap items-center gap-2 text-sm text-amber-600; }
+  .rating-value { @apply text-sm font-semibold tabular-nums text-slate-800; }
+  .results-page { @apply mx-auto flex min-h-screen max-w-7xl flex-col items-center px-5 py-12 md:px-10 md:py-16; }
+  .results-searches { @apply mb-12 grid w-full grid-cols-1 gap-6 lg:grid-cols-3; }
+  .results-searches > div { @apply min-w-0 rounded-2xl border border-slate-200 bg-white p-5; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+  .text-balance { text-wrap: balance; }
 }

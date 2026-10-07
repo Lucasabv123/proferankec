@@ -20,8 +20,8 @@ const HomeButton: React.FC<HomeButtonProps> = ({size=50 , width, height, disable
 
     return (
         <div>
-            <button onClick={handleClick}>
-                <Image src = "/logo.svg" alt="Home" width={width || size} height={height || size} /> 
+            <button className="home-button" disabled={disabled} onClick={handleClick}>
+                <Image src = "/professor-rank-logo.png" alt="Home" width={width || size} height={height || size} /> 
             </button>
             
             

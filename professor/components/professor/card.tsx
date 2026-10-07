@@ -1,7 +1,4 @@
-"use client"
-
-import { useRouter } from "next/navigation"; 
-import { useState } from "react";
+import Link from "next/link";
 import { professorPath } from "@/helpers/links";
 
 type Professor = {
@@ -18,25 +15,10 @@ interface ProfessorCardProps{
 
 }
 
-const ProfessorCard : React.FC<ProfessorCardProps> = ({ professor }) => {
-  const router = useRouter();
-  const professorPageName = professorPath(professor);
-  const [hovered, setHovered] = useState(false);
-
-  const handleClick = () => {
-    router.push(professorPageName);
-  };
-
-
-  return (
-    <>
-      <div onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}onClick={handleClick} className="bg-white w-full p-4 my-2 rounded-lg shadow-lg text-xl font-bold text-center flex flex-col cursor-pointer hover:border-black hover:border-2">
-        <h1>{professor.Prefix} {professor.Firstname} {professor.Lastname}</h1>
-    </div>
-    
-    </>
-  );
-};
-
+const ProfessorCard: React.FC<ProfessorCardProps> = ({ professor }) => (
+  <Link href={professorPath(professor)} className="result-card">
+    <h3>{professor.Prefix} {professor.Firstname} {professor.Lastname}</h3>
+    <span aria-hidden="true" className="result-arrow">↗</span>
+  </Link>
+);
 export default ProfessorCard;

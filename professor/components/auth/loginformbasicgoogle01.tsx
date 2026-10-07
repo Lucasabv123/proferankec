@@ -8,7 +8,7 @@ import { format } from '@/helpers/i18n/dictionaries';
 interface LoginProps {
     showLogin: boolean;
     user?: any;
-    compact?: boolean; // smaller buttons for the page header
+    compact?: boolean;
 }
 
 
@@ -17,10 +17,10 @@ const Login : React.FC<LoginProps> = ({ showLogin, user, compact = false }) => {
   const t = useDictionary();
   if ( user && !showLogin) {
     return (
-      <div className="flex items-center gap-3">
-        <h1 className={compact ? "hidden sm:block text-sm font-semibold" : "text-lg font-semibold"}>{format(t.welcome, { name: user.name ?? "" })}</h1>
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        <p className={compact ? "hidden sm:block text-sm font-medium" : "text-sm font-medium"}>{format(t.welcome, { name: user.name ?? "" })}</p>
         <button
-          className="whitespace-nowrap px-4 py-2 bg-white text-blue-700 rounded-lg shadow hover:bg-gray-100 transition-colors duration-300"
+          className="auth-button"
           onClick={() => signOut({ callbackUrl: '/' })}
         >
           {t.signOut}
@@ -30,16 +30,11 @@ const Login : React.FC<LoginProps> = ({ showLogin, user, compact = false }) => {
   } else if (showLogin) {
     return (
       <button
-        className={`flex items-center whitespace-nowrap ${compact ? "px-3 py-2 text-sm" : "px-6 py-3"} bg-red-600 text-white rounded-lg shadow-lg hover:bg-red-700 transition-colors duration-300`}
+        className="auth-button"
         onClick={() => signIn('google')}
       >
-        <FaGoogle className="mr-2" />
-        {compact ? (
-          <>
-            <span className="sm:hidden">{t.signIn}</span>
-            <span className="hidden sm:inline">{t.signInWithGoogle}</span>
-          </>
-        ) : t.signInWithGoogle}
+        <FaGoogle aria-hidden="true" className="text-blue-600" />
+        {compact ? <><span className="sm:hidden">{t.signIn}</span><span className="hidden sm:inline">{t.signInWithGoogle}</span></> : t.signInWithGoogle}
       </button>
     );
   } else {

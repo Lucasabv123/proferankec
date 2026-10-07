@@ -10,7 +10,7 @@ export default async function Search() {
   return (
     <>
     <SiteHeader session={session} showSearch={false} />
-    <main className="flex min-h-screen flex-col items-center px-4 py-6 md:p-12">
+    <main className="results-page">
       <h1 className="text-2xl md:text-3xl font-bold mb-8 text-center">
         {t.homeHeading}
       </h1>

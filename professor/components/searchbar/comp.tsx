@@ -17,7 +17,6 @@ interface SearchBarPrimitiveProps {
     placeholder?: string;
     buttonText?: string;
     size?: "small" | "medium" | "large";
-    // place suggestions under the nearest positioned parent instead of the input, so a narrow input still gets a wide list
     listUnderParent?: boolean;
 }
 
@@ -68,11 +67,12 @@ export const SearchBarAddOnPrimitive : React.FC<SearchBarAddOnPrimitiveProps> = 
     };
 
     return (
-        <div className="flex flex-wrap justify-center items-stretch gap-2 w-full max-w-xl">
+        <div className="school-search">
             <select 
+                aria-label={t.searchCategory}
                 value={searchType} 
                 onChange={handleSearchTypeChange} 
-                className="border border-gray-300 rounded-lg px-2 py-2 text-base md:text-sm"
+                className="border border-gray-300 rounded-lg px-2 py-1 text-sm"
             >
                 {searchTypeOptions.map(type => (
                     <option key={type} value={type}>{typeLabels[type] ?? type}</option>
@@ -80,15 +80,16 @@ export const SearchBarAddOnPrimitive : React.FC<SearchBarAddOnPrimitiveProps> = 
             </select>
             <input
                 type="text"
+                aria-label={placeholder}
                 value={searchValue}
                 onChange={handleChange}
                 onKeyPress={handleKeyPress}
                 placeholder={placeholder}
-                className="flex-1 min-w-0 border border-gray-300 rounded-lg px-2 py-2 text-base md:text-sm"
+                className="border border-gray-300 rounded-lg px-2 py-1 text-sm"
             />
             <button 
                 onClick={handleSearch} 
-                className="bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 px-4 py-2"
+                className="bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 px-4"
             >
                 {buttonText}
             </button>
@@ -163,6 +164,7 @@ export const SearchBarPrimitive: React.FC<SearchBarPrimitiveProps> = ({ defaultV
             e.preventDefault();
             setActive((i) => (i <= 0 ? suggestions.length - 1 : i - 1));
         } else if (e.key === "Escape") {
+            e.preventDefault();
             setOpen(false);
         } else if (e.key === "Enter") {
             if (showing && active >= 0) return goTo(suggestions[active]);
@@ -171,8 +173,7 @@ export const SearchBarPrimitive: React.FC<SearchBarPrimitiveProps> = ({ defaultV
     }; 
 
     const sizeClasses = {
-        // phones zoom into inputs under 16px, so small stays text-base until md
-        small: 'px-2 py-2 text-base md:py-1 md:text-sm',
+        small: 'px-2 py-1 text-sm',
         medium: 'px-4 py-2 text-base', // Default size
         large: 'px-6 py-3 text-lg',
     };
@@ -181,10 +182,11 @@ export const SearchBarPrimitive: React.FC<SearchBarPrimitiveProps> = ({ defaultV
     const showList = open && q.length >= 2 && loadedFor === q;
 
     return(
-        <div className="flex gap-2 w-full">
-            <div className={`${listUnderParent ? "" : "relative"} flex-1 min-w-0`}>
+        <div className={`search-control ${size === "medium" ? "search-control-medium" : ""}`}>
+            <div className={`${listUnderParent ? "" : "relative"} min-w-0 flex-1`}>
                 <input
-                type = "text"
+                type = "search"
+                aria-label = {buttonText}
                 value = {searchValue}
                 onChange = {handleChange}
                 onKeyDown = {handleKeyDown}
@@ -200,7 +202,7 @@ export const SearchBarPrimitive: React.FC<SearchBarPrimitiveProps> = ({ defaultV
                 className = {`border border-gray-300 rounded-lg w-full ${sizeClasses[size]}`}
                 />
                 {showList && (
-                    <ul id={listId} role="listbox" className={`absolute left-0 right-0 z-20 mt-1 ${listUnderParent ? "top-full" : "min-w-[14rem] sm:min-w-[16rem]"} max-h-80 overflow-auto rounded-lg border border-gray-200 bg-white text-left text-black shadow-lg`}>
+                    <ul id={listId} role="listbox" className={`absolute left-0 right-0 z-20 mt-1 ${listUnderParent ? "top-full" : ""} max-h-80 overflow-auto rounded-lg border border-gray-200 bg-white text-left text-black shadow-lg`}>
                         {suggestions.length === 0 && (
                             <li className="px-3 py-2 text-sm text-gray-500">{t.searchNoSuggestions}</li>
                         )}
@@ -213,7 +215,7 @@ export const SearchBarPrimitive: React.FC<SearchBarPrimitiveProps> = ({ defaultV
                             // mousedown fires before the input's blur, which would close the list first
                             onMouseDown = {(e) => { e.preventDefault(); goTo(s); }}
                             onMouseEnter = {() => setActive(i)}
-                            className = {`cursor-pointer px-3 py-2 ${i === active ? 'bg-blue-50' : ''}`}
+                            className = {`cursor-pointer px-3 py-3 ${i === active ? 'bg-blue-50' : ''}`}
                             >
                                 <div className="text-sm font-medium">{s.label}</div>
                                 <div className="text-xs text-gray-500">{s.detail}</div>
@@ -222,10 +224,8 @@ export const SearchBarPrimitive: React.FC<SearchBarPrimitiveProps> = ({ defaultV
                     </ul>
                 )}
             </div>
-            <button onClick = {handleSearch} aria-label = {buttonText} className={`shrink-0 whitespace-nowrap bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 ${sizeClasses[size]}`}>
-                {/* a magnifier on phones leaves the input room to show what is typed */}
-                <span className="sm:hidden"><i className="fas fa-search" aria-hidden="true" /></span>
-                <span className="hidden sm:inline">{buttonText}</span>
+            <button onClick = {handleSearch} aria-label={buttonText} className={`bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 ${sizeClasses[size]}`}>
+                {size === "small" ? <><span className="sm:hidden"><i className="fas fa-search" aria-hidden="true" /></span><span className="hidden sm:inline">{buttonText}</span></> : buttonText}
             </button>
 
         </div>

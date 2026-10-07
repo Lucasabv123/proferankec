@@ -21,7 +21,7 @@ const HeaderSearch = ({ defaultType = "professor" }: { defaultType?: SearchType 
             <select
                 value={type}
                 onChange={(e) => setType(e.target.value as SearchType)}
-                aria-label={t.searchButton}
+                aria-label={t.searchCategory}
                 className="shrink-0 max-w-[8.5rem] rounded-lg border border-gray-300 bg-white px-2 py-2 text-base md:py-1 md:text-sm"
             >
                 <option value="professor">{t.professors}</option>

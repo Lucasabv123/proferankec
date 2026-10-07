@@ -29,12 +29,12 @@ const SearchInner: React.FC = () => {
   return (
     <>
       {/* Make search bars stack vertically on mobile and horizontally on larger screens */}
-      <div className="flex flex-col space-y-8 md:flex-row md:space-y-0 md:space-x-8 mb-8 w-full justify-center">
-        <div className="flex flex-col items-center w-full md:w-auto">
+      <div className="results-searches">
+        <div className="flex flex-col items-center">
           <h2 className="text-lg md:text-xl font-semibold mb-4">{t.professorsSearch}</h2>
           <SearchBar type="professor" size="small" />
         </div>
-        <div className="flex flex-col items-center w-full md:w-auto">
+        <div className="flex flex-col items-center">
           <h2 className="text-lg md:text-xl font-semibold mb-4">{t.coursesSearch}</h2>
           <SearchBar
             type="course"
@@ -43,7 +43,7 @@ const SearchInner: React.FC = () => {
             placeholder={searchQ}
           />
         </div>
-        <div className="flex flex-col items-center w-full md:w-auto">
+        <div className="flex flex-col items-center">
           <h2 className="text-lg md:text-xl font-semibold mb-4">{t.schoolSearch}</h2>
           <SearchBar type="school" size="small" />
         </div>
