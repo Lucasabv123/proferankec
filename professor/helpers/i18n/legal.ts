@@ -11,7 +11,7 @@ type LegalText = { title: string; intro: string; sections: Section[] };
 export const privacy: Record<Locale, LegalText> = {
     en: {
         title: "Privacy Policy",
-        intro: "Professor Rank is a student project that lets students at USFQ and UDLA review their professors and courses. This page explains what we store and why. It is written in plain language and is not legal advice.",
+        intro: "Profe Rank is a student project that lets students at USFQ and UDLA review their professors and courses. This page explains what we store and why. It is written in plain language and is not legal advice.",
         sections: [
             {
                 heading: "What we store",
@@ -45,7 +45,7 @@ export const privacy: Record<Locale, LegalText> = {
     },
     es: {
         title: "Política de privacidad",
-        intro: "Professor Rank es un proyecto estudiantil que permite a estudiantes de la USFQ y la UDLA calificar a sus profesores y materias. Esta página explica qué datos guardamos y por qué. Está escrita en lenguaje sencillo y no es asesoría legal.",
+        intro: "Profe Rank es un proyecto estudiantil que permite a estudiantes de la USFQ y la UDLA calificar a sus profesores y materias. Esta página explica qué datos guardamos y por qué. Está escrita en lenguaje sencillo y no es asesoría legal.",
         sections: [
             {
                 heading: "Qué datos guardamos",
@@ -82,7 +82,7 @@ export const privacy: Record<Locale, LegalText> = {
 export const terms: Record<Locale, LegalText> = {
     en: {
         title: "Terms of Service",
-        intro: "Professor Rank is a free student project, not affiliated with USFQ or UDLA. By using the site you agree to these terms. They are written in plain language and are not legal advice.",
+        intro: "Profe Rank is a free student project, not affiliated with USFQ or UDLA. By using the site you agree to these terms. They are written in plain language and are not legal advice.",
         sections: [
             {
                 heading: "Your reviews",
@@ -100,7 +100,7 @@ export const terms: Record<Locale, LegalText> = {
             {
                 heading: "No guarantees",
                 paragraphs: [
-                    "Reviews are opinions of students, not of Professor Rank or the universities. Course and professor data comes from public schedules and may be out of date or wrong. The site is provided as is, and it may change or go offline at any time.",
+                    "Reviews are opinions of students, not of Profe Rank or the universities. Course and professor data comes from public schedules and may be out of date or wrong. The site is provided as is, and it may change or go offline at any time.",
                 ],
             },
             {
@@ -113,7 +113,7 @@ export const terms: Record<Locale, LegalText> = {
     },
     es: {
         title: "Términos de servicio",
-        intro: "Professor Rank es un proyecto estudiantil gratuito, sin relación oficial con la USFQ ni la UDLA. Al usar el sitio aceptas estos términos. Están escritos en lenguaje sencillo y no son asesoría legal.",
+        intro: "Profe Rank es un proyecto estudiantil gratuito, sin relación oficial con la USFQ ni la UDLA. Al usar el sitio aceptas estos términos. Están escritos en lenguaje sencillo y no son asesoría legal.",
         sections: [
             {
                 heading: "Tus reseñas",
@@ -131,7 +131,7 @@ export const terms: Record<Locale, LegalText> = {
             {
                 heading: "Sin garantías",
                 paragraphs: [
-                    "Las reseñas son opiniones de estudiantes, no de Professor Rank ni de las universidades. Los datos de materias y profesores vienen de horarios públicos y pueden estar desactualizados o tener errores. El sitio se ofrece tal como está y puede cambiar o dejar de funcionar en cualquier momento.",
+                    "Las reseñas son opiniones de estudiantes, no de Profe Rank ni de las universidades. Los datos de materias y profesores vienen de horarios públicos y pueden estar desactualizados o tener errores. El sitio se ofrece tal como está y puede cambiar o dejar de funcionar en cualquier momento.",
                 ],
             },
             {

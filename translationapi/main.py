@@ -1,4 +1,4 @@
-"""English <-> Spanish translation service for Professor Rank review comments.
+"""English <-> Spanish translation service for Profe Rank review comments.
 
 The Next.js app calls POST /translate from the server; browsers never call this directly.
 Models are the Helsinki-NLP Marian models, baked into the Docker image at build time.
@@ -51,7 +51,7 @@ def check_api_key(x_api_key: str = Header(default="")):
         raise HTTPException(status_code=401, detail="Invalid API key")
 
 
-app = FastAPI(title="Professor Rank translation API")
+app = FastAPI(title="Profe Rank translation API")
 
 
 @app.get("/health")

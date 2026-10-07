@@ -1,6 +1,6 @@
-# ProfessorRank
+# Profe Rank
 
-ProfessorRank is a web app that allows students to search for professors based on rankings, the classes they teach, and the universities they are affiliated with. Students can also review professors based on several criteria, providing valuable feedback for others.
+Profe Rank is a web app that allows students to search for professors based on rankings, the classes they teach, and the universities they are affiliated with. Students can also review professors based on several criteria, providing valuable feedback for others.
 
 ## Features
 
