@@ -4,7 +4,7 @@ import SearchInner from "@/components/searchPages/course";
 export default function Search() {
   const t = getDictionary();
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-6 md:p-24">
+    <main className="results-page">
       <h1 className="text-2xl md:text-3xl font-bold mb-8 text-center">
         {t.homeHeading}
       </h1>

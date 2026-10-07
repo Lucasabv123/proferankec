@@ -42,43 +42,43 @@ const StaticStarRating: React.FC<StaticStarRatingProps> = ({ rating }) => {
   const RatingComponent = Rating as any;
 
   return (
-    <RatingComponent
+    <span className="static-rating"><span className="sr-only">{rating.toFixed(1)} / 5</span><span aria-hidden="true"><RatingComponent
       initialRating={rating}
       emptySymbol="far fa-star"
       fullSymbol="fas fa-star"
       fractions={2}
       readonly={true}
-    />
+    /></span><span className="rating-value" aria-hidden="true">{rating.toFixed(1)}</span></span>
   )
 }
 
 const ReviewCard: React.FC<ReviewCardProps> = ({ review, type = "professor", canReport = false, isOwn = false, canTranslate = false }) => {
   const t = useDictionary();
   return (
-    <div className="bg-gray-200 shadow-lg rounded-lg p-6 mb-6 w-full max-w-4xl mx-auto">
+    <div className="review-card p-5 sm:p-6 mb-6 w-full max-w-4xl mx-auto">
       <h3 className="text-xl md:text-2xl font-bold mb-4 text-center">
         {type === "professor" ? review.course?.name : `${review.professor?.Prefix} ${review.professor?.Firstname} ${review.professor?.Lastname}`}
       </h3>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
         <div>
-          <h1 className="text-lg font-semibold">{t.overallRating}</h1>
+          <h4 className="text-sm font-medium text-slate-600 mb-2">{t.overallRating}</h4>
           <StaticStarRating rating={review.overallRating} />
         </div>
         <div>
-          <h1 className="text-lg font-semibold">{t.difficulty}</h1>
+          <h4 className="text-sm font-medium text-slate-600 mb-2">{t.difficulty}</h4>
           <StaticStarRating rating={review.difficulty} />
         </div>
         <div>
-          <h1 className="text-lg font-semibold">{t.workload}</h1>
+          <h4 className="text-sm font-medium text-slate-600 mb-2">{t.workload}</h4>
           <StaticStarRating rating={review.workload} />
         </div>
         <div>
-          <h1 className="text-lg font-semibold">{t.lectureQuality}</h1>
+          <h4 className="text-sm font-medium text-slate-600 mb-2">{t.lectureQuality}</h4>
           <StaticStarRating rating={review.lecture} />
         </div>
         <div>
-          <h1 className="text-lg font-semibold">{t.learningValue}</h1>
+          <h4 className="text-sm font-medium text-slate-600 mb-2">{t.learningValue}</h4>
           <StaticStarRating rating={review.learning} />
         </div>
       </div>

@@ -48,13 +48,13 @@ async function RankingsPage({ params }) {
     const [professors, courses] = await Promise.all([getTopProfessors(school.id), getTopCourses(school.id)]);
 
     return (
-        <main className="relative flex min-h-screen flex-col items-center gap-10 p-24">
-            <div className="absolute top-4 left-4">
+        <main className="detail-page">
+            <div className="detail-home">
                 <HomeButton />
             </div>
-            <div className="md:absolute md:top-4 md:right-4 flex flex-col justify-evenly"><TopSearchSection /></div>
+            <div className="detail-search"><TopSearchSection /></div>
 
-            <div className="text-center md:pt-16">
+            <div className="text-center">
                 <h1 className="text-4xl font-semibold pt-3">{format(t.rankingsTitle, { school: school.name })}</h1>
                 <Link className="underline" href={schoolPath(school)}>{t.backToSchool}</Link>
             </div>

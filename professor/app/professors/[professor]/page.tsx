@@ -163,19 +163,19 @@ const ProfessorPage = async ({ params, searchParams }) => {
 
   
     return (
-      <main className=" relative flex min-h-screen flex-col items-center justify-between p-24">
-        <div className="absolute top-4 left-4">
+      <main className="detail-page">
+        <div className="detail-home">
           <HomeButton />
           {session ? null : <Login showLogin={true} />}
         </div>
 
-        <div className="absolute top-4 right-4 flex flex-col justify-evenl"><TopSearchSection /> </div>
+        <div className="detail-search"><TopSearchSection /> </div>
           
 
         <h1>{professor.Prefix} {professor.Firstname} {professor.Lastname}</h1>
         <Link className="underline" href={schoolPath(professor.school)}>{professor.school.name}</Link>
         <h2>{t.courses}</h2>
-        <ul  className="flex flex-row">
+        <ul  className="related-cards">
           {professor.courses.map(({ course }) => (
             <li className="px-3" key={course.id}>
               <CourseCard course={course} />
@@ -203,9 +203,9 @@ const ProfessorPage = async ({ params, searchParams }) => {
         {reviews.length === 0 ? (
           <p>{t.noReviewsYet}</p>
         ) : (
-          <ul className = "flex flex-col w-2/3  justify-center">
+          <ul className="review-list">
             {reviews.map(review => (
-              <li key={review.id} className="p-5">
+              <li key={review.id}>
                 <ReviewCard review={review} canReport={!!session} isOwn={userid !== null && review.userId === userid} canTranslate={canTranslate} />
               </li>
             ))}

@@ -199,13 +199,13 @@ const CoursePage = async ({ params, searchParams }) => {
   const canTranslate = isTranslationEnabled();
 
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-between p-24">
-      <div className = "absolute top-4 left-4">
+    <main className="detail-page">
+      <div className = "detail-home">
         <HomeButton /> 
         {session ? null : <Login showLogin ={true} />}
       </div>
 
-      <div className="absolute top-4 right-4 flex flex-col justify-evenly"><TopSearchSection /> </div>
+      <div className="detail-search"><TopSearchSection /> </div>
 
       <h1>{course.code ? `${course.code} ` : ""}{course.name} - <Link className="underline" href={schoolPath(course.school)}>{course.school.name}</Link> - {course.Department}</h1>
       <h2>{t.professors}</h2>

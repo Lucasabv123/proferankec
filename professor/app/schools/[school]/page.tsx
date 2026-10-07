@@ -49,13 +49,13 @@ async function SchoolPage( {params, searchParams }) {
     
      
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24"> 
-        <div className = "absolute top-4 left-4">
+    <main className="detail-page">
+        <div className = "detail-home">
             <HomeButton /> 
         </div>
 
 
-        <div className="md:absolute md:top-4 md:right-4 flex flex-col justify-evenly"><TopSearchSection /> </div>
+        <div className="detail-search"><TopSearchSection /> </div>
         <div>
             <h1 className="text-4xl font-semibold mb-4 pt-3">{school.name}</h1>
             <Link className="underline" href={`${schoolPath(school)}/rankings`}>{t.seeRankings}</Link>

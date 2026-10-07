@@ -28,7 +28,7 @@ const SearchInner : React.FC = () => {
     
     return(
     <>
-        <div className ="flex space-x-8"> 
+        <div className="results-searches">
             <div className="flex flex-col items-center">
             <h2 className="text-xl font-semibold mb-4">{t.professorsSearch}</h2>
             <SearchBar type="professor" size ="small"/>
