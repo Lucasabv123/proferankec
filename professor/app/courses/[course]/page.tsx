@@ -234,7 +234,7 @@ const CoursePage = async ({ params, searchParams }) => {
         <ul>
           {reviews.map((review) => (
             <li key={review.id}>
-              <ReviewCard review={review} type="course" canReport={!!session} />
+              <ReviewCard review={review} type="course" canReport={!!session} isOwn={userid !== null && review.userId === userid} />
             </li>
           ))}
         </ul>

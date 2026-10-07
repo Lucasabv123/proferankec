@@ -6,22 +6,10 @@ import prisma from '@/helpers/prisma/prisma';
 import { getServerSession } from 'next-auth';
 import authOptions from '@/helpers/auth/options';
 import { getDictionary } from '@/helpers/i18n/locale';
-import { format } from '@/helpers/i18n/dictionaries';
-
-const SCORE_FIELDS = ['overallRating', 'difficulty', 'workload', 'lecture', 'learning'] as const;
-const MAX_COMMENT_LENGTH = 500;
+import { isValidId, validateReviewContent } from '@/helpers/reviews/validate';
 
 function badRequest(error: string, status = 400) {
   return NextResponse.json({ error }, { status });
-}
-
-// scores come from half-star inputs, so they must be 0.5 to 5 in steps of 0.5
-function isValidScore(value: unknown): value is number {
-  return typeof value === 'number' && value >= 0.5 && value <= 5 && Number.isInteger(value * 2);
-}
-
-function isValidId(value: unknown): value is number {
-  return typeof value === 'number' && Number.isInteger(value) && value > 0;
 }
 
 export async function POST(req : NextRequest) {
@@ -46,23 +34,15 @@ export async function POST(req : NextRequest) {
     } catch {
       return badRequest(t.errBadBody);
     }
-    const { professorId, courseId, comment } = body ?? {};
+    const { professorId, courseId } = body ?? {};
 
     if (!isValidId(professorId) || !isValidId(courseId)) {
       return badRequest(t.errChoose);
     }
 
-    for (const field of SCORE_FIELDS) {
-      if (!isValidScore(body[field])) {
-        return badRequest(t.errScores);
-      }
-    }
-
-    if (typeof comment !== 'string' || comment.trim() === '') {
-      return badRequest(t.errEmptyComment);
-    }
-    if (comment.length > MAX_COMMENT_LENGTH) {
-      return badRequest(format(t.errLongComment, { max: MAX_COMMENT_LENGTH }));
+    const checked = validateReviewContent(body, t);
+    if ('error' in checked) {
+      return badRequest(checked.error);
     }
 
     // the professor must actually teach the course being reviewed
@@ -80,17 +60,7 @@ export async function POST(req : NextRequest) {
       return badRequest(t.errDuplicate, 409);
     }
 
-    const review = {
-      professorId,
-      courseId,
-      userId,
-      overallRating: body.overallRating,
-      difficulty: body.difficulty,
-      workload: body.workload,
-      lecture: body.lecture,
-      learning: body.learning,
-      comment: comment.trim()
-    };
+    const review = { professorId, courseId, userId, ...checked.content };
 
     const result = await postReview(review);
     if (!result) {

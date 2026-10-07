@@ -2,6 +2,7 @@
 import Rating from "react-rating";
 import { useDictionary } from "@/components/i18n/provider";
 import ReportButton from "./reportButton";
+import OwnReviewActions from "./ownReviewActions";
 
 type Review = {
   id?: number,
@@ -28,6 +29,7 @@ interface ReviewCardProps {
   review: Review; 
   type?: string;
   canReport?: boolean;
+  isOwn?: boolean; // the signed-in user wrote this review, so they can edit or delete it
 }
 
 interface StaticStarRatingProps {
@@ -48,7 +50,7 @@ const StaticStarRating: React.FC<StaticStarRatingProps> = ({ rating }) => {
   )
 }
 
-const ReviewCard: React.FC<ReviewCardProps> = ({ review, type = "professor", canReport = false }) => {
+const ReviewCard: React.FC<ReviewCardProps> = ({ review, type = "professor", canReport = false, isOwn = false }) => {
   const t = useDictionary();
   return (
     <div className="bg-gray-200 shadow-lg rounded-lg p-6 mb-6 w-full max-w-4xl mx-auto">
@@ -80,7 +82,21 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, type = "professor", can
       </div>
 
       <p className="text-gray-700 text-sm md:text-base">{review.comment}</p>
-      {canReport && review.id ? (
+      {review.id && isOwn ? (
+        <div className="mt-3 flex justify-end items-center gap-3">
+          <OwnReviewActions
+            reviewId={review.id}
+            initial={{
+              overallRating: review.overallRating,
+              difficulty: review.difficulty,
+              workload: review.workload,
+              lecture: review.lecture,
+              learning: review.learning,
+              comment: review.comment ?? "",
+            }}
+          />
+        </div>
+      ) : canReport && review.id ? (
         <div className="mt-3 text-right">
           <ReportButton reviewId={review.id} />
         </div>

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Dialog, DialogPanel, DialogTitle, Combobox, ComboboxButton, ComboboxOptions, ComboboxOption, ComboboxInput, Field, Label, Textarea } from "@headlessui/react";
-import StarRating from "./rating";
+import { Dialog, DialogPanel, DialogTitle, Combobox, ComboboxButton, ComboboxOptions, ComboboxOption, ComboboxInput } from "@headlessui/react";
+import ReviewFields, { EMPTY_DRAFT, ReviewDraft } from "./reviewFields";
 import { FiChevronDown } from 'react-icons/fi';
 import { useRouter } from "next/navigation";
 import { useDictionary } from "@/components/i18n/provider";
@@ -125,13 +125,8 @@ const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "profe
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
-  const [rating, setRating] = useState(0);
-  const [difficulty, setDifficulty] = useState(0);
-  const [workload, setWorkload] = useState(0);
-  const [lecture, setLecture] = useState(0);
-  const [learning, setLearning] = useState(0);
+  const [draft, setDraft] = useState<ReviewDraft>(EMPTY_DRAFT);
   const [other, setOther] = useState(others[0]); // Default to the first item initially
-  const [comment, setComment] = useState("");
 
 
   const handleSubmit = async (e : any) => {
@@ -158,12 +153,7 @@ const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "profe
     const review = {
       professorId: professorId,
       courseId: courseId,
-      overallRating: rating,
-      difficulty,
-      workload,
-      lecture,
-      learning,
-      comment
+      ...draft
     };
 
 
@@ -180,12 +170,7 @@ const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "profe
       router.refresh(); 
 
       setIsOpen(false);
-      setRating(0);
-      setDifficulty(0);
-      setWorkload(0);
-      setLecture(0);
-      setLearning(0);
-      setComment("");
+      setDraft(EMPTY_DRAFT);
     } else {
       const data = await res.json().catch(() => null);
       alert(data?.error ?? t.reviewFailed);
@@ -219,44 +204,8 @@ const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "profe
               <ComboBox options={others} setOption={setOther} type = {type} />
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-              <div>
-                <h1 className="text-gray-700 font-semibold mb-2">{t.difficulty}</h1>
-                <StarRating rating={difficulty} onRatingChange={setDifficulty} />
-              </div>
-  
-              <div>
-                <h1 className="text-gray-700 font-semibold mb-2">{t.workload}</h1>
-                <StarRating rating={workload} onRatingChange={setWorkload} />
-              </div>
-  
-              <div>
-                <h1 className="text-gray-700 font-semibold mb-2">{t.lectureQuality}</h1>
-                <StarRating rating={lecture} onRatingChange={setLecture} />
-              </div>
-  
-              <div>
-                <h1 className="text-gray-700 font-semibold mb-2">{t.learningValue}</h1>
-                <StarRating rating={learning} onRatingChange={setLearning} />
-              </div>
-  
-              <div className="sm:col-span-2">
-                <h1 className="text-gray-700 font-semibold mb-2">{t.overallRating}</h1>
-                <StarRating rating={rating} onRatingChange={setRating} />
-              </div>
-            </div>
-  
-            <div className="mb-6">
-              <Field>
-                <Label className="block text-gray-700 font-semibold mb-2">{t.comment}</Label>
-                <Textarea 
-                  value={comment} 
-                  onChange={(e) => setComment(e.target.value)} 
-                  className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </Field>
-            </div>
-  
+            <ReviewFields value={draft} onChange={setDraft} />
+
             <button 
               type="submit" 
               className="bg-blue-500 text-white px-4 py-2 rounded shadow-lg hover:bg-blue-600 transition duration-200 ease-in-out w-full"

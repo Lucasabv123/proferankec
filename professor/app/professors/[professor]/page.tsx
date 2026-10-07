@@ -204,7 +204,7 @@ const ProfessorPage = async ({ params, searchParams }) => {
           <ul className = "flex flex-col w-2/3  justify-center">
             {reviews.map(review => (
               <li key={review.id} className="p-5">
-                <ReviewCard review={review} canReport={!!session} />
+                <ReviewCard review={review} canReport={!!session} isOwn={userid !== null && review.userId === userid} />
               </li>
             ))}
           </ul>
