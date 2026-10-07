@@ -6,14 +6,10 @@ import CourseCard from "@/components/course/card";
 import TopSearchSection from "@/components/searchbar/topSection";
 import HomeButton from "@/components/util/homeButton";
 import { getDictionary } from "@/helpers/i18n/locale";
+import getSchool from "@/helpers/school/getschool";
+import { notFound } from "next/navigation";
 
 
-type Course = {
-    name: string; 
-    School: string;
-    description: string;
-    Department: string; 
-}
 type Professor = {
     id: number; 
     Prefix?: string; 
@@ -23,15 +19,15 @@ type Professor = {
 }
 
 
-async function getSearch(school : string, type? : string, search? : string){
+async function getSearch(schoolId : number, type? : string, search? : string){
     if(!type || !search){
         return;
     }
     let data = []; 
     if(type === "professor"){
-        data = await getProfessors(school, search);
+        data = await getProfessors(schoolId, search);
     }else if(type === "course"){
-        data = await getCourses(school, search);
+        data = await getCourses(schoolId, search);
     }else{
         return; 
     }
@@ -41,16 +37,13 @@ async function getSearch(school : string, type? : string, search? : string){
 async function SchoolPage( {params, searchParams }) {
 
     const t = getDictionary();
-    const school = decodeURIComponent(params.school);  
+    const school = await getSchool(params.school);
+    if (!school) {
+        notFound();
+    }
     const search = searchParams?.q; 
     const type = searchParams?.type;
-    const searchData: any = await getSearch(school, type, search); 
-    // if the search data is a course we need to add the school to the course object
-    if(searchData && searchData[0] && searchData[0].description){
-        searchData.forEach((course : Course) => {
-            course.School = school;
-        })
-    }
+    const searchData: any = await getSearch(school.id, type, search); 
     
      
   return (
@@ -62,22 +55,22 @@ async function SchoolPage( {params, searchParams }) {
 
         <div className="md:absolute md:top-4 md:right-4 flex flex-col justify-evenly"><TopSearchSection /> </div>
         <div>
-            <h1 className="text-4xl font-semibold mb-4 pt-3">{school}</h1>
+            <h1 className="text-4xl font-semibold mb-4 pt-3">{school.name}</h1>
         </div>
         <SearchBarAddOnPrimitive placeholder={t.schoolSearchPlaceholder} buttonText={t.searchButton} />
 
         {searchData == null ? (<p>{t.couldNotFind}</p>) : (
             type === "professor" ? (
                 <div className="flex flex-wrap justify-between space-x-3">
-                    {searchData.map((professor : Professor, index) => (
-                        <ProfessorCard key={index} professor={professor} />
+                    {searchData.map((professor : Professor) => (
+                        <ProfessorCard key={professor.id} professor={professor} />
                     ))}
                 </div>
             ) : (
                 <div className="flex flex-wrap justify-between space-x-3">
-                    {searchData.map((course: Course, index) => (
-                        <div>
-                            <CourseCard key={index} course={course} />
+                    {searchData.map((course) => (
+                        <div key={course.id}>
+                            <CourseCard course={course} />
                         </div>
                     ))}
                 </div>

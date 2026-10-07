@@ -17,13 +17,13 @@ export function professorPath(professor: { id: number; Prefix?: string | null; F
     return `/professors/${professor.id}${slug ? `-${slug}` : ""}`;
 }
 
-export function coursePath(course: { id: number; name?: string; School?: string }): string {
-    const slug = slugify(course.name, course.School);
+export function coursePath(course: { id: number; name?: string; code?: string | null }): string {
+    const slug = slugify(course.code, course.name);
     return `/courses/${course.id}${slug ? `-${slug}` : ""}`;
 }
 
-export function schoolPath(school: string): string {
-    return `/schools/${encodeURIComponent(school)}`;
+export function schoolPath(school: { key: string }): string {
+    return `/schools/${encodeURIComponent(school.key)}`;
 }
 
 // returns the id from "12" or "12-jane-doe", or null for the old name-based links

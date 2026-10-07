@@ -9,7 +9,8 @@ import HomeButton from '@/components/util/homeButton';
 import TopSearchSection from "@/components/searchbar/topSection";
 import Login from "@/components/auth/loginformbasicgoogle01"; 
 import { notFound } from "next/navigation";
-import { parseIdParam } from "@/helpers/links";
+import { parseIdParam, schoolPath } from "@/helpers/links";
+import Link from "next/link";
 import { getDictionary } from "@/helpers/i18n/locale";
 
 
@@ -118,9 +119,10 @@ async function getProfessorData(professorParam) {
         Lastname: lastname
       },
       include: {
+        school: true,
         courses: {
           include: {
-            course: true
+            course: { include: { school: true } }
           }
         }
       }
@@ -169,6 +171,7 @@ const ProfessorPage = async ({ params, searchParams }) => {
           
 
         <h1>{professor.Prefix} {professor.Firstname} {professor.Lastname}</h1>
+        <Link className="underline" href={schoolPath(professor.school)}>{professor.school.name}</Link>
         <h2>{t.courses}</h2>
         <ul  className="flex flex-row">
           {professor.courses.map(({ course }) => (

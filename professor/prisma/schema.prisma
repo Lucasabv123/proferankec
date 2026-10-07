@@ -56,31 +56,49 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+// a university; Course.code and Professor.externalKey are unique within one school
+model School {
+  id         Int         @id @default(autoincrement())
+  key        String      @unique // short name used in links and imports, e.g. "usfq"
+  name       String
+  courses    Course[]
+  professors Professor[]
+}
+
 model Course {
   id          Int               @id @default(autoincrement())
+  code        String? // the school's catalog code, e.g. "ART 1101"
   name        String
-  description String
-  School      String
+  description String            @default("")
   Department  String
+  schoolId    Int
+  school      School            @relation(fields: [schoolId], references: [id])
   professors  CourseProfessor[] // Establish many-to-many relationship with Professor
   Review      Review[]
 
-  //@@unique([name])
+  @@unique([schoolId, code]) // lets imports update a course instead of duplicating it
 }
 
 model Professor {
-  id        Int               @id @default(autoincrement())
-  Firstname String
-  Lastname  String
-  Prefix    String?
-  Verified  Boolean           @default(false)
-  courses   CourseProfessor[] // Establish many-to-many relationship with Course
-  Review    Review[]
+  id          Int               @id @default(autoincrement())
+  Firstname   String
+  Lastname    String
+  Prefix      String?
+  displayName String? // full name as the school lists it, e.g. "Idrovo Pérez, Gustavo"
+  externalKey String? // the school's id for this professor, or their normalized name
+  Verified    Boolean           @default(false)
+  schoolId    Int
+  school      School            @relation(fields: [schoolId], references: [id])
+  courses     CourseProfessor[] // Establish many-to-many relationship with Course
+  Review      Review[]
+
+  @@unique([schoolId, externalKey]) // lets imports update a professor instead of duplicating them
 }
 
 model CourseProfessor {
   courseId    Int
   professorId Int
+  term        String? // term of the last import that listed this pairing, e.g. "202610"
   course      Course    @relation(fields: [courseId], references: [id])
   professor   Professor @relation(fields: [professorId], references: [id])
 
