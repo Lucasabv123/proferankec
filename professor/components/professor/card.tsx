@@ -1,3 +1,4 @@
+import ArrowIcon from "@/components/util/arrowIcon";
 import Link from "next/link";
 import { professorPath } from "@/helpers/links";
 
@@ -18,7 +19,7 @@ interface ProfessorCardProps{
 const ProfessorCard: React.FC<ProfessorCardProps> = ({ professor }) => (
   <Link href={professorPath(professor)} className="result-card">
     <h3>{professor.Prefix} {professor.Firstname} {professor.Lastname}</h3>
-    <span aria-hidden="true" className="result-arrow">↗</span>
+    <ArrowIcon className="result-arrow" />
   </Link>
 );
 export default ProfessorCard;
