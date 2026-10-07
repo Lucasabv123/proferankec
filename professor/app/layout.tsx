@@ -13,6 +13,7 @@ export async function generateMetadata() {
   return {
     title: t.appName,
     description: t.appDescription,
+    icons: { icon: { url: "/professor-rank-logo.png", type: "image/png" }, apple: "/professor-rank-logo.png" },
   };
 }
 

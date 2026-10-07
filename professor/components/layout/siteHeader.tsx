@@ -17,7 +17,7 @@ const SiteHeader = ({ session, showSearch = true }: SiteHeaderProps) => {
     <header className="w-full border-b border-slate-200 bg-white text-slate-900">
       <div className="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center gap-3 md:flex-nowrap">
         <Link href="/" className="flex items-center gap-2 shrink-0">
-          <Image src="/logo.svg" alt="" width={36} height={36} />
+          <Image src="/professor-rank-logo.png" alt="" width={36} height={36} />
           <span className="font-bold text-lg">{t.appName}</span>
         </Link>
         {showSearch ? (
