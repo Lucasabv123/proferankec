@@ -1,3 +1,4 @@
+import ArrowIcon from "@/components/util/arrowIcon";
 import Link from "next/link";
 import { coursePath } from "@/helpers/links";
 
@@ -18,7 +19,7 @@ const CourseCard = ({ course }: CourseCardProps) => (
     <h3>{course.code ? `${course.code} ` : ""}{course.name}</h3>
     {course.school && <p>{course.school.name}</p>}
     <p>{course.Department}</p>
-    <span aria-hidden="true" className="result-arrow">↗</span>
+    <ArrowIcon className="result-arrow" />
   </Link>
 );
 export default CourseCard;
