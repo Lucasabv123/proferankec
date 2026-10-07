@@ -7,10 +7,13 @@ import { getServerSession } from 'next-auth';
 import authOptions from "@/helpers/auth/options";
 import SiteHeader from "@/components/layout/siteHeader";
 import { notFound } from "next/navigation";
-import { parseIdParam, schoolPath } from "@/helpers/links";
+import { parseIdParam, professorName, schoolPath } from "@/helpers/links";
 import Link from "next/link";
 import { getDictionary } from "@/helpers/i18n/locale";
 import { isTranslationEnabled } from "@/helpers/translate/translate";
+import { format } from "@/helpers/i18n/dictionaries";
+import { summarizeReviews } from "@/helpers/reviews/summary";
+import { Distribution, ScoreHeadline, StatPair } from "@/components/reviews/ratingSummary";
 
 
 
@@ -59,35 +62,6 @@ type Review = {
 
 
 
-function calcAverageRatings(reviews : Review[], professor : Professor){
-
-  const overallRatings = reviews.map(review => review.overallRating);
-  const difficulties = reviews.map(review => review.difficulty);
-  const workloads = reviews.map(review => review.workload);
-  const lectures = reviews.map(review => review.lecture);
-  const learning = reviews.map(review => review.learning);
-
-  // with no reviews, show zero stars instead of NaN
-  const mean = (values: number[]) => values.length ? values.reduce((a, b) => a + b, 0) / values.length : 0;
-  const meanOverallRating = mean(overallRatings);
-  const meanDifficulty = mean(difficulties);
-  const meanWorkload = mean(workloads);
-  const meanLecture = mean(lectures);
-  const meanLearning = mean(learning);
-
-  const overallReview = {
-    overallRating: meanOverallRating,
-    difficulty: meanDifficulty,
-    workload: meanWorkload,
-    lecture: meanLecture,
-    learning: meanLearning,
-    professor: professor,
-  }
-
-  return overallReview; 
-
-}
-
 async function getUserId(session) {
   // grab the session from the db
    if (!session) {
@@ -103,45 +77,13 @@ async function getUserId(session) {
 }
 
 
-async function getReviews(course : Course, professorId = null){
-  const reviews = await prisma.review.findMany({
-    where: {
-      courseId: course.id,
-      hidden: false,
-      ...(professorId && { professorId: parseInt(professorId, 10) }),
-    },
-    include: {
-      professor: true,
-    },
+// the visible reviews of this course, newest first; the page filters them by professor itself
+async function getReviews(course : Course){
+  return prisma.review.findMany({
+    where: { courseId: course.id, hidden: false },
+    include: { professor: true },
+    orderBy: { createdAt: "desc" },
   });
-
-  const allReviews = await prisma.review.findMany({
-    where:{
-      courseId: course.id,
-      hidden: false,
-    }, 
-    include: {
-      professor: true,
-  },  
-  });
-
-
-  let professor;
-  if(professorId == null){
-    professor = {
-      id: null,
-      Prefix: "",
-      Firstname: getDictionary().allProfessors,
-      Lastname: ""
-    }
-  } else{
-    // take the name from the course's own professor list so a professor with no reviews still works
-    professor = course.professors
-      .map(({ professor }) => professor)
-      .find((p) => p.id === parseInt(professorId, 10)) ?? { id: parseInt(professorId, 10), Prefix: "", Firstname: getDictionary().unknownProfessor, Lastname: "" };
-  }
-  const overallReview = calcAverageRatings(reviews, professor);
-  return({reviews: reviews, overallReview: overallReview, allReviews: allReviews});
 }
 
 
@@ -179,10 +121,13 @@ const CoursePage = async ({ params, searchParams }) => {
   const session = await getServerSession( authOptions );
   const professorId = searchParams.professorId;
   const t = getDictionary();
-  const reviewsComp = await getReviews(course, professorId);
-  const reviews = reviewsComp.reviews;
-  const allReviews = reviewsComp.allReviews;
-  const overallReview = reviewsComp.overallReview;  
+  const allReviews = await getReviews(course);
+  const selectedProfessorId = professorId ? parseInt(professorId, 10) : null;
+  const reviews = selectedProfessorId === null ? allReviews : allReviews.filter((r) => r.professorId === selectedProfessorId);
+  const summary = summarizeReviews(reviews);
+  const selectedProfessor = selectedProfessorId === null ? null
+    : course.professors.map(({ professor }) => professor).find((p) => p.id === selectedProfessorId) ?? null;
+  const selectedName = selectedProfessor ? professorName(selectedProfessor) : selectedProfessorId !== null ? t.unknownProfessor : null;
   const allProfessors = course.professors
     .map(({ professor }) => professor)
     .filter((value, index, self) =>
@@ -200,11 +145,28 @@ const CoursePage = async ({ params, searchParams }) => {
     <>
     <SiteHeader session={session} />
     <main className="flex min-h-screen flex-col items-center gap-4 px-4 py-6 md:p-12 max-w-5xl mx-auto w-full">
-      <div className="text-center">
-        <h1 className="text-2xl md:text-3xl font-bold">{course.code ? `${course.code} ` : ""}{course.name}</h1>
-        <p><Link className="underline" href={schoolPath(course.school)}>{course.school.name}</Link> · {course.Department}</p>
-      </div>
-      <h2 className="text-xl font-semibold">{t.professors}</h2>
+      <section className="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
+        <div className="flex flex-col gap-6">
+          <ScoreHeadline summary={summary} scope={selectedName ? format(t.forProfessor, { professor: selectedName }) : undefined} />
+          <div>
+            <h1 className="text-3xl md:text-4xl font-black" style={{ overflowWrap: "anywhere" }}>{course.code ? `${course.code} ` : ""}{course.name}</h1>
+            <p className="mt-2"><Link className="font-semibold underline" href={schoolPath(course.school)}>{course.school.name}</Link> · {course.Department}</p>
+          </div>
+          <StatPair summary={summary} />
+          <div>
+            <Review
+              proco={course}
+              session={session}
+              userid={userid}
+              type="course"
+              buttonLabel={`${t.rate} →`}
+              buttonClassName="min-h-11 rounded-full bg-blue-600 px-10 py-2 font-semibold text-white hover:bg-blue-700"
+            />
+          </div>
+        </div>
+        <Distribution summary={summary} />
+      </section>
+      <h2 className="mt-6 text-xl font-semibold">{t.professors}</h2>
       <ul className="grid w-full grid-cols-1 gap-x-4 sm:grid-cols-2 lg:grid-cols-3">
         {course.professors.map(({ professor }) => (
           <li key={professor.id}>
@@ -213,32 +175,35 @@ const CoursePage = async ({ params, searchParams }) => {
         ))}
       </ul>
 
-      <div className="w-full">
-        <h1 className="pb-4 text-2xl md:text-3xl text-center">{t.overallRatings}</h1>
-        <ReviewCard review={overallReview} type="course" />
-      </div>
-
-      <h1>{t.filterForProfessor}</h1>
-      <Filter items={allProffessorWithReviews} itemId={professorId} type="professor" param="professorId" />
-
-      <div className="py-3" />
-
-      <Review proco={course} session={session} userid={userid} type="course" />
-
-      <div className="py-3" />
-
-      <h2 className="text-xl font-semibold">{t.reviews}</h2>
-      {reviews.length === 0 ? (
-        <p>{t.noReviewsYet}</p>
-      ) : (
-        <ul className="flex flex-col w-full">
-          {reviews.map((review) => (
-            <li key={review.id}>
-              <ReviewCard review={review} type="course" canReport={!!session} isOwn={userid !== null && review.userId === userid} canTranslate={canTranslate} />
-            </li>
-          ))}
-        </ul>
+      {summary.count > 0 && (
+        <div className="w-full">
+          <h2 className="mb-3 text-xl font-semibold">{t.overallRatings}</h2>
+          <ReviewCard
+            review={{ ...summary, overallRating: summary.average, professor: { Firstname: selectedName ?? t.allProfessors, Lastname: "" } }}
+            type="course"
+          />
+        </div>
       )}
+
+      <section id="ratings" className="w-full scroll-mt-4">
+        <h2 className="mb-3 border-b border-slate-200 pb-3 text-xl font-semibold">
+          {reviews.length === 1 ? t.studentRatingsOne : format(t.studentRatingsMany, { count: reviews.length })}
+        </h2>
+        <div className="mb-4">
+          <Filter items={allProffessorWithReviews} itemId={selectedProfessorId ?? ""} type="professor" param="professorId" />
+        </div>
+        {reviews.length === 0 ? (
+          <p>{t.noReviewsYet}</p>
+        ) : (
+          <ul className="flex flex-col w-full">
+            {reviews.map((review) => (
+              <li key={review.id}>
+                <ReviewCard review={review} type="course" canReport={!!session} isOwn={userid !== null && review.userId === userid} canTranslate={canTranslate} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </main>
     </>
   );

@@ -117,6 +117,7 @@ model Review {
   workload      Float
   lecture       Float
   learning      Float
+  wouldTakeAgain Boolean? // null on reviews written before the question existed, or when skipped
   comment       String
   hidden        Boolean        @default(false) // hidden by an admin; never shown publicly
   createdAt     DateTime       @default(now())

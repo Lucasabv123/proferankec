@@ -9,6 +9,7 @@ type Review = {
     workload: number,
     lecture: number,
     learning: number,
+    wouldTakeAgain: boolean | null,
     comment: string
 }
 
@@ -24,6 +25,7 @@ export const postReview = async ( review : Review ) => {
             workload: review.workload,
             lecture: review.lecture,
             learning: review.learning,
+            wouldTakeAgain: review.wouldTakeAgain,
             comment: review.comment
         }
     });

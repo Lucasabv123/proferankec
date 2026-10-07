@@ -8,7 +8,7 @@ import { professorName } from "@/helpers/links";
 
 interface FilterProps {
     items: any[];
-    itemId: string;
+    itemId: string | number;
     totalItems?: number;
     type: string;
     param: string;
