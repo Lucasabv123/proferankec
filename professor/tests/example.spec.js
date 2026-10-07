@@ -10,7 +10,7 @@ test.beforeEach(async ({ page }) => {
 
 test('homepage retains its three searches and sign-in control', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Your next semester starts here.');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Search Professors and Courses');
   await expect(page.getByRole('button', { name: 'Sign in with Google' })).toBeVisible();
   for (const name of ['Search Professors', 'Search Courses', 'Search Schools']) {
     await expect(page.getByRole('combobox', { name, exact: true })).toBeVisible();
