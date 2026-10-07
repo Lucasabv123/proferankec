@@ -1,6 +1,9 @@
+// The site name is a brand: it stays "Professor Rank" in every language.
+export const BRAND_NAME = "Professor Rank";
+
 // UI text in every supported language. Add a key to `en` first; TypeScript then requires it in `es`.
 export const en = {
-    appName: "Professor Rank",
+    appName: BRAND_NAME,
     appDescription: "Rank your professors",
     homeHeading: "Search Professors and Courses",
     searchCategory: "Search category",
@@ -113,7 +116,7 @@ export const en = {
 export type Dictionary = typeof en;
 
 export const es: Dictionary = {
-    appName: "Professor Rank",
+    appName: BRAND_NAME,
     appDescription: "Califica a tus profesores",
     homeHeading: "Busca profesores y materias",
     searchCategory: "Categoría de búsqueda",

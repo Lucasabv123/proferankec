@@ -20,7 +20,7 @@ export default async function Home() {
         <div className="home-header-inner">
         <div className="home-brand">
           <HomeButton size={42} disabled />
-          <span className="text-lg font-bold tracking-tight md:text-xl">{t.appName}</span>
+          <span className="text-lg font-bold tracking-tight md:text-xl notranslate" translate="no">{t.appName}</span>
         </div>
         <Login showLogin={!session} user={session?.user} />
         </div>
