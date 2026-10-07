@@ -13,9 +13,10 @@ export interface Suggestion {
 const LIMIT = 8;
 
 // the first few matches for the search bar's dropdown, already linked to their pages
-async function getSuggestions(type: SuggestType, query: string): Promise<Suggestion[]> {
+// schoolId limits professors and courses to one university (the school page's search box)
+async function getSuggestions(type: SuggestType, query: string, schoolId?: number): Promise<Suggestion[]> {
     if (type === "professor") {
-        const ids = await findMatchingIds("Professor", query, { limit: LIMIT });
+        const ids = await findMatchingIds("Professor", query, { schoolId, limit: LIMIT });
         if (!ids?.length) return [];
         const professors = await prisma.professor.findMany({ where: { id: { in: ids } }, include: { school: true } });
         return sortByIds(professors, ids).map((p) => ({
@@ -25,7 +26,7 @@ async function getSuggestions(type: SuggestType, query: string): Promise<Suggest
         }));
     }
     if (type === "course") {
-        const ids = await findMatchingIds("Course", query, { limit: LIMIT });
+        const ids = await findMatchingIds("Course", query, { schoolId, limit: LIMIT });
         if (!ids?.length) return [];
         const courses = await prisma.course.findMany({ where: { id: { in: ids } }, include: { school: true } });
         return sortByIds(courses, ids).map((c) => ({
