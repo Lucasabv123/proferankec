@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import ProfessorCard from "@/components/professor/card";
 import SearchBar from "@/components/searchbar/comp";
@@ -56,7 +57,10 @@ const SearchInner: React.FC = () => {
             ))}
           </div>
         ) : (
-          <p className="text-center text-lg">{t.noProfessors}</p>
+          <div className="flex flex-col items-center gap-2 text-center">
+            <p className="text-lg">{t.noProfessors}</p>
+            {data && <Link className="font-semibold text-blue-700 underline" href="/suggest">{t.suggestLink}</Link>}
+          </div>
         )}
       </div>
     </>

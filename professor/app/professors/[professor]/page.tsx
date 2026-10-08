@@ -121,6 +121,9 @@ const ProfessorPage = async ({ params, searchParams }) => {
                 buttonLabel={`${t.rate} →`}
                 buttonClassName="min-h-11 rounded-full bg-blue-600 px-10 py-2 font-semibold text-white hover:bg-blue-700"
               />
+              <p className="mt-3 text-sm">
+                <Link className="text-blue-700 underline" href={`/suggest?professor=${professor.id}`}>{t.suggestMissingCourse}</Link>
+              </p>
             </div>
           </div>
           <Distribution summary={summary} />

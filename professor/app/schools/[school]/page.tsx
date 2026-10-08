@@ -57,10 +57,16 @@ async function SchoolPage( {params, searchParams }) {
         <div className="text-center">
             <h1 className="text-3xl md:text-4xl font-semibold mb-2">{school.name}</h1>
             <Link className="underline" href={`${schoolPath(school)}/rankings`}>{t.seeRankings}</Link>
+            <p className="mt-2"><Link className="text-sm text-blue-700 underline" href={`/suggest?school=${encodeURIComponent(school.key)}`}>{t.suggestLink}</Link></p>
         </div>
         <SearchBarAddOnPrimitive placeholder={t.schoolSearchPlaceholder} buttonText={t.searchButton} school={school.key} />
 
-        {searchData == null ? null : searchData.length === 0 ? (<p>{t.couldNotFind}</p>) : (
+        {searchData == null ? null : searchData.length === 0 ? (
+            <div className="flex flex-col items-center gap-2 text-center">
+                <p>{t.couldNotFind}</p>
+                <Link className="font-semibold text-blue-700 underline" href={`/suggest?school=${encodeURIComponent(school.key)}`}>{t.suggestLink}</Link>
+            </div>
+        ) : (
             type === "professor" ? (
                 <div className="grid w-full grid-cols-1 gap-x-4 sm:grid-cols-2 lg:grid-cols-3">
                     {searchData.map((professor : Professor) => (

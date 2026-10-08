@@ -48,6 +48,7 @@ model User {
   sessions      Session[]
   reviews       Review[]
   reports       ReviewReport[]
+  submissions   Submission[]
 }
 
 model VerificationToken {
@@ -60,11 +61,12 @@ model VerificationToken {
 
 // a university; Course.code and Professor.externalKey are unique within one school
 model School {
-  id         Int         @id @default(autoincrement())
-  key        String      @unique // short name used in links and imports, e.g. "usfq"
-  name       String
-  courses    Course[]
-  professors Professor[]
+  id          Int          @id @default(autoincrement())
+  key         String       @unique // short name used in links and imports, e.g. "usfq"
+  name        String
+  courses     Course[]
+  professors  Professor[]
+  submissions Submission[]
 }
 
 model Course {
@@ -73,10 +75,12 @@ model Course {
   name        String
   description String            @default("")
   Department  String
+  userAdded   Boolean           @default(false) // added from a student's suggestion, not the school's catalog
   schoolId    Int
   school      School            @relation(fields: [schoolId], references: [id])
   professors  CourseProfessor[] // Establish many-to-many relationship with Professor
   Review      Review[]
+  submissions Submission[]
 
   @@unique([schoolId, code]) // lets imports update a course instead of duplicating it
 }
@@ -89,10 +93,12 @@ model Professor {
   displayName String? // full name as the school lists it, e.g. "Idrovo Pérez, Gustavo"
   externalKey String? // the school's id for this professor, or their normalized name
   Verified    Boolean           @default(false)
+  userAdded   Boolean           @default(false) // added from a student's suggestion, not the school's catalog
   schoolId    Int
   school      School            @relation(fields: [schoolId], references: [id])
   courses     CourseProfessor[] // Establish many-to-many relationship with Course
   Review      Review[]
+  submissions Submission[]
 
   @@unique([schoolId, externalKey]) // lets imports update a professor instead of duplicating them
 }
@@ -108,24 +114,24 @@ model CourseProfessor {
 }
 
 model Review {
-  id            Int            @id @default(autoincrement())
-  courseId      Int
-  professorId   Int
-  userId        Int
-  overallRating Float
-  difficulty    Float
-  workload      Float
-  lecture       Float
-  learning      Float
+  id             Int                 @id @default(autoincrement())
+  courseId       Int
+  professorId    Int
+  userId         Int
+  overallRating  Float
+  difficulty     Float
+  workload       Float
+  lecture        Float
+  learning       Float
   wouldTakeAgain Boolean? // null on reviews written before the question existed, or when skipped
-  comment       String
-  hidden        Boolean        @default(false) // hidden by an admin; never shown publicly
-  createdAt     DateTime       @default(now())
-  course        Course         @relation(fields: [courseId], references: [id])
-  professor     Professor      @relation(fields: [professorId], references: [id])
-  user          User           @relation(fields: [userId], references: [id])
-  reports       ReviewReport[]
-  translations  ReviewTranslation[]
+  comment        String
+  hidden         Boolean             @default(false) // hidden by an admin; never shown publicly
+  createdAt      DateTime            @default(now())
+  course         Course              @relation(fields: [courseId], references: [id])
+  professor      Professor           @relation(fields: [professorId], references: [id])
+  user           User                @relation(fields: [userId], references: [id])
+  reports        ReviewReport[]
+  translations   ReviewTranslation[]
 
   @@unique([userId, professorId, courseId]) // one review per user per professor and course
 }
@@ -152,4 +158,30 @@ model ReviewTranslation {
   review      Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
 
   @@id([reviewId, language])
+}
+
+// a student's suggestion that a professor teaches a course the site is missing. Each side is either
+// an existing record (professorId / courseId) or a new one described by the other fields, so it can
+// add a professor, a course, both, or just the pairing. An admin approves or rejects it on /admin.
+model Submission {
+  id          Int        @id @default(autoincrement())
+  schoolId    Int
+  userId      Int
+  professorId Int? // the existing professor, or the one created on approval
+  firstName   String? // a new professor's names, when professorId was empty
+  lastName    String?
+  courseId    Int? // the existing course, or the one created on approval
+  courseCode  String? // a new course's catalog code (optional) and title
+  courseName  String?
+  department  String?
+  note        String? // anything else the student wants the admin to know
+  status      String     @default("pending") // "pending", "approved" or "rejected"
+  createdAt   DateTime   @default(now())
+  reviewedAt  DateTime?
+  school      School     @relation(fields: [schoolId], references: [id])
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  professor   Professor? @relation(fields: [professorId], references: [id], onDelete: SetNull)
+  course      Course?    @relation(fields: [courseId], references: [id], onDelete: SetNull)
+
+  @@index([status])
 }
