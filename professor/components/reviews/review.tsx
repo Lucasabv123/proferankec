@@ -188,7 +188,9 @@ const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "profe
     <>
     <button 
       onClick={() => setIsOpen(true)} 
-      className={buttonClassName ?? "bg-blue-500 text-white px-4 py-2 rounded shadow-lg hover:bg-blue-600 transition duration-200 ease-in-out"}
+      // a custom label is the "Rank" button, which stays the same word in every language
+      translate={buttonLabel ? "no" : undefined}
+      className={(buttonLabel ? "notranslate " : "") + (buttonClassName ?? "bg-blue-500 text-white px-4 py-2 rounded shadow-lg hover:bg-blue-600 transition duration-200 ease-in-out")}
     >
       {buttonLabel ?? t.leaveReview}
     </button>
