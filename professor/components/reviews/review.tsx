@@ -20,6 +20,8 @@ interface ReviewProps {
     session: any;
     userid: number;
     type?: string;
+    buttonLabel?: string;
+    buttonClassName?: string;
 }
 
 // Lukas Continue from this point
@@ -96,7 +98,7 @@ const ComboBox : React.FC<ComboBoxProps> = ({ options, setOption, type = "profes
   );
 };
 
-const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "professor" }) => {
+const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "professor", buttonLabel, buttonClassName }) => {
   const t = useDictionary();
   
 
@@ -186,9 +188,9 @@ const Review : React.FC<ReviewProps> = ({ proco , session, userid, type = "profe
     <>
     <button 
       onClick={() => setIsOpen(true)} 
-      className="bg-blue-500 text-white px-4 py-2 rounded shadow-lg hover:bg-blue-600 transition duration-200 ease-in-out"
+      className={buttonClassName ?? "bg-blue-500 text-white px-4 py-2 rounded shadow-lg hover:bg-blue-600 transition duration-200 ease-in-out"}
     >
-      {t.leaveReview}
+      {buttonLabel ?? t.leaveReview}
     </button>
   
     <Dialog open={isOpen} onClose={() => setIsOpen(false)}>

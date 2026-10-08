@@ -1,6 +1,7 @@
 "use client"; 
 import Rating from "react-rating";
-import { professorName } from "@/helpers/links";
+import Link from "next/link";
+import { coursePath, professorName, professorPath } from "@/helpers/links";
 import { useDictionary } from "@/components/i18n/provider";
 import ReportButton from "./reportButton";
 import ReviewComment from "./reviewComment";
@@ -16,12 +17,17 @@ type Review = {
   workload: number,
   lecture: number,
   learning: number,
+  wouldTakeAgain?: boolean | null,
   comment?: string, 
+  createdAt?: Date | string,
   course?: {
+    id?: number,
+    code?: string | null,
     name: string
   },
   professor?: {
-    Prefix?: string, 
+    id?: number,
+    Prefix?: string | null, 
     Firstname: string, 
     Lastname: string
   },
@@ -39,7 +45,7 @@ interface StaticStarRatingProps {
   rating: number; 
 }
 
-const StaticStarRating: React.FC<StaticStarRatingProps> = ({ rating }) => {
+export const StaticStarRating: React.FC<StaticStarRatingProps> = ({ rating }) => {
   const RatingComponent = Rating as any;
 
   return (
@@ -53,35 +59,52 @@ const StaticStarRating: React.FC<StaticStarRatingProps> = ({ rating }) => {
   )
 }
 
+// one student's review (or the averages, when it has no id): its course or professor, date, star ratings and comment
 const ReviewCard: React.FC<ReviewCardProps> = ({ review, type = "professor", canReport = false, isOwn = false, canTranslate = false }) => {
   const t = useDictionary();
-  return (
-    <div className="review-card p-5 sm:p-6 mb-6 w-full max-w-4xl mx-auto">
-      <h3 className="text-xl md:text-2xl font-bold mb-4 text-center">
-        {type === "professor" ? review.course?.name : (review.professor ? professorName(review.professor) : "")}
-      </h3>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-        <div>
-          <h4 className="text-sm font-medium text-slate-600 mb-2">{t.overallRating}</h4>
-          <StaticStarRating rating={review.overallRating} />
-        </div>
-        <div>
-          <h4 className="text-sm font-medium text-slate-600 mb-2">{t.difficulty}</h4>
-          <StaticStarRating rating={review.difficulty} />
-        </div>
-        <div>
-          <h4 className="text-sm font-medium text-slate-600 mb-2">{t.workload}</h4>
-          <StaticStarRating rating={review.workload} />
-        </div>
-        <div>
-          <h4 className="text-sm font-medium text-slate-600 mb-2">{t.lectureQuality}</h4>
-          <StaticStarRating rating={review.lecture} />
-        </div>
-        <div>
-          <h4 className="text-sm font-medium text-slate-600 mb-2">{t.learningValue}</h4>
-          <StaticStarRating rating={review.learning} />
-        </div>
+  // on a professor page each review names its course; on a course page, its professor
+  let title: React.ReactNode = null;
+  if (type === "professor" && review.course) {
+    const name = review.course.code ? `${review.course.code} ${review.course.name}` : review.course.name;
+    title = review.course.id && review.id ? <Link href={coursePath({ ...review.course, id: review.course.id })} className="hover:underline">{name}</Link> : name;
+  } else if (type !== "professor" && review.professor) {
+    const name = professorName(review.professor);
+    title = review.professor.id && review.id ? <Link href={professorPath({ ...review.professor, id: review.professor.id })} className="hover:underline">{name}</Link> : name;
+  }
+
+  const date = review.createdAt
+    ? new Date(review.createdAt).toLocaleDateString(t.dateLocale, { year: "numeric", month: "short", day: "numeric" })
+    : null;
+
+  const stars: [string, number][] = [
+    [t.overallRating, review.overallRating],
+    [t.difficulty, review.difficulty],
+    [t.workload, review.workload],
+    [t.lectureQuality, review.lecture],
+    [t.learningValue, review.learning],
+  ];
+
+  return (
+    <article className="review-card p-5 sm:p-6 mb-6 w-full max-w-4xl mx-auto">
+      <div className="mb-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+        <h3 className="text-xl md:text-2xl font-bold" style={{ overflowWrap: "anywhere" }}>{title}</h3>
+        {date && <time className="text-sm font-semibold text-slate-600" dateTime={new Date(review.createdAt!).toISOString()}>{date}</time>}
+      </div>
+
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-3 mb-4">
+        {stars.map(([label, rating]) => (
+          <div key={label}>
+            <h4 className="text-sm font-medium text-slate-600 mb-2">{label}</h4>
+            <StaticStarRating rating={rating} />
+          </div>
+        ))}
+        {typeof review.wouldTakeAgain === "boolean" && (
+          <div>
+            <h4 className="text-sm font-medium text-slate-600 mb-2">{t.wouldTakeAgain}</h4>
+            <span className="text-sm font-semibold">{review.wouldTakeAgain ? t.yes : t.no}</span>
+          </div>
+        )}
       </div>
 
       <ReviewComment reviewId={review.id} comment={review.comment} canTranslate={canTranslate} />
@@ -95,6 +118,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, type = "professor", can
               workload: review.workload,
               lecture: review.lecture,
               learning: review.learning,
+              wouldTakeAgain: review.wouldTakeAgain ?? null,
               comment: review.comment ?? "",
             }}
           />
@@ -104,7 +128,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, type = "professor", can
           <ReportButton reviewId={review.id} />
         </div>
       ) : null}
-    </div>
+    </article>
   );
 }
 

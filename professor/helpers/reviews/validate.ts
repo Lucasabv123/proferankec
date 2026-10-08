@@ -3,7 +3,7 @@ import { Dictionary, format } from "../i18n/dictionaries";
 export const SCORE_FIELDS = ["overallRating", "difficulty", "workload", "lecture", "learning"] as const;
 export const MAX_COMMENT_LENGTH = 500;
 
-export type ReviewContent = Record<(typeof SCORE_FIELDS)[number], number> & { comment: string };
+export type ReviewContent = Record<(typeof SCORE_FIELDS)[number], number> & { wouldTakeAgain: boolean | null; comment: string };
 
 // scores come from half-star inputs, so they must be 0.5 to 5 in steps of 0.5
 function isValidScore(value: unknown): value is number {
@@ -21,6 +21,8 @@ export function validateReviewContent(body: any, t: Dictionary): { content: Revi
             return { error: t.errScores };
         }
     }
+    // optional yes/no; anything other than true or false counts as not answered
+    const wouldTakeAgain = typeof body?.wouldTakeAgain === "boolean" ? body.wouldTakeAgain : null;
     const comment = body?.comment;
     if (typeof comment !== "string" || comment.trim() === "") {
         return { error: t.errEmptyComment };
@@ -35,6 +37,7 @@ export function validateReviewContent(body: any, t: Dictionary): { content: Revi
             workload: body.workload,
             lecture: body.lecture,
             learning: body.learning,
+            wouldTakeAgain,
             comment: comment.trim(),
         },
     };
