@@ -5,6 +5,7 @@ import { findMatchingIds } from "./text";
 export type SuggestType = "professor" | "course" | "school";
 
 export interface Suggestion {
+    id: number;
     label: string;
     detail: string;
     href: string;
@@ -20,6 +21,7 @@ async function getSuggestions(type: SuggestType, query: string, schoolId?: numbe
         if (!ids?.length) return [];
         const professors = await prisma.professor.findMany({ where: { id: { in: ids } }, include: { school: true } });
         return sortByIds(professors, ids).map((p) => ({
+            id: p.id,
             label: p.displayName || [p.Prefix, p.Firstname, p.Lastname].filter(Boolean).join(" "),
             detail: p.school.name,
             href: professorPath(p),
@@ -30,6 +32,7 @@ async function getSuggestions(type: SuggestType, query: string, schoolId?: numbe
         if (!ids?.length) return [];
         const courses = await prisma.course.findMany({ where: { id: { in: ids } }, include: { school: true } });
         return sortByIds(courses, ids).map((c) => ({
+            id: c.id,
             label: c.code ? `${c.code} · ${c.name}` : c.name,
             detail: c.school.name,
             href: coursePath(c),
@@ -38,7 +41,7 @@ async function getSuggestions(type: SuggestType, query: string, schoolId?: numbe
     const ids = await findMatchingIds("School", query, { limit: LIMIT });
     if (!ids?.length) return [];
     const schools = await prisma.school.findMany({ where: { id: { in: ids } } });
-    return sortByIds(schools, ids).map((s) => ({ label: s.name, detail: s.key.toUpperCase(), href: schoolPath(s) }));
+    return sortByIds(schools, ids).map((s) => ({ id: s.id, label: s.name, detail: s.key.toUpperCase(), href: schoolPath(s) }));
 }
 
 // findMany doesn't keep the order of an `in` list

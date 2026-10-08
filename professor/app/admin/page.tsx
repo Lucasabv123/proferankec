@@ -7,8 +7,12 @@ import SiteHeader from "@/components/layout/siteHeader";
 import { getServerSession } from "next-auth";
 import authOptions from "@/helpers/auth/options";
 import ReviewActions from "@/components/admin/reviewActions";
+import SubmissionActions from "@/components/admin/submissionActions";
+import Link from "next/link";
+import { coursePath, professorName, professorPath } from "@/helpers/links";
 
-// reported or hidden reviews, most-reported first; only admins (User.isAdmin) can open it
+// students' suggested professors and courses, then reported or hidden reviews (most-reported first);
+// only admins (User.isAdmin) can open it
 export default async function AdminPage() {
   const user = await getCurrentUser();
   if (!user?.isAdmin) {
@@ -27,11 +31,63 @@ export default async function AdminPage() {
   });
   reviews.sort((a, b) => b.reports.length - a.reports.length);
 
+  const submissions = await prisma.submission.findMany({
+    where: { status: "pending" },
+    orderBy: { createdAt: "asc" },
+    include: { school: true, user: true, professor: true, course: true },
+  });
+
   return (
     <>
     <SiteHeader session={session} />
     <main className="flex min-h-screen flex-col items-center px-4 py-6 md:p-12">
-      <h1 className="text-3xl font-bold mb-8">{t.adminTitle}</h1>
+      <h1 className="text-3xl font-bold mb-8">{t.adminSuggestionsTitle}</h1>
+      {submissions.length === 0 ? (
+        <p className="mb-12">{t.adminSuggestionsEmpty}</p>
+      ) : (
+        <ul className="w-full max-w-4xl space-y-6 mb-12">
+          {submissions.map((s) => (
+            <li key={s.id} className="bg-white rounded-lg shadow p-4 md:p-6">
+              <p className="text-sm text-gray-500 mb-2">
+                {s.school.name} · {s.user.name ?? s.user.email} · {s.createdAt.toLocaleDateString(t.dateLocale)}
+              </p>
+              <dl className="grid grid-cols-[auto,1fr] gap-x-3 gap-y-1 mb-3">
+                <dt className="font-semibold">{t.suggestProfessorHeading}</dt>
+                <dd style={{ overflowWrap: "anywhere" }}>
+                  {s.professor ? (
+                    <Link className="underline" href={professorPath(s.professor)}>{professorName(s.professor)}</Link>
+                  ) : (
+                    <span className="rounded bg-amber-100 px-2 text-xs font-semibold text-amber-800 mr-2">{t.newLabel}</span>
+                  )}
+                </dd>
+                <dt className="font-semibold">{t.suggestCourseHeading}</dt>
+                <dd style={{ overflowWrap: "anywhere" }}>
+                  {s.course ? (
+                    <Link className="underline" href={coursePath(s.course)}>{s.course.code ? `${s.course.code} · ${s.course.name}` : s.course.name}</Link>
+                  ) : (
+                    <span className="rounded bg-amber-100 px-2 text-xs font-semibold text-amber-800 mr-2">{t.newLabel}</span>
+                  )}
+                </dd>
+              </dl>
+              {s.note && <p className="text-gray-800 mb-3">&ldquo;{s.note}&rdquo;</p>}
+              <SubmissionActions
+                submissionId={s.id}
+                newProfessor={!s.professor}
+                newCourse={!s.course}
+                initial={{
+                  firstName: s.firstName ?? "",
+                  lastName: s.lastName ?? "",
+                  courseCode: s.courseCode ?? "",
+                  courseName: s.courseName ?? "",
+                  department: s.department ?? "",
+                }}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <h2 className="text-3xl font-bold mb-8">{t.adminTitle}</h2>
 
       {reviews.length === 0 ? (
         <p>{t.adminEmpty}</p>

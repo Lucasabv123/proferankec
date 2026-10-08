@@ -39,7 +39,7 @@ try {
     const fields = { name: c.title || c.code, Department: c.department || c.subject || '' };
     const course = await prisma.course.upsert({
       where: { schoolId_code: { schoolId: school.id, code: c.code } },
-      update: fields,
+      update: { ...fields, userAdded: false }, // a student-added course the school now lists becomes a catalog course
       create: { ...fields, code: c.code, schoolId: school.id },
     });
     courseIds.set(c.code, course.id);
