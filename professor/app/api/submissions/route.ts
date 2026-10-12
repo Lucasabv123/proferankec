@@ -10,6 +10,7 @@ import {
   takenCourseCode,
   validateSubmission,
 } from '@/helpers/submissions/submissions';
+import { notifyNewSubmission } from '@/helpers/submissions/notify';
 
 function badRequest(error: string, status = 400) {
   return NextResponse.json({ error }, { status });
@@ -53,5 +54,7 @@ export async function POST(req: NextRequest) {
   }
 
   await prisma.submission.create({ data: { ...submission, userId: user.id } });
+  // awaited because the server may be frozen once the response is sent; it never throws
+  await notifyNewSubmission(submission, user.email);
   return NextResponse.json({ ok: true }, { status: 201 });
 }
