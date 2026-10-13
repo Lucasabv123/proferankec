@@ -11,7 +11,7 @@ import SubmissionActions from "@/components/admin/submissionActions";
 import Link from "next/link";
 import { coursePath, professorName, professorPath } from "@/helpers/links";
 
-// students' suggested professors and courses, then reported or hidden reviews (most-reported first);
+// site stats, then students' suggested professors and courses, then reported or hidden reviews (most-reported first);
 // only admins (User.isAdmin) can open it
 export default async function AdminPage() {
   const user = await getCurrentUser();
@@ -20,6 +20,23 @@ export default async function AdminPage() {
   }
   const t = getDictionary();
   const session = await getServerSession(authOptions);
+
+  // User has no signup date, so "active" counts users holding an unexpired login session:
+  // NextAuth sessions last 30 days and are extended on each visit, so that is anyone signed in during the last 30 days
+  const now = new Date();
+  const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const [userCount, activeUsers, reviewCount, weekReviewCount] = await Promise.all([
+    prisma.user.count(),
+    prisma.user.count({ where: { sessions: { some: { expires: { gt: now } } } } }),
+    prisma.review.count(),
+    prisma.review.count({ where: { createdAt: { gte: weekAgo } } }),
+  ]);
+  const stats = [
+    { label: t.statsUsers, value: userCount },
+    { label: t.statsActiveUsers, value: activeUsers },
+    { label: t.statsReviews, value: reviewCount },
+    { label: t.statsReviewsWeek, value: weekReviewCount },
+  ];
 
   const reviews = await prisma.review.findMany({
     where: { OR: [{ reports: { some: {} } }, { hidden: true }] },
@@ -41,7 +58,17 @@ export default async function AdminPage() {
     <>
     <SiteHeader session={session} />
     <main className="flex min-h-screen flex-col items-center px-4 py-6 md:p-12">
-      <h1 className="text-3xl font-bold mb-8">{t.adminSuggestionsTitle}</h1>
+      <h1 className="text-3xl font-bold mb-6">{t.statsTitle}</h1>
+      <dl className="w-full max-w-4xl grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+        {stats.map((s) => (
+          <div key={s.label} className="flex flex-col-reverse bg-white rounded-lg shadow p-4 text-center">
+            <dt className="text-sm text-gray-500 mt-1">{s.label}</dt>
+            <dd className="text-3xl font-bold">{s.value.toLocaleString(t.dateLocale)}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <h2 className="text-3xl font-bold mb-8">{t.adminSuggestionsTitle}</h2>
       {submissions.length === 0 ? (
         <p className="mb-12">{t.adminSuggestionsEmpty}</p>
       ) : (
