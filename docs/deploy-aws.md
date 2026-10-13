@@ -68,6 +68,10 @@ Re-running the import and `load-banner` at the start of each semester updates co
 | `GOOGLE_CLIENT_SECRET` | from step 3 |
 | `TRANSLATION_API_URL` | optional: the translation service's address. The review Translate button stays hidden without it. |
 | `TRANSLATION_API_KEY` | optional: the key for that translation service |
+| `SUGGESTION_EMAIL_TO` | optional: the address that gets an email when a student suggests a professor or course (see "Email alerts" below) |
+| `SUGGESTION_EMAIL_FROM` | optional: the sender address, verified in SES; defaults to `SUGGESTION_EMAIL_TO` |
+| `SES_SMTP_USER` / `SES_SMTP_PASSWORD` | optional: SES SMTP credentials for those emails |
+| `SES_SMTP_HOST` | optional: defaults to `email-smtp.us-east-2.amazonaws.com` |
 
 4. Click **Save and deploy**. Every push to `main` deploys again automatically.
 
@@ -82,6 +86,16 @@ DATABASE_URL="<rds url>" npx prisma studio
 ```
 
 Open the **User** table and set `isAdmin` to `true` on your user. The `/admin` page then shows reported reviews.
+
+## Email alerts for suggestions
+
+When a student suggests a professor or course at `/suggest`, the site can email you. It sends through Amazon SES. Without these settings no email is sent and suggestions still work.
+
+1. Open **Amazon SES** in the **us-east-2 (Ohio)** region. Go to **Identities → Create identity**, pick **Email address**, enter your Gmail address and create it. Click the link in the email AWS sends you.
+2. Go to **SMTP settings → Create SMTP credentials**, keep the suggested name, and click **Create user**. Copy the **SMTP user name** and **SMTP password** (the password is shown only once).
+3. In **Amplify → your app → Hosting → Environment variables**, add `SUGGESTION_EMAIL_TO` (your Gmail address), `SES_SMTP_USER` and `SES_SMTP_PASSWORD`. Save, then redeploy `main`.
+
+A new SES account is in the "sandbox", which only sends to verified addresses. That is fine here because you send to yourself. The first emails may land in Gmail's spam folder; mark one as "Not spam".
 
 ## Costs
 
