@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import Login from "@/components/auth/loginformbasicgoogle01";
+import AdminLink from "@/components/layout/adminLink";
 import HeaderSearch from "@/components/searchbar/topSection";
 import { getDictionary } from "@/helpers/i18n/locale";
 
@@ -27,7 +28,8 @@ const SiteHeader = ({ session, showSearch = true }: SiteHeaderProps) => {
         ) : (
           <div className="hidden md:block md:flex-1" />
         )}
-        <div className="ml-auto shrink-0">
+        <div className="ml-auto shrink-0 flex items-center gap-2">
+          {session && <AdminLink />}
           {session ? <Login showLogin={false} user={session.user} compact /> : <Login showLogin={true} compact />}
         </div>
       </div>
