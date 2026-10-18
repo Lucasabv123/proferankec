@@ -2,6 +2,7 @@ import Login from "@/components/auth/loginformbasicgoogle01";
 import SearchBar from "@/components/searchbar/comp";
 import { getServerSession } from "next-auth";
 import authOptions from "@/helpers/auth/options";
+import AdminLink from "@/components/layout/adminLink";
 import HomeButton from "@/components/util/homeButton";
 import { getDictionary } from "@/helpers/i18n/locale";
 
@@ -22,7 +23,10 @@ export default async function Home() {
           <HomeButton size={42} disabled />
           <span className="text-lg font-bold tracking-tight md:text-xl notranslate" translate="no">{t.appName}</span>
         </div>
-        <Login showLogin={!session} user={session?.user} />
+        <div className="flex flex-wrap items-center gap-3">
+          {session && <AdminLink />}
+          <Login showLogin={!session} user={session?.user} />
+        </div>
         </div>
       </header>
       <section className="home-content" aria-labelledby="home-heading">
